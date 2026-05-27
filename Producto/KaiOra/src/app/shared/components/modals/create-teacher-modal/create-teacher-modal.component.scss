@@ -1,0 +1,204 @@
+@import 'src/theme/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: $color-bg-primary;
+}
+
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.modal-header {
+  box-shadow: none;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-md $space-lg;
+    background: $color-bg-primary;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__icon {
+    font-size: 22px;
+    color: $color-secondary;
+  }
+
+  &__title {
+    @include typography($typography-h4);
+    color: $color-secondary;
+    margin: 0;
+  }
+
+  &__close-btn {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    border-radius: $border-radius-full;
+    border: none;
+    background: $color-neutral-lighter;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    font-size: 20px;
+
+    &:hover {
+      background: $color-neutral-light;
+      color: $color-text-primary;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────
+.modal-content {
+  --background: #{$color-bg-secondary};
+}
+
+.professor-form {
+  padding: $space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+}
+
+// ─────────────────────────────────────────
+// FIELDS
+// ─────────────────────────────────────────
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+}
+
+.field-label {
+  @include typography($typography-label);
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+}
+
+.custom-field {
+  display: flex;
+  align-items: center;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: 0 $space-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus-within {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
+  }
+
+  &--error {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+  }
+}
+
+.field-icon {
+  font-size: 18px;
+  color: $color-text-light;
+  flex-shrink: 0;
+  margin-right: $space-xs;
+}
+
+.field-input {
+  flex: 1;
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --color: #{$color-text-primary};
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+}
+
+.field-hint {
+  @include typography($typography-label-xs);
+  color: $color-text-light;
+}
+
+.field-error {
+  @include typography($typography-label-xs);
+  color: $color-danger;
+}
+
+// ─────────────────────────────────────────
+// FOOTER
+// ─────────────────────────────────────────
+.modal-footer {
+  border-top: $border-width-thin solid $color-neutral-light;
+  background: $color-bg-primary;
+  box-shadow: none;
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-sm;
+    padding: $space-md $space-lg;
+  }
+}
+
+// ─────────────────────────────────────────
+// BUTTONS
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: $border-width-medium solid transparent;
+  height: 44px;
+
+  ion-icon { font-size: 18px; }
+  ion-spinner { width: 18px; height: 18px; }
+
+  &--outline {
+    background: transparent;
+    border-color: $color-neutral-light;
+    color: $color-text-secondary;
+
+    &:hover {
+      border-color: $color-neutral-medium;
+      color: $color-text-primary;
+    }
+  }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+
+    &:hover:not([disabled]) {
+      background: $color-secondary-dark;
+      border-color: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+
+    &[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+}

@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BottomTabsComponent  {
   tabs = [
-    { label: 'Principal', icon: 'home', route: '/admin/home' },
+    { label: 'Principal', icon: 'home', route: '/admin'},
     { label: 'Profesores', icon: 'person', route: '/admin/profesores' },
     { label: 'Estadísticas', icon: 'stats-chart', route: '/admin/estadisticas' },
   ];

@@ -1,12 +1,13 @@
-<div class="admin-container">
-  <!-- SIDEBAR (Desktop) -->
-  <app-sidebar-nav *ngIf="!isMobile" class="sidebar"></app-sidebar-nav>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>admin</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <div class="main-content">
-    <router-outlet></router-outlet>
-  </div>
-
-  <!-- BOTTOM TABS (Mobile) -->
-  <app-bottom-tabs *ngIf="isMobile" class="bottom-tabs"></app-bottom-tabs>
-</div>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">admin</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>

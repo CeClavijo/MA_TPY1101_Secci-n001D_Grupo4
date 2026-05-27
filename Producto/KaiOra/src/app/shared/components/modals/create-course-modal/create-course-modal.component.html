@@ -1,40 +1,184 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Crear Curso</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+<!-- 
+<ion-header class="modal-header">
+  <div class="modal-header__content">
+    <div class="modal-header__title-group">
+      <ion-icon name="school-outline" class="modal-header__icon"></ion-icon>
+      <h2 class="modal-header__title">{{ isEditMode ? 'Editar Curso' : 'Crear Nuevo Curso' }}</h2>
+    </div>
+    <button class="modal-header__close-btn" (click)="dismiss()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
 </ion-header>
 
-<ion-content>
-  <div class="modal-content">
-    <form>
-      <!-- Selector de Profesor -->
-      <div class="form-group">
-        <ion-label>Profesor</ion-label>
-        <div class="select-teacher">
-          <ion-select placeholder="Elegir Profesor">
-            <!-- Opciones aquí después -->
-          </ion-select>
-          <ion-button fill="clear" class="btn-add-teacher">
-            <ion-icon name="add-circle"></ion-icon>
-          </ion-button>
+<ion-content class="modal-content">
+  <form [formGroup]="courseForm" class="course-form">
+
+    
+    <section class="form-section">
+      <div class="section-row">
+
+        
+        <div class="field-group field-group--grow">
+          <label class="field-label">Nombre del Curso</label>
+          <div class="custom-field" [class.custom-field--error]="isFieldInvalid('name')">
+            <ion-icon name="book-outline" class="field-icon"></ion-icon>
+            <ion-input
+              formControlName="name"
+              placeholder="Ej. TRS203"
+              class="field-input">
+            </ion-input>
+          </div>
+          <span class="field-error" *ngIf="isFieldInvalid('name')">El nombre es requerido</span>
+        </div>
+
+        
+        <div class="field-group field-group--instructor">
+          <label class="field-label">Instructor</label>
+          <div class="custom-field" [class.custom-field--error]="isFieldInvalid('professorId')">
+            <ion-icon name="person-outline" class="field-icon"></ion-icon>
+            <ion-select
+              formControlName="professorId"
+              placeholder="Seleccionar..."
+              interface="popover"
+              class="field-select">
+              <ion-select-option
+                *ngFor="let prof of professors"
+                [value]="prof.uid">
+                {{ prof.name }}
+              </ion-select-option>
+            </ion-select>
+          </div>
+          <span class="field-error" *ngIf="isFieldInvalid('professorId')">Requerido</span>
+        </div>
+
+      </div>
+    </section>
+
+    
+    <section class="form-section">
+      <label class="field-label">Descripción</label>
+      <div class="custom-field custom-field--textarea" [class.custom-field--error]="isFieldInvalid('description')">
+        <ion-textarea
+          formControlName="description"
+          placeholder="Describe el contenido y objetivos del curso..."
+          [autoGrow]="true"
+          [rows]="3"
+          class="field-textarea">
+        </ion-textarea>
+      </div>
+      <span class="field-error" *ngIf="isFieldInvalid('description')">La descripción es requerida</span>
+    </section>
+
+    
+    <section class="form-section">
+      <label class="field-label">Imagen del Curso <span class="field-label--optional">(opcional)</span></label>
+      <div class="image-upload-area" (click)="triggerImageInput()" [class.image-upload-area--has-image]="imagePreview">
+        <input #imageInputRef type="file" accept="image/*" (change)="onImageSelected($event)" hidden />
+        <ng-container *ngIf="!imagePreview; else previewTpl">
+          <ion-icon name="image-outline" class="image-upload-area__icon"></ion-icon>
+          <p class="image-upload-area__text">Haz clic para subir una imagen</p>
+          <span class="image-upload-area__hint">PNG, JPG o WEBP · Máx 2MB</span>
+        </ng-container>
+        <ng-template #previewTpl>
+          <img [src]="imagePreview" alt="Preview del curso" class="image-upload-area__preview" />
+          <button class="image-upload-area__remove-btn" (click)="removeImage($event)">
+            <ion-icon name="trash-outline"></ion-icon>
+            Quitar imagen
+          </button>
+        </ng-template>
+      </div>
+    </section>
+
+    
+    <section class="form-section">
+      <div class="nomina-header">
+        <div class="nomina-header__left">
+          <ion-icon name="people-outline" class="nomina-header__icon"></ion-icon>
+          <span class="nomina-header__title">Nómina de Estudiantes</span>
+        </div>
+        <span class="nomina-badge" *ngIf="students.length > 0">
+          {{ students.length }} {{ students.length === 1 ? 'Estudiante' : 'Estudiantes' }}
+        </span>
+      </div>
+
+     
+      <div class="add-student-box" [formGroup]="studentForm">
+        <div class="add-student-box__fields">
+          <div class="mini-field" [class.mini-field--error]="studentFieldInvalid('studentName')">
+            <ion-input
+              formControlName="studentName"
+              placeholder="Nombre completo"
+              class="mini-field__input">
+            </ion-input>
+          </div>
+          <div class="mini-field" [class.mini-field--error]="studentFieldInvalid('studentEmail')">
+            <ion-input
+              formControlName="studentEmail"
+              placeholder="correo@ejemplo.com"
+              type="email"
+              class="mini-field__input">
+            </ion-input>
+          </div>
+        </div>
+        <button
+          class="add-student-btn"
+          (click)="addStudent()"
+          [disabled]="studentForm.invalid">
+          <ion-icon name="add-outline"></ion-icon>
+          Agregar
+        </button>
+        <span class="field-error field-error--student" *ngIf="duplicateEmailError">
+          <ion-icon name="warning-outline"></ion-icon>
+          Este email ya está registrado en otro curso
+        </span>
+        <span class="field-error field-error--student" *ngIf="duplicateInCourseError">
+          <ion-icon name="warning-outline"></ion-icon>
+          Este alumno ya está en este curso
+        </span>
+      </div>
+
+      
+      <div class="student-list" *ngIf="students.length > 0">
+        <div
+          class="student-card animate-fade-in"
+          *ngFor="let student of students; let i = index">
+          <div class="student-card__avatar">
+            {{ getInitials(student.name) }}
+          </div>
+          <div class="student-card__info">
+            <span class="student-card__name">{{ student.name }}</span>
+            <span class="student-card__email">{{ student.email }}</span>
+          </div>
+          <button class="student-card__remove-btn" (click)="removeStudent(i)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
         </div>
       </div>
 
-      <!-- Lista de Alumnos -->
-      <div class="form-group">
-        <ion-label>Alumnos</ion-label>
-        <p class="placeholder-text">Aquí irá la lista de alumnos</p>
+      
+      <div class="students-empty" *ngIf="students.length === 0">
+        <ion-icon name="people-outline"></ion-icon>
+        <p>Aún no hay estudiantes en este curso</p>
       </div>
 
-      <!-- Botón Guardar -->
-      <ion-button class="submit" expand="block">
-        Crear Curso
-      </ion-button>
-    </form>
-  </div>
+    </section>
+
+  </form>
 </ion-content>
+
+
+<ion-footer class="modal-footer">
+  <div class="modal-footer__actions">
+    <button class="btn btn--outline" (click)="dismiss()">Cancelar</button>
+    <button
+      class="btn btn--primary"
+      (click)="saveCourse()"
+      [disabled]="isSaving">
+      <ion-icon name="save-outline" *ngIf="!isSaving"></ion-icon>
+      <ion-spinner name="crescent" *ngIf="isSaving"></ion-spinner>
+      {{ isSaving ? 'Guardando...' : 'Guardar Curso' }}
+    </button>
+  </div>
+</ion-footer>
+-->

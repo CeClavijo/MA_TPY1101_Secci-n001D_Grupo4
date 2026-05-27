@@ -2,153 +2,78 @@ import { inject, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  updateProfile
+getAuth,
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+updateProfile,
+sendPasswordResetEmail
 } from 'firebase/auth';
-import { Admin, Teacher, Student, AppUser } from '../models/user.model';
+import { User } from '../models/user.model';
+import { getFirestore, setDoc, doc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, addDoc  } from '@angular/fire/firestore';
+import { Utils } from './utils';
+
 
 @Injectable({
-  providedIn: 'root',
+providedIn: 'root',
 })
 export class FirebaseService {
-  auth = inject(AngularFireAuth);
-  firestore = inject(AngularFirestore);
+auth = inject(AngularFireAuth);
+firestore = inject(AngularFirestore);
+utilsSvc = inject(Utils);
 
-  // ==================== AUTH ====================
+// ==================== AUTH ====================
 
-  signIn(email: string, password: string) {
-    return signInWithEmailAndPassword(getAuth(), email, password);
-  }
+getAuth() {
+    return getAuth();
+}
 
-  signOut() {
-    return signOut(getAuth());
-  }
+signIn(user: User) {
+return signInWithEmailAndPassword(getAuth(), user.email, user.password);
+}
 
-  // ==================== CREATE USERS ====================
 
-  // Crear Admin
-  async createAdmin(admin: Omit<Admin, 'uid' | 'createdAt' | 'updatedAt'>) {
-    try {
-      // Crear en Firebase Auth
-      const authUser = await createUserWithEmailAndPassword(
-        getAuth(),
-        admin.email,
-        admin.password
-      );
+signUp(user: User) {
+return createUserWithEmailAndPassword(getAuth(), user.email, user.password);
+}
 
-      const uid = authUser.user.uid;
-      const now = new Date();
+updateUser(displayName: string) {
+    return updateProfile(getAuth().currentUser, {displayName})
+}
+//======= Enviar email para resetear contraseña =======
 
-      // Guardar en Firestore
-      const adminData: Admin = {
-        ...admin,
-        uid,
-        createdAt: now,
-        updatedAt: now,
-      };
+sendRecoveryEmail(email: string){
+    return sendPasswordResetEmail(getAuth(), email);
+}
 
-      await this.firestore.collection('users').doc(uid).set(adminData);
+signOut() {
+  getAuth().signOut();
+  localStorage.removeItem('user');
+  this.utilsSvc.routerLink('/auth');
+}
 
-      return { success: true, uid };
-    } catch (error) {
-      console.error('Error creando admin:', error);
-      throw error;
-    }
-  }
+// ==================== FIRESTORE ====================
 
-  // Crear Profesor
-  async createTeacher(teacher: Omit<Teacher, 'uid' | 'createdAt' | 'updatedAt'>) {
-    try {
-      const authUser = await createUserWithEmailAndPassword(
-        getAuth(),
-        teacher.email,
-        teacher.password
-      );
+setDocument(path: string, data: any) {
+    return setDoc(doc(getFirestore(), path), data);
+}
 
-      const uid = authUser.user.uid;
-      const now = new Date();
+async getDocument(path: string) {
+    return (await getDoc(doc(getFirestore(), path))).data();
+}
+async getCollectionWhere(path: string, field: string, value: any) {
+  const ref = collection(getFirestore(), path);
+  const q = query(ref, where(field, '==', value));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => doc.data());
+}
+updateDocument(path: string, data: any) {
+  return updateDoc(doc(getFirestore(), path), data);
+}
 
-      const teacherData: Teacher = {
-        ...teacher,
-        uid,
-        createdAt: now,
-        updatedAt: now,
-      };
-
-      await this.firestore.collection('users').doc(uid).set(teacherData);
-
-      return { success: true, uid };
-    } catch (error) {
-      console.error('Error creando profesor:', error);
-      throw error;
-    }
-  }
-
-  // Crear Alumno
-  async createStudent(student: Omit<Student, 'uid' | 'createdAt' | 'updatedAt'>) {
-    try {
-      const authUser = await createUserWithEmailAndPassword(
-        getAuth(),
-        student.email,
-        student.password
-      );
-
-      const uid = authUser.user.uid;
-      const now = new Date();
-
-      const studentData: Student = {
-        ...student,
-        uid,
-        createdAt: now,
-        updatedAt: now,
-      };
-
-      await this.firestore.collection('users').doc(uid).set(studentData);
-
-      return { success: true, uid };
-    } catch (error) {
-      console.error('Error creando alumno:', error);
-      throw error;
-    }
-  }
-
-  // ==================== GET USERS ====================
-
-  getUser(uid: string) {
-    return this.firestore.collection('users').doc(uid).valueChanges();
-  }
-
-  getAllTeachers() {
-    return this.firestore
-      .collection<Teacher>('users', ref => ref.where('role', '==', 'profesor'))
-      .valueChanges();
-  }
-
-  getAllStudents() {
-    return this.firestore
-      .collection<Student>('users', ref => ref.where('role', '==', 'alumno'))
-      .valueChanges();
-  }
-
-  getAllUsers() {
-    return this.firestore.collection('users').valueChanges();
-  }
-
-  // ==================== UPDATE ====================
-
-  updateUser(uid: string, data: Partial<AppUser>) {
-    return this.firestore.collection('users').doc(uid).update({
-      ...data,
-      updatedAt: new Date(),
-    });
-  }
-
-  // ==================== DELETE ====================
-
-  deleteUser(uid: string) {
-    return this.firestore.collection('users').doc(uid).delete();
-  }
+deleteDocument(path: string) {
+  return deleteDoc(doc(getFirestore(), path));
+}
+addDocument(path: string, data: any) {
+  return addDoc(collection(getFirestore(), path), data);
+}
 }

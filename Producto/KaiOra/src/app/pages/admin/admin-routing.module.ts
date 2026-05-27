@@ -9,18 +9,9 @@ const routes: Routes = [
     component: AdminPage
   },
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'profesores',
-    loadChildren: () => import('./profesores/profesores.module').then( m => m.ProfesoresPageModule)
-  },
-      {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full',
-      },
+    path: 'create-teacher',
+    loadChildren: () => import('./create-teacher/create-teacher.module').then( m => m.CreateTeacherPageModule)
+  }
 ];
 
 @NgModule({

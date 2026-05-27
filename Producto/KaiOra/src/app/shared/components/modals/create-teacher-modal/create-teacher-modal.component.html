@@ -1,0 +1,63 @@
+<ion-header class="modal-header">
+  <div class="modal-header__content">
+    <div class="modal-header__title-group">
+      <ion-icon name="person-add-outline" class="modal-header__icon"></ion-icon>
+      <h2 class="modal-header__title">Registrar Profesor</h2>
+    </div>
+    <button class="modal-header__close-btn" (click)="dismiss()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+</ion-header>
+
+<ion-content class="modal-content">
+  <form [formGroup]="form" class="professor-form">
+
+    <!-- Nombre Completo -->
+    <div class="field-group">
+      <label class="field-label">Nombre Completo</label>
+      <div class="custom-field" [class.custom-field--error]="isFieldInvalid('name')">
+        <ion-icon name="person-outline" class="field-icon"></ion-icon>
+        <ion-input
+          formControlName="name"
+          placeholder="Ej. Mariana Silva"
+          class="field-input">
+        </ion-input>
+      </div>
+      <span class="field-error" *ngIf="isFieldInvalid('name')">El nombre es requerido</span>
+    </div>
+
+    <!-- Correo Electrónico -->
+    <div class="field-group">
+      <label class="field-label">Correo Electrónico</label>
+      <div class="custom-field" [class.custom-field--error]="isFieldInvalid('email')">
+        <ion-icon name="mail-outline" class="field-icon"></ion-icon>
+        <ion-input
+          formControlName="email"
+          placeholder="m.silva@kaiora.edu"
+          type="email"
+          class="field-input">
+        </ion-input>
+      </div>
+      <span class="field-hint" *ngIf="!isFieldInvalid('email')">
+        Se enviará una invitación de acceso a esta dirección.
+      </span>
+      <span class="field-error" *ngIf="isFieldInvalid('email')">Ingresa un correo válido</span>
+    </div>
+
+  </form>
+</ion-content>
+
+<ion-footer class="modal-footer">
+  <div class="modal-footer__actions">
+    <button class="btn btn--outline" (click)="dismiss()">Cancelar</button>
+    <button
+      class="btn btn--primary"
+      (click)="submit()"
+      [disabled]="isSaving">
+      <ion-icon name="save-outline" *ngIf="!isSaving"></ion-icon>
+      <ion-spinner name="crescent" *ngIf="isSaving"></ion-spinner>
+      {{ isSaving ? 'Guardando...' : 'Registrar Profesor' }}
+    </button>
+  </div>
+</ion-footer>
