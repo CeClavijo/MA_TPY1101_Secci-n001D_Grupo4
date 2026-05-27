@@ -40,7 +40,29 @@ export class AddUpdateRecipeComponent implements OnInit {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(Utils);
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.techSheet) {
+      this.form.patchValue(this.techSheet);
+
+      if (this.techSheet.ingredients && this.techSheet.ingredients.length > 0) {
+        this.techSheet.ingredients.forEach((ingredient: any) => {
+          this.ingredients.push(
+            new FormGroup({
+              name: new FormControl(ingredient.name, [Validators.required]),
+              quantity: new FormControl(ingredient.quantity, [Validators.required]),
+              unit: new FormControl(ingredient.unit, [Validators.required]),
+            })
+          );
+        });
+      }
+
+      if (this.techSheet.keyPoints && this.techSheet.keyPoints.length > 0) {
+        this.techSheet.keyPoints.forEach((point: string) => {
+          this.keyPoints.push(new FormControl(point, [Validators.required]));
+        });
+      }
+    }
+  }
 
   dismissModal() {
     this.utilsSvc.dismissModal();

@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
   utilsSvc = inject(Utils);
   firebaseSvc = inject(FirebaseService);
 
-  recipes: Recipe[] = [];
+  techSheets: Recipe[] = [];
   loading: boolean = false;
   totalRecipes: number = 0;
   totalViews: number = 0;
@@ -37,12 +37,12 @@ export class HomePage implements OnInit {
 
     let sub = this.firebaseSvc.getCollectionData(path, query).subscribe({
       next: (res: any) => {
-        this.recipes = res;
+        this.techSheets = res;
 
         // Matematicas para los 4 atributos del inicio de la pagina
-        this.totalRecipes = this.recipes.length;
+        this.totalRecipes = this.techSheets.length;
 
-        this.totalViews = this.recipes.reduce((sum, recipe) => {
+        this.totalViews = this.techSheets.reduce((sum, recipe) => {
           return sum + (recipe.views || 0)
         }, 0);
 
@@ -58,11 +58,11 @@ export class HomePage implements OnInit {
     this.getRecipes();
   }
 
-  async addUpdateRecipe(recipe?: Recipe) {
+  async addUpdateRecipe(techSheet?: Recipe) {
     let success = await this.utilsSvc.presentModal({
       component: AddUpdateRecipeComponent,
       cssClass: 'add-update-modal',
-      componentProps: { recipe }
+      componentProps: { techSheet }
     })
 
     if (success) this.getRecipes();

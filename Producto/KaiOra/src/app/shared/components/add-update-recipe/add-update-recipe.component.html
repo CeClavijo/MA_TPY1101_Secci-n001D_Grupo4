@@ -11,9 +11,9 @@
           culinaria.</p>
         <div class="header-actions-row">
           <ion-button fill="outline" class="btn-discard" (click)="dismissModal()">Descartar</ion-button>
-          <ion-button mode="ios" class="btn-create" (click)="createTechSheet()">
+          <ion-button mode="ios" class="btn-create" (click)="techSheet ? updateTechSheet() : createTechSheet()">
             <ion-icon slot="start" name="save-outline"></ion-icon>
-            Guardar Ficha
+            {{ techSheet ? 'Actualizar Ficha' : 'Guardar Ficha' }}
           </ion-button>
         </div>
       </div>
