@@ -1,0 +1,205 @@
+@import 'src/theme/variables';
+
+.professors-content {
+  --background: #{$color-bg-secondary};
+}
+
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-md;
+  padding: $space-xl $space-xl $space-lg;
+  flex-wrap: wrap;
+
+  &__title {
+    @include typography($typography-h2);
+    color: $color-text-primary;
+    margin: 0 0 $space-2xs 0;
+  }
+
+  &__subtitle {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// TABLA
+// ─────────────────────────────────────────
+.professors-table {
+  margin: 0 $space-xl $space-xl;
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-sm $space-lg;
+    background: $color-bg-secondary;
+    border-bottom: $border-width-thin solid $color-neutral-light;
+
+    span {
+      @include typography($typography-label);
+      font-size: $font-size-xs;
+      text-transform: uppercase;
+      letter-spacing: $letter-spacing-wide;
+      color: $color-text-secondary;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// FILAS
+// ─────────────────────────────────────────
+.professor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-md $space-lg;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+  transition: background $transition-fast;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $color-bg-secondary;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__avatar {
+    @include flex-center;
+    width: 42px;
+    height: 42px;
+    border-radius: $border-radius-full;
+    background: rgba($color-secondary, 0.14);
+    color: $color-secondary-dark;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    letter-spacing: $letter-spacing-wide;
+    flex-shrink: 0;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    @include typography($typography-body-sm);
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  &__email {
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+  }
+}
+
+// ─────────────────────────────────────────
+// BOTONES DE ACCIÓN
+// ─────────────────────────────────────────
+.icon-btn {
+  @include flex-center;
+  width: 34px;
+  height: 34px;
+  border-radius: $border-radius-full;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-size: 18px;
+
+  &--edit {
+    color: $color-text-secondary;
+    &:hover {
+      background: rgba($color-secondary, 0.1);
+      color: $color-secondary;
+    }
+  }
+
+  &--delete {
+    color: $color-text-light;
+    &:hover {
+      background: rgba($color-danger, 0.1);
+      color: $color-danger;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// BOTÓN NUEVO PROFESOR
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: none;
+  height: 44px;
+
+  ion-icon { font-size: 20px; }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+
+    &:hover {
+      background: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// EMPTY STATE
+// ─────────────────────────────────────────
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3xl $space-lg;
+  opacity: 0.4;
+
+  ion-icon {
+    font-size: 48px;
+    color: $color-text-secondary;
+    margin-bottom: $space-sm;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}

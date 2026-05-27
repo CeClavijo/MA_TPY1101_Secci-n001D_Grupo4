@@ -9,6 +9,8 @@ import { AddUpdateRecipeComponent } from './components/modals/add-update-recipe/
 import { CreateCourseModalComponent } from './components/modals/create-course-modal/create-course-modal.component';
 import { SidebarNavComponent } from './components/sidebar-nav/sidebar-nav.component';
 import { BottomTabsComponent } from './components/bottom-tabs/bottom-tabs.component';
+import { CreateTeacherModalComponent } from './components/modals/create-teacher-modal/create-teacher-modal.component';
+import { ForgotPasswordModalComponent } from './components/modals/forgot-password-modal/forgot-password-modal.component';
 
 
 
@@ -20,7 +22,9 @@ import { BottomTabsComponent } from './components/bottom-tabs/bottom-tabs.compon
     AddUpdateRecipeComponent,
     CreateCourseModalComponent,
     SidebarNavComponent,
-    BottomTabsComponent
+    BottomTabsComponent,
+    CreateTeacherModalComponent,
+    ForgotPasswordModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -30,7 +34,9 @@ import { BottomTabsComponent } from './components/bottom-tabs/bottom-tabs.compon
     AddUpdateRecipeComponent,
     CreateCourseModalComponent,
     SidebarNavComponent,
-    BottomTabsComponent
+    BottomTabsComponent,
+    CreateTeacherModalComponent,
+    ForgotPasswordModalComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profesores</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="professors-content">
+
+  <!-- ENCABEZADO -->
+  <div class="page-header">
+    <div class="page-header__left">
+      <h1 class="page-header__title">Administrar Profesores</h1>
+      <p class="page-header__subtitle">Gestiona la nómina de profesores de la academia.</p>
+    </div>
+    <button class="btn btn--primary" (click)="openCreateModal()">
+      <ion-icon name="add-outline"></ion-icon>
+      Nuevo Profesor
+    </button>
+  </div>
+
+  <!-- LISTA DE PROFESORES -->
+  <div class="professors-table">
+
+    <!-- Cabecera -->
+    <div class="professors-table__header">
+      <span>Profesor</span>
+      <span>Acciones</span>
+    </div>
+
+    <!-- Estado vacío -->
+    <div class="empty" *ngIf="professors.length === 0">
+      <ion-icon name="people-outline"></ion-icon>
+      <p>Aún no hay profesores registrados</p>
+    </div>
+
+    <!-- Filas -->
+    <div class="professor-row" *ngFor="let professor of professors; let i = index"
+      [class.professor-row--editing]="professor['isEditing']">
+
+      <div class="professor-row__info">
+        <div class="professor-row__avatar">
+          {{ getInitials(professor.name) }}
+        </div>
+        <div class="professor-row__details">
+
+          <!-- Modo lectura -->
+          <span class="professor-row__name" *ngIf="!professor['isEditing']">
+            {{ professor.name }}
+          </span>
+
+          <!-- Modo edición -->
+          <div class="inline-edit" *ngIf="professor['isEditing']">
+            <ion-input
+              class="inline-edit__input"
+              [value]="professor['editingName']"
+              (ionInput)="professor['editingName'] = $event.detail.value"
+              placeholder="Nombre del profesor">
+            </ion-input>
+          </div>
+
+          <span class="professor-row__email">{{ professor.email }}</span>
+        </div>
+      </div>
+
+      <div class="professor-row__actions">
+
+        <!-- Botón editar / confirmar -->
+        <button
+          class="icon-btn"
+          [class.icon-btn--confirm]="professor['isEditing']"
+          [class.icon-btn--edit]="!professor['isEditing']"
+          [disabled]="professor['isSaving']"
+          (click)="toggleEdit(professor)">
+          <ion-spinner name="crescent" *ngIf="professor['isSaving']"></ion-spinner>
+          <ion-icon *ngIf="!professor['isSaving'] && !professor['isEditing']" name="pencil-outline"></ion-icon>
+          <ion-icon *ngIf="!professor['isSaving'] && professor['isEditing']" name="checkmark-outline"></ion-icon>
+        </button>
+
+        <!-- Botón cancelar (solo en modo edición) -->
+        <button
+          class="icon-btn icon-btn--cancel"
+          *ngIf="professor['isEditing']"
+          (click)="cancelEdit(professor)">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+
+        <!-- Botón eliminar (solo en modo lectura) -->
+        <button
+          class="icon-btn icon-btn--delete"
+          *ngIf="!professor['isEditing']"
+          (click)="deleteProfessor(professor, i)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+
+      </div>
+    </div>
+    <ion-button (click)="signOut()">Cerrar sesión</ion-button>
+  </div>
+
+</ion-content>

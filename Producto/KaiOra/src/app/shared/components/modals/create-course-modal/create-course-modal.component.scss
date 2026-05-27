@@ -1,81 +1,570 @@
-@import 'src/theme/variables.scss';
+@import 'src/theme/variables';
 
+// ─────────────────────────────────────────
+// HOST & WRAPPER
+// ─────────────────────────────────────────
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: $color-bg-primary;
+}
+
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.modal-header {
+  box-shadow: none;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-md $space-lg;
+    background: $color-bg-primary;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__icon {
+    font-size: 22px;
+    color: $color-secondary;
+  }
+
+  &__title {
+    @include typography($typography-h4);
+    color: $color-secondary;
+    margin: 0;
+  }
+
+  &__close-btn {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    border-radius: $border-radius-full;
+    border: none;
+    background: $color-neutral-lighter;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    font-size: 20px;
+
+    &:hover {
+      background: $color-neutral-light;
+      color: $color-text-primary;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────
 .modal-content {
-  padding: $space-md;
+  --background: #{$color-bg-secondary};
+}
+
+.course-form {
+  padding: $space-lg;
   display: flex;
   flex-direction: column;
   gap: $space-lg;
 }
 
-form {
+// ─────────────────────────────────────────
+// SECTIONS
+// ─────────────────────────────────────────
+.form-section {
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  padding: $space-lg;
+  box-shadow: $shadow-xs;
   display: flex;
   flex-direction: column;
+  gap: $space-sm;
+}
+
+.section-row {
+  display: flex;
   gap: $space-md;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-.form-group {
+// ─────────────────────────────────────────
+// FIELD GROUPS
+// ─────────────────────────────────────────
+.field-group {
   display: flex;
   flex-direction: column;
-  gap: $space-sm;
+  gap: $space-2xs;
 
-  ion-label {
-    @include typography($typography-label);
-    color: $color-text-secondary;
-    font-weight: $font-weight-semibold;
+  &--grow {
+    flex: 1;
+    min-width: 160px;
   }
 
-  .placeholder-text {
-    @include typography($typography-body-sm);
-    color: $color-text-light;
-    padding: $space-md;
-    background-color: $color-bg-secondary;
-    border-radius: $border-radius-md;
-    text-align: center;
+  &--instructor {
+    flex: 0 0 200px;
+    min-width: 160px;
   }
 }
 
-.select-teacher {
-  display: flex;
-  gap: $space-sm;
-  align-items: center;
+.field-label {
+  @include typography($typography-label);
+  color: $color-text-secondary;
+  letter-spacing: $letter-spacing-wide;
+  text-transform: uppercase;
+  font-size: $font-size-xs;
 
-  ion-select {
-    flex: 1;
-    --padding-start: #{$space-md};
-    --padding-end: #{$space-md};
-    border: $border-width-thin solid $color-neutral-light;
-    border-radius: $border-radius-md;
-    height: 44px;
+  &--optional {
+    font-weight: $font-weight-regular;
+    color: $color-text-light;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// CUSTOM FIELD (input wrapper)
+// ─────────────────────────────────────────
+.custom-field {
+  display: flex;
+  align-items: center;
+  background: $color-bg-secondary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: 0 $space-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus-within {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
   }
 
-  .btn-add-teacher {
-    --color: #{$color-primary};
-    font-size: 28px;
-    height: 44px;
-    width: 44px;
-    margin: 0;
+  &--error {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+  }
+
+  &--textarea {
+    align-items: flex-start;
+    padding: $space-xs $space-sm;
+  }
+}
+
+.field-icon {
+  font-size: 18px;
+  color: $color-text-light;
+  flex-shrink: 0;
+  margin-right: $space-xs;
+}
+
+.field-input,
+.field-select,
+.field-textarea {
+  flex: 1;
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --color: #{$color-text-primary};
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+}
+
+.field-select {
+  width: 100%;
+}
+
+.field-textarea {
+  --padding-top: #{$space-xs};
+  --padding-bottom: #{$space-xs};
+}
+
+.field-error {
+  @include typography($typography-label-xs);
+  color: $color-danger;
+  display: flex;
+  align-items: center;
+  gap: $space-2xs;
+
+  &--student {
+    margin-top: $space-xs;
+  }
+}
+
+// ─────────────────────────────────────────
+// IMAGE UPLOAD
+// ─────────────────────────────────────────
+.image-upload-area {
+  border: $border-width-medium dashed $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: $space-xl $space-lg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+  cursor: pointer;
+  transition: all $transition-base;
+  background: $color-bg-secondary;
+  min-height: 110px;
+  text-align: center;
+
+  &:hover {
+    border-color: $color-secondary;
+    background: rgba($color-secondary, 0.04);
+  }
+
+  &--has-image {
+    border-style: solid;
     padding: 0;
+    overflow: hidden;
+  }
+
+  &__icon {
+    font-size: 32px;
+    color: $color-text-light;
+  }
+
+  &__text {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    margin: 0;
+  }
+
+  &__hint {
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+  }
+
+  &__preview {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: $border-radius-md;
+  }
+
+  &__remove-btn {
+    position: absolute;
+    bottom: $space-sm;
+    right: $space-sm;
+    display: flex;
+    align-items: center;
+    gap: $space-2xs;
+    background: rgba(0,0,0,0.55);
+    color: white;
+    border: none;
+    border-radius: $border-radius-full;
+    padding: $space-2xs $space-sm;
+    font-size: $font-size-xs;
+    font-family: $font-family-primary;
+    cursor: pointer;
+    transition: background $transition-fast;
+
+    ion-icon { font-size: 14px; }
 
     &:hover {
-      --color: #{$color-primary-dark};
+      background: rgba($color-danger, 0.85);
     }
   }
 }
 
-// Responsive Desktop
-@include respond-to('md') {
-  .modal-content {
-    padding: $space-lg;
-    max-width: 600px;
+// ─────────────────────────────────────────
+// NÓMINA HEADER
+// ─────────────────────────────────────────
+.nomina-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
   }
 
-  .select-teacher {
-    ion-select {
-      font-size: $font-size-base;
+  &__icon {
+    font-size: 20px;
+    color: $color-secondary;
+  }
+
+  &__title {
+    @include typography($typography-label);
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+    color: $color-text-secondary;
+  }
+}
+
+.nomina-badge {
+  background: rgba($color-secondary, 0.12);
+  color: $color-secondary-dark;
+  @include typography($typography-label-xs);
+  border-radius: $border-radius-full;
+  padding: $space-2xs $space-sm;
+  font-weight: $font-weight-semibold;
+}
+
+// ─────────────────────────────────────────
+// ADD STUDENT BOX
+// ─────────────────────────────────────────
+.add-student-box {
+  background: $color-bg-secondary;
+  border: $border-width-thin dashed $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: $space-md;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+
+  &__fields {
+    display: flex;
+    gap: $space-sm;
+    flex-wrap: wrap;
+  }
+}
+
+.mini-field {
+  flex: 1;
+  min-width: 130px;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: 0 $space-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus-within {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
+  }
+
+  &--error {
+    border-color: $color-danger;
+  }
+
+  &__input {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --color: #{$color-text-primary};
+    font-size: $font-size-sm;
+    font-family: $font-family-primary;
+  }
+}
+
+.add-student-btn {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+  background: $color-secondary;
+  color: white;
+  border: none;
+  border-radius: $border-radius-md;
+  padding: $space-xs $space-md;
+  font-size: $font-size-sm;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  ion-icon { font-size: 18px; }
+
+  &:hover:not([disabled]) {
+    background: $color-secondary-dark;
+    transform: translateY(-1px);
+    box-shadow: $shadow-sm;
+  }
+
+  &[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+// ─────────────────────────────────────────
+// STUDENT LIST
+// ─────────────────────────────────────────
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  margin-top: $space-xs;
+}
+
+.student-card {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: $space-sm $space-md;
+  transition: box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: $shadow-sm;
+  }
+
+  &__avatar {
+    @include flex-center;
+    width: 38px;
+    height: 38px;
+    border-radius: $border-radius-full;
+    background: rgba($color-secondary, 0.14);
+    color: $color-secondary-dark;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  &__name {
+    @include typography($typography-body-sm);
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    @include truncate;
+  }
+
+  &__email {
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+    @include truncate;
+  }
+
+  &__remove-btn {
+    @include flex-center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: $border-radius-full;
+    background: transparent;
+    color: $color-text-light;
+    cursor: pointer;
+    transition: all $transition-fast;
+    font-size: 17px;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba($color-danger, 0.1);
+      color: $color-danger;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// EMPTY STATE
+// ─────────────────────────────────────────
+.students-empty {
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-xs;
+  padding: $space-lg $space-md;
+  opacity: 0.4;
+
+  ion-icon {
+    font-size: 36px;
+    color: $color-text-light;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// FOOTER
+// ─────────────────────────────────────────
+.modal-footer {
+  border-top: $border-width-thin solid $color-neutral-light;
+  background: $color-bg-primary;
+  box-shadow: none;
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-sm;
+    padding: $space-md $space-lg;
+  }
+}
+
+// ─────────────────────────────────────────
+// BUTTONS
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: $border-width-medium solid transparent;
+  height: 44px;
+
+  ion-icon { font-size: 18px; }
+  ion-spinner { width: 18px; height: 18px; }
+
+  &--outline {
+    background: transparent;
+    border-color: $color-neutral-light;
+    color: $color-text-secondary;
+
+    &:hover {
+      border-color: $color-neutral-medium;
+      color: $color-text-primary;
+    }
+  }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+
+    &:hover:not([disabled]) {
+      background: $color-secondary-dark;
+      border-color: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
     }
 
-    .btn-add-teacher {
-      font-size: 32px;
+    &[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
+  }
+}
+
+// ─────────────────────────────────────────
+// RESPONSIVE
+// ─────────────────────────────────────────
+@include respond-to('md') {
+  .section-row {
+    flex-wrap: nowrap;
+  }
+
+  .field-group--instructor {
+    flex: 0 0 220px;
   }
 }
