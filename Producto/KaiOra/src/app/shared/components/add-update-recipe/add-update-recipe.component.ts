@@ -120,8 +120,6 @@ export class AddUpdateRecipeComponent implements OnInit {
 
     const formValues = this.form.value;
 
-    delete formValues.id;
-
     const recipeData = {
       ...formValues,
       profesorId: '',
@@ -158,7 +156,8 @@ export class AddUpdateRecipeComponent implements OnInit {
   }
 
   async updateTechSheet() {
-    let path = `technical-sheets/${this.techSheet.id}`;
+    let id = this.form.value.id;
+    let path = `technical-sheets/${id}`;
 
     const loading = await this.utilsSvc.loading();
     await loading.present();
