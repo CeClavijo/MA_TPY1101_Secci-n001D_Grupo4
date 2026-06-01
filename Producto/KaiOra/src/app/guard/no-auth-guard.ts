@@ -16,40 +16,28 @@ export class NoAuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    let localUserData = localStorage.getItem('user');
-
     return new Promise((resolve) => {
-
-      this.firebaseSvc.getAuth().onAuthStateChanged((auth) => {
-
+      const unsubscribe = this.firebaseSvc.getAuth().onAuthStateChanged((auth) => {
+        unsubscribe(); // se desuscribe inmediatamente después de la primera respuesta
+        
         if (!auth) {
           resolve(true);
         } else {
-          if (localUserData) {
-            try {
-              const user = JSON.parse(localUserData);
+          const user = this.utilsSvc.getFromLocalStorage('user');
 
-              if (user.role === 'admin') {
-                this.utilsSvc.routerLink('/admin');
-              } else if (user.role === 'profesor') {
-                this.utilsSvc.routerLink('/main/home');
-              } else {
-                this.utilsSvc.routerLink('/main'); 
-              }
-            } catch (e) {
-              this.utilsSvc.routerLink('/main');
-            }
+          if (user?.role === 'admin') {
+            this.utilsSvc.routerLink('/admin');
+          } else if (user?.role === 'profesor') {
+            this.utilsSvc.routerLink('/main/home');
           } else {
-            this.utilsSvc.routerLink('/main');
+            this.firebaseSvc.signOut();
+            resolve(true);
+            return;
           }
-          
+
           resolve(false);
         }
-
-      })
-
+      });
     });
-
   }
-
 }

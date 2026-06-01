@@ -1,13 +1,9 @@
 @import 'src/theme/variables';
 
-// ─────────────────────────────────────────
-// HOST & WRAPPER
-// ─────────────────────────────────────────
 :host {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: $color-bg-primary;
 }
 
 // ─────────────────────────────────────────
@@ -72,7 +68,7 @@
   padding: $space-lg;
   display: flex;
   flex-direction: column;
-  gap: $space-lg;
+  gap: $space-md;
 }
 
 // ─────────────────────────────────────────
@@ -105,32 +101,31 @@
 
   &--grow {
     flex: 1;
-    min-width: 160px;
+    min-width: 150px;
   }
 
   &--instructor {
-    flex: 0 0 200px;
-    min-width: 160px;
+    flex: 0 0 220px;
+    min-width: 150px;
   }
 }
 
 .field-label {
   @include typography($typography-label);
   color: $color-text-secondary;
-  letter-spacing: $letter-spacing-wide;
-  text-transform: uppercase;
   font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+}
 
-  &--optional {
-    font-weight: $font-weight-regular;
-    color: $color-text-light;
-    text-transform: none;
-    letter-spacing: 0;
-  }
+.instructor-row {
+  display: flex;
+  gap: $space-xs;
+  align-items: center;
 }
 
 // ─────────────────────────────────────────
-// CUSTOM FIELD (input wrapper)
+// CUSTOM FIELD
 // ─────────────────────────────────────────
 .custom-field {
   display: flex;
@@ -149,6 +144,10 @@
   &--error {
     border-color: $color-danger;
     box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+  }
+
+  &--select {
+    flex: 1;
   }
 
   &--textarea {
@@ -176,10 +175,6 @@
   font-size: $font-size-base;
 }
 
-.field-select {
-  width: 100%;
-}
-
 .field-textarea {
   --padding-top: #{$space-xs};
   --padding-bottom: #{$space-xs};
@@ -193,85 +188,29 @@
   gap: $space-2xs;
 
   &--student {
-    margin-top: $space-xs;
+    margin-top: $space-2xs;
   }
 }
 
 // ─────────────────────────────────────────
-// IMAGE UPLOAD
+// BOTÓN AGREGAR PROFESOR
 // ─────────────────────────────────────────
-.image-upload-area {
-  border: $border-width-medium dashed $color-neutral-light;
+.add-professor-btn {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   border-radius: $border-radius-md;
-  padding: $space-xl $space-lg;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $space-xs;
+  border: $border-width-thin solid $color-secondary;
+  background: rgba($color-secondary, 0.08);
+  color: $color-secondary;
   cursor: pointer;
-  transition: all $transition-base;
-  background: $color-bg-secondary;
-  min-height: 110px;
-  text-align: center;
+  transition: all $transition-fast;
+  font-size: 20px;
 
   &:hover {
-    border-color: $color-secondary;
-    background: rgba($color-secondary, 0.04);
-  }
-
-  &--has-image {
-    border-style: solid;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  &__icon {
-    font-size: 32px;
-    color: $color-text-light;
-  }
-
-  &__text {
-    @include typography($typography-body-sm);
-    color: $color-text-secondary;
-    font-weight: $font-weight-medium;
-    margin: 0;
-  }
-
-  &__hint {
-    @include typography($typography-label-xs);
-    color: $color-text-light;
-  }
-
-  &__preview {
-    width: 100%;
-    max-height: 160px;
-    object-fit: cover;
-    border-radius: $border-radius-md;
-  }
-
-  &__remove-btn {
-    position: absolute;
-    bottom: $space-sm;
-    right: $space-sm;
-    display: flex;
-    align-items: center;
-    gap: $space-2xs;
-    background: rgba(0,0,0,0.55);
+    background: $color-secondary;
     color: white;
-    border: none;
-    border-radius: $border-radius-full;
-    padding: $space-2xs $space-sm;
-    font-size: $font-size-xs;
-    font-family: $font-family-primary;
-    cursor: pointer;
-    transition: background $transition-fast;
-
-    ion-icon { font-size: 14px; }
-
-    &:hover {
-      background: rgba($color-danger, 0.85);
-    }
   }
 }
 
@@ -396,7 +335,6 @@
   display: flex;
   flex-direction: column;
   gap: $space-sm;
-  margin-top: $space-xs;
 }
 
 .student-card {
@@ -409,21 +347,18 @@
   padding: $space-sm $space-md;
   transition: box-shadow $transition-fast;
 
-  &:hover {
-    box-shadow: $shadow-sm;
-  }
+  &:hover { box-shadow: $shadow-sm; }
 
   &__avatar {
     @include flex-center;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: $border-radius-full;
     background: rgba($color-secondary, 0.14);
     color: $color-secondary-dark;
     font-size: $font-size-xs;
     font-weight: $font-weight-bold;
     flex-shrink: 0;
-    letter-spacing: $letter-spacing-wide;
   }
 
   &__info {
@@ -438,26 +373,24 @@
     @include typography($typography-body-sm);
     font-weight: $font-weight-semibold;
     color: $color-text-primary;
-    @include truncate;
   }
 
   &__email {
     @include typography($typography-label-xs);
     color: $color-text-light;
-    @include truncate;
   }
 
   &__remove-btn {
     @include flex-center;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border: none;
     border-radius: $border-radius-full;
     background: transparent;
     color: $color-text-light;
     cursor: pointer;
+    font-size: 16px;
     transition: all $transition-fast;
-    font-size: 17px;
     flex-shrink: 0;
 
     &:hover {
@@ -471,16 +404,14 @@
 // EMPTY STATE
 // ─────────────────────────────────────────
 .students-empty {
-  @include flex-center;
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: $space-lg;
   gap: $space-xs;
-  padding: $space-lg $space-md;
   opacity: 0.4;
 
-  ion-icon {
-    font-size: 36px;
-    color: $color-text-light;
-  }
+  ion-icon { font-size: 32px; color: $color-text-secondary; }
 
   p {
     @include typography($typography-body-sm);
@@ -499,7 +430,6 @@
 
   &__actions {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
     gap: $space-sm;
     padding: $space-md $space-lg;
@@ -553,18 +483,5 @@
       opacity: 0.55;
       cursor: not-allowed;
     }
-  }
-}
-
-// ─────────────────────────────────────────
-// RESPONSIVE
-// ─────────────────────────────────────────
-@include respond-to('md') {
-  .section-row {
-    flex-wrap: nowrap;
-  }
-
-  .field-group--instructor {
-    flex: 0 0 220px;
   }
 }

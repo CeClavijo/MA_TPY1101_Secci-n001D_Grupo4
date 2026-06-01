@@ -1,0 +1,283 @@
+@import 'src/theme/variables';
+
+// ─────────────────────────────────────────
+// LAYOUT
+// ─────────────────────────────────────────
+.admin-layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  &__content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.main-content {
+  --background: #{$color-bg-secondary};
+}
+
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-md;
+  padding: $space-xl $space-xl $space-lg;
+  flex-wrap: wrap;
+
+  &__title {
+    @include typography($typography-h2);
+    color: $color-text-primary;
+    margin: 0 0 $space-2xs 0;
+  }
+
+  &__subtitle {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// STATS
+// ─────────────────────────────────────────
+.stats-grid {
+  display: flex;
+  gap: $space-md;
+  padding: 0 $space-xl $space-lg;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  padding: $space-lg;
+  box-shadow: $shadow-xs;
+  flex: 1;
+  min-width: 180px;
+
+  &__icon-wrap {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    border-radius: $border-radius-md;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 24px;
+    }
+
+    &--green {
+      background: rgba($color-secondary, 0.12);
+      ion-icon { color: $color-secondary; }
+    }
+
+    &--orange {
+      background: rgba($color-primary, 0.12);
+      ion-icon { color: $color-primary; }
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2xs;
+  }
+
+  &__label {
+    @include typography($typography-label-xs);
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__value {
+    @include typography($typography-h3);
+    color: $color-text-primary;
+    font-weight: $font-weight-bold;
+  }
+}
+
+// ─────────────────────────────────────────
+// SECTION
+// ─────────────────────────────────────────
+.section {
+  padding: 0 $space-xl $space-xl;
+
+  &__title {
+    @include typography($typography-h4);
+    color: $color-text-primary;
+    margin: 0 0 $space-md 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// COURSES GRID
+// ─────────────────────────────────────────
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-md;
+}
+
+.course-card {
+  margin: 0;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xs;
+  border: $border-width-thin solid $color-neutral-light;
+  transition: box-shadow $transition-base, transform $transition-base;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  &__header {
+    padding: $space-md $space-md $space-xs;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba($color-secondary, 0.12);
+    color: $color-secondary-dark;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    border-radius: $border-radius-full;
+    padding: $space-2xs $space-sm;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__content {
+    padding: $space-xs $space-md $space-md;
+  }
+
+  &__title {
+    @include typography($typography-body);
+    color: $color-text-primary;
+    margin: 0 0 $space-xs 0;
+  }
+
+  &__description {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0 0 $space-md 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-sm;
+  }
+
+  &__meta-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2xs;
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// EMPTY STATE
+// ─────────────────────────────────────────
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3xl $space-lg;
+  opacity: 0.4;
+
+  ion-icon {
+    font-size: 48px;
+    color: $color-text-secondary;
+    margin-bottom: $space-sm;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// BUTTON
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: none;
+  height: 44px;
+
+  ion-icon { font-size: 20px; }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+
+    &:hover {
+      background: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// RESPONSIVE — mobile oculta sidebar
+// ─────────────────────────────────────────
+@media (max-width: 767px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .page-header {
+    padding: $space-lg $space-md $space-md;
+
+    &__title {
+      font-size: $font-size-xl;
+    }
+  }
+
+  .stats-grid {
+    padding: 0 $space-md $space-md;
+    flex-direction: column;
+  }
+
+  .section {
+    padding: 0 $space-md $space-lg;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,13 +1,89 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="admin-layout">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+  <!-- NAVBAR -->
+  <app-navbar [menuItems]="menuItems"></app-navbar>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="admin-layout__content">
+    <ion-content class="main-content">
+
+      <!-- HEADER -->
+      <div class="page-header">
+        <div class="page-header__left">
+          <h1 class="page-header__title">Panel de Control</h1>
+          <p class="page-header__subtitle">Gestión académica de KaiOra Institute.</p>
+        </div>
+        <button class="btn btn--primary" (click)="openCreateCourseModal()">
+          <ion-icon name="add-outline"></ion-icon>
+          Crear Nuevo Curso
+        </button>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-card__icon-wrap stat-card__icon-wrap--green">
+            <ion-icon name="book-outline"></ion-icon>
+          </div>
+          <div class="stat-card__info">
+            <span class="stat-card__label">Cursos Activos</span>
+            <span class="stat-card__value">{{ courses.length }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__icon-wrap stat-card__icon-wrap--orange">
+            <ion-icon name="people-outline"></ion-icon>
+          </div>
+          <div class="stat-card__info">
+            <span class="stat-card__label">Estudiantes Totales</span>
+            <span class="stat-card__value">{{ totalStudents }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- LISTADO DE CURSOS -->
+      <div class="section">
+        <h2 class="section__title">Listado de Cursos</h2>
+
+        <!-- Empty state -->
+        <div class="empty" *ngIf="courses.length === 0">
+          <ion-icon name="book-outline"></ion-icon>
+          <p>Aún no hay cursos creados</p>
+        </div>
+
+        <!-- Grid de cursos -->
+        <div class="courses-grid" *ngIf="courses.length > 0">
+          <ion-card class="course-card" *ngFor="let course of courses">
+
+            <ion-card-header class="course-card__header">
+              <div class="course-card__badge">{{ course.name }}</div>
+            </ion-card-header>
+
+            <ion-card-content class="course-card__content">
+              <h3 class="course-card__title">{{ course.name }}</h3>
+              <p class="course-card__description">{{ course.description }}</p>
+
+              <div class="course-card__meta">
+                <span class="course-card__meta-item">
+                  <ion-icon name="people-outline"></ion-icon>
+                  {{ course.studentIds.length }} Alumnos
+                </span>
+                <span class="course-card__meta-item">
+                  <ion-icon name="person-outline"></ion-icon>
+                  {{ getProfessorName(course.professorId) }}
+                </span>
+              </div>
+            </ion-card-content>
+
+          </ion-card>
+        </div>
+
+      </div>
+
+    </ion-content>
+  </div>
+
+</div>

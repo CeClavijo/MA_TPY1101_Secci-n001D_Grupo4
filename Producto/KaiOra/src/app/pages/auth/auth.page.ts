@@ -52,7 +52,7 @@ export class AuthPage implements OnInit {
 
       // Routear según role
       if (userData.role === 'admin') {
-        this.utilsSvc.routerLink('/admin/create-teacher');
+        this.utilsSvc.routerLink('/admin');
       } else if (userData.role === 'profesor') {
         this.utilsSvc.routerLink('/main/home');
       } else {

@@ -45,10 +45,9 @@ sendRecoveryEmail(email: string){
     return sendPasswordResetEmail(getAuth(), email);
 }
 
-signOut() {
-  getAuth().signOut();
+async signOut() {
+  await getAuth().signOut();
   localStorage.removeItem('user');
-  this.utilsSvc.routerLink('/auth');
 }
 
 // ==================== FIRESTORE ====================
@@ -75,5 +74,10 @@ deleteDocument(path: string) {
 }
 addDocument(path: string, data: any) {
   return addDoc(collection(getFirestore(), path), data);
+}
+
+async getCollection(path: string) {
+  const snapshot = await getDocs(collection(getFirestore(), path));
+  return snapshot.docs.map(doc => doc.data());
 }
 }

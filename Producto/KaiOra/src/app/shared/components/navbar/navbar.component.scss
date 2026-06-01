@@ -1,0 +1,186 @@
+@import 'src/theme/variables';
+
+// ══════════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════════
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 220px;
+  height: 100%;
+  background: $color-bg-primary;
+  border-right: $border-width-thin solid $color-neutral-light;
+  padding: $space-lg $space-md;
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xl;
+  }
+
+  // Brand
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: 0 $space-xs;
+  }
+
+  &__brand-icon {
+    font-size: 26px;
+    color: $color-secondary;
+  }
+
+  &__brand-name {
+    @include typography($typography-h4);
+    color: $color-secondary;
+  }
+
+  // Menu
+  &__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-sm $space-md;
+    border-radius: $border-radius-lg;
+    color: $color-text-secondary;
+    text-decoration: none;
+    transition: all $transition-fast;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba($color-secondary, 0.08);
+      color: $color-secondary;
+    }
+
+    &--active {
+      background: rgba($color-secondary, 0.12);
+      color: $color-secondary;
+      font-weight: $font-weight-semibold;
+
+      .sidebar__item-icon {
+        color: $color-secondary;
+      }
+    }
+  }
+
+  &__item-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    color: $color-text-light;
+    transition: color $transition-fast;
+  }
+
+  &__item-label {
+    @include typography($typography-body-sm);
+    font-weight: $font-weight-medium;
+  }
+
+  // Logout
+  &__bottom {
+    padding-bottom: $space-sm;
+  }
+
+  &__logout-btn {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    width: 100%;
+    padding: $space-sm $space-md;
+    border-radius: $border-radius-lg;
+    border: none;
+    background: transparent;
+    color: $color-text-light;
+    font-family: $font-family-primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    ion-icon {
+      font-size: 20px;
+    }
+
+    &:hover {
+      background: rgba($color-danger, 0.08);
+      color: $color-danger;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════
+// BOTTOM TAB BAR
+// ══════════════════════════════════════════════
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 60px;
+  background: $color-bg-primary;
+  border-top: $border-width-thin solid $color-neutral-light;
+  padding: 0 $space-sm;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 1;
+    height: 100%;
+    text-decoration: none;
+    color: $color-text-light;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color $transition-fast;
+    font-family: $font-family-primary;
+
+    &:hover {
+      color: $color-secondary;
+    }
+
+    &--active {
+      color: $color-secondary;
+
+      .bottom-bar__icon {
+        color: $color-secondary;
+      }
+    }
+
+    &--logout {
+      color: $color-text-light;
+
+      &:hover {
+        color: $color-danger;
+      }
+    }
+  }
+
+  &__icon {
+    font-size: 22px;
+    transition: color $transition-fast;
+  }
+
+  &__label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+  }
+}

@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminPage } from './admin.page';
+import { AdminHomePage } from './admin.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: AdminPage
-  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: AdminHomePage },
   {
     path: 'create-teacher',
-    loadChildren: () => import('./create-teacher/create-teacher.module').then( m => m.CreateTeacherPageModule)
+    loadChildren: () => import('./create-teacher/create-teacher.module').then(m => m.CreateTeacherPageModule)
   }
 ];
 
