@@ -3,7 +3,7 @@ import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Utils } from 'src/app/services/utils';
 import { CreateTeacherModalComponent } from 'src/app/shared/components/modals/create-teacher-modal/create-teacher-modal.component';
-
+import { NavMenuItem } from 'src/app/shared/components/navbar/navbar.component';
 @Component({
   selector: 'app-create-teacher',
   templateUrl: './create-teacher.page.html',
@@ -11,12 +11,15 @@ import { CreateTeacherModalComponent } from 'src/app/shared/components/modals/cr
   standalone: false,
 })
 export class CreateTeacherPage implements OnInit {
-
+  
   utilsSvc = inject(Utils);
   firebaseSvc = inject(FirebaseService);
 
   professors: User[] = [];
-
+  menuItems: NavMenuItem[] = [
+      { label: 'Principal',  icon: 'grid-outline',   url: '/admin' },
+      { label: 'Profesores', icon: 'school-outline',  url: '/admin/create-teacher'},
+    ];
   ngOnInit() {
     this.getProfessors();
   }
@@ -145,8 +148,5 @@ export class CreateTeacherPage implements OnInit {
     }).finally(() => {
       loading.dismiss();
     });
-  }
-  signOut() {
-    this.firebaseSvc.signOut();
   }
 }

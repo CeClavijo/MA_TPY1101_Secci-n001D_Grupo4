@@ -1,0 +1,42 @@
+<nav class="sidebar" *ngIf="!isMobile">
+  <div class="sidebar__top">
+    <div class="sidebar__brand">
+      <ion-icon name="leaf-outline" class="sidebar__brand-icon"></ion-icon>
+      <span class="sidebar__brand-name">{{ appName }}</span>
+    </div>
+    <ul class="sidebar__menu">
+      <li *ngFor="let item of menuItems">
+        <a
+          class="sidebar__item"
+          [routerLink]="item.url"
+          routerLinkActive="sidebar__item--active"
+          [routerLinkActiveOptions]="{exact: true}">
+          <ion-icon [name]="item.icon" class="sidebar__item-icon"></ion-icon>
+          <span class="sidebar__item-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="sidebar__bottom">
+    <button class="sidebar__logout-btn" (click)="confirmLogout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+</nav>
+
+<nav class="bottom-bar" *ngIf="isMobile">
+  <a
+    class="bottom-bar__item"
+    *ngFor="let item of menuItems"
+    [routerLink]="item.url"
+    routerLinkActive="bottom-bar__item--active"
+    [routerLinkActiveOptions]="{exact: true}">
+    <ion-icon [name]="item.icon" class="bottom-bar__icon"></ion-icon>
+    <span class="bottom-bar__label">{{ item.label }}</span>
+  </a>
+  <button class="bottom-bar__item bottom-bar__item--logout" (click)="confirmLogout()">
+    <ion-icon name="log-out-outline" class="bottom-bar__icon"></ion-icon>
+    <span class="bottom-bar__label">Salir</span>
+  </button>
+</nav>

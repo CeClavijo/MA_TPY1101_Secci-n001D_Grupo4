@@ -1,6 +1,6 @@
 <ion-content class="auth-content">
   <div class="auth-container">
-    <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()" (keypress.enter)="submit()">
+    <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()">
 
       <!-- Logo y Encabezado -->
       <div class="form-header">
@@ -9,35 +9,33 @@
 
       <!-- Inputs de Formulario -->
       <div class="form-inputs">
-        <!-- Email Input -->
+
         <div class="input-group">
           <app-custom-input
             icon="mail-outline"
             autocomplete="email"
             [control]="form.controls.email"
             type="email"
-            label="Correo Electrónico"
-          ></app-custom-input>
-
+            label="Correo Electrónico">
+          </app-custom-input>
           <div class="validators" *ngIf="form.controls.email.errors && form.controls.email.touched">
             <div *ngIf="form.controls.email.errors?.['required']">El correo es requerido</div>
             <div *ngIf="form.controls.email.errors?.['email']">El correo no es válido</div>
           </div>
         </div>
 
-        <!-- Password Input -->
         <div class="input-group">
           <app-custom-input
             icon="lock-closed-outline"
             [control]="form.controls.password"
             type="password"
-            label="Contraseña"
-          ></app-custom-input>
-
+            label="Contraseña">
+          </app-custom-input>
           <div class="validators" *ngIf="form.controls.password.errors && form.controls.password.touched">
             <div *ngIf="form.controls.password.errors?.['required']">La contraseña es requerida</div>
           </div>
         </div>
+
       </div>
 
       <!-- Submit Button -->
@@ -47,14 +45,12 @@
           mode="ios"
           class="submit-btn"
           type="submit"
-          [disabled]="form.invalid"
-        >
+          [disabled]="form.invalid">
           Iniciar Sesión
         </ion-button>
-</div>
+      </div>
 
-<!-- ... resto del código ... -->
-      <!-- Forgot Password Link -->
+      <!-- Forgot Password -->
       <div class="forgot-password">
         <p>
           <a (click)="openForgotModal()" class="forgot-link">¿Olvidaste tu contraseña?</a>
@@ -75,14 +71,14 @@
       <ion-img
         src="assets/footer.png"
         alt="footer"
-        class="footer-image"
-      ></ion-img>
+        class="footer-image">
+      </ion-img>
       <div>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of service</a>
         <a href="#">Cookies</a>
       </div>
     </div>
-  </div>
 
+  </div>
 </ion-content>

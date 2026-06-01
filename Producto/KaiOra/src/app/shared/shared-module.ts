@@ -7,10 +7,10 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUpdateRecipeComponent } from './components/modals/add-update-recipe/add-update-recipe.component';
 import { CreateCourseModalComponent } from './components/modals/create-course-modal/create-course-modal.component';
-import { SidebarNavComponent } from './components/sidebar-nav/sidebar-nav.component';
-import { BottomTabsComponent } from './components/bottom-tabs/bottom-tabs.component';
 import { CreateTeacherModalComponent } from './components/modals/create-teacher-modal/create-teacher-modal.component';
 import { ForgotPasswordModalComponent } from './components/modals/forgot-password-modal/forgot-password-modal.component';
+import { NavBarComponent } from './components/navbar/navbar.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -19,10 +19,9 @@ import { ForgotPasswordModalComponent } from './components/modals/forgot-passwor
     HeaderComponent,
     CustomInputComponent,
     LogoComponent,
+    NavBarComponent,
     AddUpdateRecipeComponent,
     CreateCourseModalComponent,
-    SidebarNavComponent,
-    BottomTabsComponent,
     CreateTeacherModalComponent,
     ForgotPasswordModalComponent
   ],
@@ -31,18 +30,19 @@ import { ForgotPasswordModalComponent } from './components/modals/forgot-passwor
     CustomInputComponent,
     ReactiveFormsModule,
     LogoComponent,
+    NavBarComponent,
     AddUpdateRecipeComponent,
     CreateCourseModalComponent,
-    SidebarNavComponent,
-    BottomTabsComponent,
     CreateTeacherModalComponent,
-    ForgotPasswordModalComponent
+    ForgotPasswordModalComponent,
+    RouterModule
   ],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ]
 })
 export class SharedModule { }

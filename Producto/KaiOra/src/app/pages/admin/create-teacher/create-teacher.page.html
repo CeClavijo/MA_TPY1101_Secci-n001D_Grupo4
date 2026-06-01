@@ -1,8 +1,7 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Profesores</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="admin-layout">
+
+  <!-- NAVBAR -->
+  <app-navbar [menuItems]="menuItems"></app-navbar>
 
 <ion-content class="professors-content">
 
@@ -73,7 +72,7 @@
           (click)="toggleEdit(professor)">
           <ion-spinner name="crescent" *ngIf="professor['isSaving']"></ion-spinner>
           <ion-icon *ngIf="!professor['isSaving'] && !professor['isEditing']" name="pencil-outline"></ion-icon>
-          <ion-icon *ngIf="!professor['isSaving'] && professor['isEditing']" name="checkmark-outline"></ion-icon>
+          <ion-icon *ngIf="!professor['isSaving'] && professor['isEditing']" name="checkmark-outline" color="success"></ion-icon>
         </button>
 
         <!-- Botón cancelar (solo en modo edición) -->
@@ -81,7 +80,7 @@
           class="icon-btn icon-btn--cancel"
           *ngIf="professor['isEditing']"
           (click)="cancelEdit(professor)">
-          <ion-icon name="close-outline"></ion-icon>
+          <ion-icon name="close-outline" color="danger"></ion-icon>
         </button>
 
         <!-- Botón eliminar (solo en modo lectura) -->
@@ -94,7 +93,7 @@
 
       </div>
     </div>
-    <ion-button (click)="signOut()">Cerrar sesión</ion-button>
   </div>
 
 </ion-content>
+</div>
