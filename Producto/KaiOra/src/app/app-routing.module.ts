@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NoAuthGuard } from './guard/no-auth-guard';
 import { AuthGuard } from './guard/auth-guard';
 import { AdminGuard } from './guard/admin-guard';
+import { ProfessorGuard } from './guard/professor-guard';
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
   {
     path: 'main',
     loadChildren: () => import('./pages/main/main.module').then(m => m.MainPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, ProfessorGuard]
   },
   {
     path: 'admin',

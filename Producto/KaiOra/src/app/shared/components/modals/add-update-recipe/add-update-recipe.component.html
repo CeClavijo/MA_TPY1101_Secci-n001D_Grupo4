@@ -1,220 +1,196 @@
-<app-header [isModal]="true" title="Agregar Receta"></app-header>
+<ion-content class="form-content-wrapper">
+  <form [formGroup]="form" class="recipe-form">
 
-<ion-content>
-  <form [formGroup]="form" class="ion-padding ion-text-center">
-    <!-- Cabecera del formulario -->
-     <div class="modal-header-container ion-padding-horizontal ion-padding-top">
-      <div class="header-top-row">
-        <h1 class="modal-title">Ficha Técnica</h1>
+    <!-- TÍTULO -->
+    <div class="form-header">
+      <h1 class="form-header__title">Ficha Técnica</h1>
+      <p class="form-header__desc">Configura los parámetros técnicos y de seguridad alimentaria para tu creación culinaria.</p>
+    </div>
 
-        <p class="modal-description">Configura los parámetros técnicos y de seguridad alimentaria para tu creación culinaria.</p>
-        <div class="header-actions-row">
-          <ion-button fill="outline" class="btn-discard">Descartar</ion-button>
-          <ion-button mode="ios" class="btn-create">
-            <ion-icon slot="start" name="save-outline"></ion-icon>
-            Guardar Ficha
-          </ion-button>
+    <!-- SECCIÓN: INFO BÁSICA -->
+    <div class="form-section">
+
+      <div class="field-group">
+        <label class="field-label">Nombre de la Receta</label>
+        <div class="custom-field" [class.custom-field--error]="form.controls.name.invalid && form.controls.name.touched">
+          <ion-input [formControl]="form.controls.name" placeholder="Ej. Risotto de Espárragos..."></ion-input>
         </div>
       </div>
-     </div>
 
-    <!-- Primera seccion del formulario -->
-    <ion-card mode="ios" class="custom-form-card">
-      <ion-card-content>
-        <!-- nombre -->
-        <div class="field-container">
-          <ion-label class="custom-label">Nombre de la Receta</ion-label>
-          <ion-item>
-            <ion-input [formControl]="form.controls.name" placeholder="Ej. Risotto de Esparragos..."></ion-input>
-          </ion-item>
+      <div class="field-group">
+        <label class="field-label">Categoría</label>
+        <div class="custom-field" [class.custom-field--error]="form.controls.category.invalid && form.controls.category.touched">
+          <ion-select formControlName="category" interface="popover" placeholder="Selecciona una opción...">
+            <ion-select-option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</ion-select-option>
+          </ion-select>
         </div>
+      </div>
 
-        <!-- categoria -->
-        <div class="field-container">
-          <ion-label class="custom-label">Categoria</ion-label>
-          <ion-item fill="outline" mode="md" class="custom-input-item">
-            <ion-select formControlName="category" interface="popover" placeholder="Selecciona una opcion..." toggle-icon="chevron-down-outline" class="category-select">
-              <ion-select-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</ion-select-option>
-            </ion-select>
-          </ion-item>
-        </div>
-
-        <!-- Rendimiento (Pax) -->
-        <div class="field-container">
-          <ion-label class="custom-label">Rendimiento (Pax)</ion-label>
-          <ion-item>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Rendimiento (Pax)</label>
+          <div class="custom-field custom-field--suffix">
             <ion-input type="number" [formControl]="form.controls.performance" placeholder="4"></ion-input>
-            <ion-note slot="end" class="input-suffix">Pers.</ion-note>
-          </ion-item>
+            <span class="field-suffix">Pers.</span>
+          </div>
         </div>
 
-        <!-- Tiempo de Preparacion -->
-        <div class="field-container">
-          <ion-label class="custom-label">Tiempo de Prep.</ion-label>
-          <ion-item fill="outline" mode="md" class="custom-input-item">
+        <div class="field-group">
+          <label class="field-label">Tiempo de Prep.</label>
+          <div class="custom-field custom-field--suffix">
             <ion-input type="number" [formControl]="form.controls.prepTime" placeholder="20"></ion-input>
-            <ion-note slot="end" class="input-suffix">Min.</ion-note>
-          </ion-item>
+            <span class="field-suffix">Min.</span>
+          </div>
         </div>
 
-        <!-- Tiempo de coccion -->
-        <div class="field-container">
-          <ion-label class="custom-label">Tiempo de Cocción</ion-label>
-          <ion-item fill="outline" mode="md" class="custom-input-item">
+        <div class="field-group">
+          <label class="field-label">Tiempo de Cocción</label>
+          <div class="custom-field custom-field--suffix">
             <ion-input type="number" [formControl]="form.controls.cookingTime" placeholder="45"></ion-input>
-            <ion-note slot="end" class="input-suffix"> Min.</ion-note>
-          </ion-item>
+            <span class="field-suffix">Min.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECCIÓN: IMAGEN -->
+    <div class="form-section">
+      <label class="field-label">Imagen de la Ficha <span class="field-label--optional">(opcional)</span></label>
+
+      <!-- Sin imagen -->
+      <div class="image-upload" *ngIf="!imagePreview" (click)="takeImage()">
+        <ion-icon name="image-outline" class="image-upload__icon"></ion-icon>
+        <p class="image-upload__text">Haz clic para seleccionar una imagen</p>
+        <span class="image-upload__hint">PNG, JPG o WEBP</span>
+      </div>
+
+      <!-- Con imagen -->
+      <div class="image-preview" *ngIf="imagePreview">
+        <img [src]="imagePreview" alt="Preview de la ficha" class="image-preview__img" />
+        <button type="button" class="image-preview__remove" (click)="removeImage()">
+          <ion-icon name="trash-outline"></ion-icon>
+          Quitar imagen
+        </button>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: INGREDIENTES -->
+    <div class="form-section">
+      <h2 class="section-title">Proporciones de Ingredientes</h2>
+
+      <div class="ingredients-table">
+        <div class="ingredients-table__header">
+          <span>Ingrediente</span>
+          <span>Cantidad</span>
+          <span>Unidad</span>
+          <span></span>
         </div>
 
-        <!-- Ingredientes -->
-        <div class="field-container">
-          <ion-label class="custom-label ion-margin-top" style="display: block;">
-            Proporciones de Ingredientes
-          </ion-label>
-
-          <div class="ingredients-container ion-margin-top">
-            <ion-row class="header-row">
-              <ion-col size="5">INGREDIENTE</ion-col>
-              <ion-col size="7">CANTIDAD / UNIDAD</ion-col>
-            </ion-row>
-            <div formArrayName="ingredients">
-              <div *ngFor="let ing of ingredients.controls; let i = index" [formGroupName]="i" class="ingredient-row">
-                <ion-row class="ion-align-items-center">
-                  <ion-col size="5">
-                    <ion-input formControlName="name" placeholder="Ej. Arroz" class="ing-input"></ion-input>
-                  </ion-col>
-
-                  <ion-col size="3">
-                    <ion-item lines="none" class="item-ingredient">
-                      <ion-input type="number" formControlName="quantity" placeholder="Cant."></ion-input>
-                    </ion-item>
-                  </ion-col>
-
-                  <ion-col size="3">
-                    <ion-item>
-                      <ion-select formControlName="unit" interface="popover" toggleIcon="chevron-down-outline" placeholder="Unid.">
-                        <ion-select-option value="">---</ion-select-option>
-                        <ion-select-option *ngFor="let u of units" [value]="u">{{ u }}</ion-select-option>
-                      </ion-select>
-                    </ion-item>
-                  </ion-col>
-
-                  <ion-col size="1" class="flex-center">
-                    <ion-button fill="clear" color="danger" (click)="removeIngredient(i)" class="btn-delete">
-                      <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-                    </ion-button>
-                  </ion-col>
-                </ion-row>
-              </div>
+        <div formArrayName="ingredients">
+          <div *ngFor="let ing of ingredients.controls; let i = index" [formGroupName]="i" class="ingredients-table__row">
+            <div class="custom-field">
+              <ion-input formControlName="name" placeholder="Ej. Arroz"></ion-input>
             </div>
-          </div>
-
-          <ion-button fill="clear" (click)="addIngredient()" class="add-ingredient-btn">
-            <ion-icon slot="start" name="add-outline"></ion-icon>
-            Agregar ingrediente
-          </ion-button>
-        </div>
-
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Segunda seccion del formulario (Parte critica) -->
-    <ion-card mode="ios" class="custom-form-card pcc-card">
-      <ion-card-content>
-        <div class="header-with-icon">
-          <ion-icon name="warning-sharp"></ion-icon>
-          <h2 class="section-title">Puntos Críticos (PCC)</h2>
-        </div>
-        <p class="section-description">
-          Puntos de control vitales para garantizar la inocuidad alimentaria del plato.
-        </p>
-
-        <!-- Temperatura de Cocción -->
-        <div class="field-container ion-margin-top">
-          <ion-label class="custom-label">Temperatura de Cocción</ion-label>
-          <ion-item>
-            <ion-input [formControl]="form.controls.cookingTemp" placeholder="Ej. > 75°C en centro"></ion-input>
-          </ion-item>
-        </div>
-
-        <!-- Mantenimiento -->
-        <div class="field-container ion-margin-top">
-          <ion-label class="custom-label">Mantenimiento</ion-label>
-          <ion-item>
-            <ion-input [formControl]="form.controls.maintenance" placeholder="Ej. Abatimiento en < 90min"></ion-input>
-          </ion-item>
-        </div>
-
-        <div class="status-footer ion-margin-top">
-          <ion-badge mode="ios">URGENTE</ion-badge>
-          <span class="helper-text">Validación obligatoria</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Tercera seccion del formulario (Puntos claves) -->
-    <ion-card mode="ios" class="custom-form-card key-points-card">
-      <ion-card-content>
-        <div class="header-with-icon">
-          <ion-icon name="bulb-outline"></ion-icon>
-          <h2 class="section-title">Puntos clave</h2>
-        </div>
-
-        <div formArrayName="keyPoints">
-          <div *ngFor="let point of keyPoints.controls; let i = index" class=key-point-row>
-
-            <div class="bullet-input-container">
-              <div class="custom-bullet"></div>
-
-              <ion-input [formControlName]="i" placeholder="Ej. Incorporación de caldo frío vs caliente..."
-                class="key-point-input"></ion-input>
-              <ion-button fill="clear" color="medium" (click)="removeKeyPoint(i)">
-                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
-              </ion-button>
+            <div class="custom-field">
+              <ion-input type="number" formControlName="quantity" placeholder="0"></ion-input>
             </div>
-            <hr class="point-divider" *ngIf="i < keyPoints.length - 1">
+            <div class="custom-field">
+              <ion-select formControlName="unit" interface="popover" placeholder="Unid.">
+                <ion-select-option value="">---</ion-select-option>
+                <ion-select-option *ngFor="let u of units" [value]="u">{{ u }}</ion-select-option>
+              </ion-select>
+            </div>
+            <button type="button" class="remove-btn" (click)="removeIngredient(i)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
           </div>
         </div>
+      </div>
 
-        <ion-button (click)="addKeypoint()" fill="clear" class="add-point-btn">
-          <ion-icon slot="start" name="add-outline"></ion-icon>
-          Agregar punto clave
-        </ion-button>
+      <button type="button" class="add-row-btn" (click)="addIngredient()">
+        <ion-icon name="add-outline"></ion-icon>
+        Agregar ingrediente
+      </button>
+    </div>
 
-      </ion-card-content>
-    </ion-card>
+    <!-- SECCIÓN: PCC -->
+    <div class="form-section form-section--pcc">
+      <div class="section-title-row">
+        <ion-icon name="warning-sharp" class="section-title-row__icon"></ion-icon>
+        <h2 class="section-title section-title--pcc">Puntos Críticos (PCC)</h2>
+      </div>
+      <p class="section-desc">Puntos de control vitales para garantizar la inocuidad alimentaria del plato.</p>
 
-    <!-- Cuarta parte del formulario -->
-    <ion-card mode="ios" class="custom-form-card status-card">
-      <ion-card-content>
-        <ion-label class="status-header">ESTADO DE LA FICHA</ion-label>
-
-        <div class="status-item">
-          <div class="status-text">
-            <span>Información Básica</span>
-            <ion-icon [name]="basicInfoProgress === 1 ? 'checkmark-circle' : 'ellipse-outline'"
-              [color]="basicInfoProgress === 1 ? 'success' : 'medium'"></ion-icon>
-          </div>
-          <ion-progress-bar [value]="basicInfoProgress" class="progress-basic"></ion-progress-bar>
+      <div class="field-group">
+        <label class="field-label field-label--pcc">Temperatura de Cocción</label>
+        <div class="custom-field">
+          <ion-input [formControl]="form.controls.cookingTemp" placeholder="Ej. > 75°C en centro del alimento"></ion-input>
         </div>
+      </div>
 
-        <div class="status-item ion-margin-top">
-          <div class="status-text">
-            <span>Seguridad (PCC)</span>
-            <ion-icon [name]="securityProgress === 1 ? 'checkmark-circle' : 'ellipse-outline'"
-              [color]="securityProgress === 1 ? 'success' : 'medium'"></ion-icon>
-          </div>
-          <ion-progress-bar [value]="securityProgress" class="progress-pcc"></ion-progress-bar>
+      <div class="field-group">
+        <label class="field-label field-label--pcc">Mantenimiento</label>
+        <div class="custom-field">
+          <ion-input [formControl]="form.controls.maintenance" placeholder="Ej. Abatimiento en < 90min"></ion-input>
         </div>
-      </ion-card-content>
-    </ion-card>
+      </div>
+
+      <div class="pcc-footer">
+        <span class="pcc-badge">URGENTE</span>
+        <span class="pcc-helper">Validación obligatoria</span>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: PUNTOS CLAVE -->
+    <div class="form-section form-section--key">
+      <div class="section-title-row">
+        <ion-icon name="bulb-outline" class="section-title-row__icon section-title-row__icon--key"></ion-icon>
+        <h2 class="section-title section-title--key">Puntos Clave</h2>
+      </div>
+
+      <div formArrayName="keyPoints">
+        <div *ngFor="let point of keyPoints.controls; let i = index" class="key-point-row">
+          <div class="key-point-row__bullet"></div>
+          <div class="custom-field key-point-row__input">
+            <ion-input [formControlName]="i" placeholder="Ej. Incorporación de caldo frío vs caliente..."></ion-input>
+          </div>
+          <button type="button" class="remove-btn" (click)="removeKeyPoint(i)">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="add-row-btn add-row-btn--key" (click)="addKeypoint()">
+        <ion-icon name="add-outline"></ion-icon>
+        Agregar punto clave
+      </button>
+    </div>
+
+    <!-- FOOTER CON BOTONES -->
+<div class="form-footer">
+  <button type="button" class="btn btn--cancel" (click)="dismissModal()">Cancelar</button>
+
+  <!-- Modo crear -->
+  <ng-container *ngIf="!techSheet">
+    <button type="button" class="btn btn--archive" (click)="archiveTechSheet()">
+      <ion-icon name="archive-outline"></ion-icon>
+      Archivar
+    </button>
+    <button type="button" class="btn btn--activate" (click)="openActivateModal()">
+      <ion-icon name="play-circle-outline"></ion-icon>
+      Activar en Curso
+    </button>
+  </ng-container>
+
+  <!-- Modo editar -->
+  <ng-container *ngIf="techSheet">
+    <button type="button" class="btn btn--activate" (click)="updateTechSheet()">
+      <ion-icon name="save-outline"></ion-icon>
+      Actualizar
+    </button>
+  </ng-container>
+</div>
+
   </form>
 </ion-content>
-
-<!-- 
-form = new FormGroup({
-    performance: new FormControl(null, [Validators.required, Validators.min(0)]),
-    prepTime: new FormControl(null, [Validators.required, Validators.min(0)]),
-    cookingTime: new FormControl(null, [Validators.required, Validators.min(0)])
-  });
-   -->

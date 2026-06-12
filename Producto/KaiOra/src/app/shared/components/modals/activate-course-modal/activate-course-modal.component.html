@@ -1,0 +1,98 @@
+<ion-header class="modal-header">
+  <div class="modal-header__content">
+    <div class="modal-header__title-group">
+      <ion-icon name="play-circle-outline" class="modal-header__icon"></ion-icon>
+      <h2 class="modal-header__title">Activar en Curso</h2>
+    </div>
+    <button class="modal-header__close-btn" (click)="dismiss()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+</ion-header>
+
+<ion-content class="modal-content">
+  <div class="modal-body">
+
+    <p class="modal-body__desc" *ngIf="courses.length > 0">
+      Selecciona los cursos donde quieres activar
+      <strong>{{ recipeName }}</strong>.
+      Los cursos con una ficha activa no están disponibles.
+    </p>
+
+    <!-- Loading -->
+    <div class="loading-state" *ngIf="loading">
+      <ion-spinner name="crescent" color="success"></ion-spinner>
+    </div>
+
+    <!-- Sin cursos asignados -->
+    <div class="empty" *ngIf="!loading && courses.length === 0">
+      <ion-icon name="school-outline"></ion-icon>
+      <p>No tienes cursos asignados</p>
+      <span class="empty__suggestion">
+        ¿Quieres archivar esta ficha técnica?
+      </span>
+    </div>
+
+    <!-- Botón archivar fuera del empty para no heredar opacity -->
+    <div class="archive-suggestion" *ngIf="!loading && courses.length === 0">
+      <button
+        class="btn btn--archive"
+        (click)="archiveInstead()"
+        [disabled]="isSaving">
+        <ion-spinner name="crescent" *ngIf="isSaving"></ion-spinner>
+        <ion-icon name="archive-outline" *ngIf="!isSaving"></ion-icon>
+        {{ isSaving ? 'Archivando...' : 'Archivar Ficha' }}
+      </button>
+    </div>
+
+    <!-- Lista de cursos -->
+    <div class="course-list" *ngIf="!loading && courses.length > 0">
+      <div
+        class="course-item"
+        *ngFor="let item of courseItems"
+        [class.course-item--disabled]="item.hasActiveRecipe"
+        (click)="toggleCourse(item)">
+
+        <div class="course-item__checkbox">
+          <div class="checkbox"
+            [class.checkbox--checked]="item.selected"
+            [class.checkbox--disabled]="item.hasActiveRecipe">
+            <ion-icon name="checkmark-outline" *ngIf="item.selected"></ion-icon>
+          </div>
+        </div>
+
+        <div class="course-item__info">
+          <span class="course-item__name">{{ item.course.name }}</span>
+          <span class="course-item__meta" *ngIf="item.hasActiveRecipe">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            Ficha activa: {{ item.activeRecipeName }}
+          </span>
+          <span class="course-item__meta course-item__meta--students" *ngIf="!item.hasActiveRecipe">
+            <ion-icon name="people-outline"></ion-icon>
+            {{ item.course.studentIds?.length || 0 }} estudiantes
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-footer class="modal-footer" *ngIf="!loading && courses.length > 0">
+  <div class="modal-footer__selected" *ngIf="selectedCount > 0">
+    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    {{ selectedCount }} {{ selectedCount === 1 ? 'curso seleccionado' : 'cursos seleccionados' }}
+  </div>
+  <div class="modal-footer__actions">
+    <button class="btn btn--outline" (click)="dismiss()">Cancelar</button>
+    <button
+      class="btn btn--primary"
+      (click)="activate()"
+      [disabled]="selectedCount === 0 || isSaving">
+      <ion-spinner name="crescent" *ngIf="isSaving"></ion-spinner>
+      <ion-icon name="play-circle-outline" *ngIf="!isSaving"></ion-icon>
+      {{ isSaving ? 'Activando...' : 'Activar' }}
+    </button>
+  </div>
+</ion-footer>

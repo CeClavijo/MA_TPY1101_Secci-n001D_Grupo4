@@ -11,6 +11,7 @@ import { CreateTeacherModalComponent } from './components/modals/create-teacher-
 import { ForgotPasswordModalComponent } from './components/modals/forgot-password-modal/forgot-password-modal.component';
 import { NavBarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
+import { ActivateCourseModalComponent } from './components/modals/activate-course-modal/activate-course-modal.component';
 
 
 
@@ -23,7 +24,8 @@ import { RouterModule } from '@angular/router';
     AddUpdateRecipeComponent,
     CreateCourseModalComponent,
     CreateTeacherModalComponent,
-    ForgotPasswordModalComponent
+    ForgotPasswordModalComponent,
+    ActivateCourseModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -35,7 +37,8 @@ import { RouterModule } from '@angular/router';
     CreateCourseModalComponent,
     CreateTeacherModalComponent,
     ForgotPasswordModalComponent,
-    RouterModule
+    RouterModule,
+    ActivateCourseModalComponent
   ],
   imports: [
     CommonModule,

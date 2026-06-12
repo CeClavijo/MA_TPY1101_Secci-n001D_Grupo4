@@ -42,7 +42,7 @@ export class AdminHomePage implements OnInit {
   // Total de estudiantes sumando los studentIds de todos los cursos
   get totalStudents(): number {
     const allIds = this.courses.flatMap(c => c.studentIds ?? []);
-    return new Set(allIds).size; // Set para evitar duplicados
+    return new Set(allIds).size; 
   }
 
   getProfessorName(professorId: string): string {
