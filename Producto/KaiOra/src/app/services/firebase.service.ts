@@ -9,8 +9,9 @@ updateProfile,
 sendPasswordResetEmail
 } from 'firebase/auth';
 import { User } from '../models/user.model';
-import { getFirestore, setDoc, doc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, addDoc  } from '@angular/fire/firestore';
+import { getFirestore, setDoc, doc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, collectionData, addDoc  } from '@angular/fire/firestore';
 import { Utils } from './utils';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -65,6 +66,12 @@ async getCollectionWhere(path: string, field: string, value: any) {
   const snapshot = await getDocs(q);
   return snapshot.docs.map(doc => doc.data());
 }
+async getCollectionWhereWithId(path: string, field: string, value: any) {
+  const ref = collection(getFirestore(), path);
+  const q = query(ref, where(field, '==', value));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+}
 updateDocument(path: string, data: any) {
   return updateDoc(doc(getFirestore(), path), data);
 }
@@ -78,6 +85,12 @@ addDocument(path: string, data: any) {
 
 async getCollection(path: string) {
   const snapshot = await getDocs(collection(getFirestore(), path));
-  return snapshot.docs.map(doc => doc.data());
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+getCollectionData(path: string, queryConstraints: any[] = []): Observable<any[]> {
+  const ref = collection(getFirestore(), path);
+  const q = query(ref, ...queryConstraints);
+  return collectionData(q, { idField: 'id' });
 }
 }

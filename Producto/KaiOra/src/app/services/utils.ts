@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, ModalOptions, ToastController, ToastOptions } from '@ionic/angular';
-
+import { Camera, MediaTypeSelection } from '@capacitor/camera';
 @Injectable({
   providedIn: 'root',
 })
@@ -63,5 +63,29 @@ async presentAlert(opts: { header: string, message: string, confirmText: string,
     await alert.present();
   });
 }
+//imagen
+async pickImage(): Promise<string | null> {
+  try {
+    const { results } = await Camera.chooseFromGallery({
+      mediaType: MediaTypeSelection.Photo,
+      allowMultipleSelection: false,
+      limit: 1,
+    });
 
+    if (results.length === 0) return null;
+
+    // En web webPath es una URL blob, hay que convertirla a base64
+    const response = await fetch(results[0].webPath);
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.readAsDataURL(blob);
+    });
+
+  } catch (e) {
+    console.error('pickImage failed:', e);
+    return null;
+  }
+}
 }

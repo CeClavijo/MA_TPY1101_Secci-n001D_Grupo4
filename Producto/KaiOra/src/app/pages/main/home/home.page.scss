@@ -1,57 +1,447 @@
-.add-button-custom {
-    padding-top: 12px;
-    --background: #204E2B;
-    --background-hover: #204E2B;
-    --background-activated: #204E2B;
-}
+@import 'src/theme/variables';
 
-.info-color {
-    --color: #204E2B;
-    color: #204E2B;
-}
-
-.view-color {
-    --color: #765A05;
-    color: #765A05;
-}
-
-.grade-color {
-    --color: #80240C;
-    color: #80240C;
-}
-
-.card-metadata {
+// ─────────────────────────────────────────
+// LAYOUT
+// ─────────────────────────────────────────
+.professor-layout {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  height: 100%;
+  width: 100%;
 
-  .custom-badge {
-    /* Color amarillento de tu imagen */
-    --background: #fde087; 
-    color: #836b1d;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 20px;
-    text-transform: uppercase;
+  &__content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.home-content {
+  --background: #{$color-bg-secondary};
+}
+
+// ─────────────────────────────────────────
+// WELCOME
+// ─────────────────────────────────────────
+.welcome-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-md;
+  padding: $space-xl $space-xl $space-lg;
+  flex-wrap: wrap;
+
+  &__title {
+    @include typography($typography-h2);
+    color: $color-text-primary;
+    margin: 0 0 $space-2xs 0;
   }
 
-  .views-container {
+  &__subtitle {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+    max-width: 480px;
+  }
+}
+
+.create-btn {
+  --background: #{$color-secondary};
+  --background-hover: #{$color-secondary-dark};
+  --border-radius: #{$border-radius-xl};
+  --box-shadow: #{$shadow-md};
+  font-weight: $font-weight-semibold;
+  height: 44px;
+}
+
+// ─────────────────────────────────────────
+// STATS
+// ─────────────────────────────────────────
+.stats-grid {
+  display: flex;
+  gap: $space-md;
+  padding: 0 $space-xl $space-lg;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 160px;
+  margin: 0;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xs;
+
+  &__inner {
     display: flex;
     align-items: center;
-    color: #4a4a4a; // Gris oscuro
-    font-size: 0.9em;
+    justify-content: space-between;
+    gap: $space-md;
+  }
 
-    ion-icon {
-      margin-right: 4px;
-      font-size: 1.2em;
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2xs;
+  }
+
+  &__label {
+    @include typography($typography-label-xs);
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__value {
+    @include typography($typography-h3);
+    color: $color-text-primary;
+    font-weight: $font-weight-bold;
+  }
+
+  &__icon {
+    font-size: 28px;
+
+    &--green { color: $color-secondary; }
+  }
+}
+
+// ─────────────────────────────────────────
+// SECTION
+// ─────────────────────────────────────────
+.section {
+  padding: 0 $space-xl $space-xl;
+
+  &__title {
+    @include typography($typography-h4);
+    color: $color-text-primary;
+    margin: 0 0 $space-md 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// RECIPE CARDS
+// ─────────────────────────────────────────
+.recipes-grid {
+  ion-row {
+    gap: 0;
+  }
+}
+
+.recipe-card {
+  margin: 0 0 $space-md 0;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xs;
+  border: $border-width-thin solid $color-neutral-light;
+  transition: box-shadow $transition-base, transform $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $space-sm;
+  }
+
+  &__badge {
+    --background: rgba(#{red($color-tertiary)}, #{green($color-tertiary)}, #{blue($color-tertiary)}, 0.15);
+    --color: #{$color-tertiary-dark};
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    border-radius: $border-radius-full;
+    padding: 2px $space-xs;
+  }
+
+  &__status {
+    @include typography($typography-label-xs);
+    border-radius: $border-radius-full;
+    padding: 2px $space-xs;
+
+    &.status--activa {
+      background: rgba($color-success, 0.12);
+      color: $color-success;
+    }
+
+    &.status--borrador {
+      background: rgba($color-neutral-medium, 0.12);
+      color: $color-neutral-medium;
+    }
+
+    &.status--revision {
+      background: rgba($color-warning, 0.15);
+      color: $color-tertiary-dark;
+    }
+
+    &.status--archivada {
+      background: rgba($color-danger, 0.1);
+      color: $color-danger;
+    }
+  }
+
+  &__title {
+    @include typography($typography-body-sm);
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin: 0 0 $space-xs 0;
+  }
+
+  &__desc {
+    @include typography($typography-label-xs);
+    color: $color-text-secondary;
+    margin: 0 0 $space-sm 0;
+    @include line-clamp(2);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: $border-width-thin solid $color-neutral-light;
+    padding-top: $space-xs;
+    margin-top: $space-xs;
+
+    ion-button {
+      --color: #{$color-secondary};
+      font-size: $font-size-xs;
+    }
+  }
+
+  // Card agregar
+  &--add {
+    cursor: pointer;
+    border: $border-width-medium dashed $color-neutral-light;
+    box-shadow: none;
+    background: $color-bg-primary;
+    min-height: 160px;
+
+    &:hover {
+      border-color: $color-secondary;
+      transform: translateY(-2px);
+
+      ion-icon { color: $color-secondary; }
+      h3 { color: $color-secondary; }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: $space-xl $space-lg;
+      gap: $space-sm;
+
+      ion-icon {
+        font-size: 40px;
+        color: $color-neutral-light;
+        transition: color $transition-base;
+      }
+
+      h3 {
+        @include typography($typography-body-sm);
+        font-weight: $font-weight-semibold;
+        color: $color-text-secondary;
+        margin: 0;
+        transition: color $transition-base;
+      }
+
+      p {
+        @include typography($typography-label-xs);
+        color: $color-text-light;
+        margin: 0;
+      }
     }
   }
 }
 
-.card-title {
-  color: #1a472a; // Verde oscuro del ejemplo
-  font-weight: bold;
-  font-size: 1.4rem;
-  margin: 10px 0;
+// ─────────────────────────────────────────
+// LOADING / EMPTY
+// ─────────────────────────────────────────
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: $space-3xl;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3xl $space-lg;
+  opacity: 0.4;
+
+  ion-icon {
+    font-size: 48px;
+    color: $color-text-secondary;
+    margin-bottom: $space-sm;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+// Empty inline (para fichas activas)
+.empty-inline {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-lg;
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  border: $border-width-thin dashed $color-neutral-light;
+  opacity: 0.6;
+ 
+  ion-icon {
+    font-size: 24px;
+    color: $color-text-secondary;
+    flex-shrink: 0;
+  }
+ 
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+ 
+// Imagen de la card
+.recipe-card__image-wrap {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  border-radius: $border-radius-lg $border-radius-lg 0 0;
+ 
+  &--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-neutral-lighter;
+ 
+    ion-icon {
+      font-size: 40px;
+      color: $color-neutral-light;
+    }
+  }
+}
+ 
+.recipe-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+ 
+// Card activa
+.recipe-card--active {
+  border: $border-width-medium solid rgba($color-secondary, 0.3);
+  box-shadow: 0 0 0 1px rgba($color-secondary, 0.1), $shadow-sm;
+}
+ 
+// Badge activada
+.recipe-card__badge--active {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
+  background: rgba($color-secondary, 0.12);
+  color: $color-secondary-dark;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $border-radius-full;
+  padding: 2px $space-xs;
+ 
+  ion-icon { font-size: 13px; }
+}
+ 
+.recipe-card__category {
+  --background: rgba(#{red($color-tertiary)}, #{green($color-tertiary)}, #{blue($color-tertiary)}, 0.15);
+  --color: #{$color-tertiary-dark};
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $border-radius-full;
+  padding: 2px $space-xs;
+}
+ 
+// Botones de la card
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
+  background: transparent;
+  border: none;
+  font-family: $font-family-primary;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  padding: $space-2xs $space-xs;
+  border-radius: $border-radius-md;
+  transition: all $transition-fast;
+ 
+  ion-icon { font-size: 15px; }
+ 
+  &--edit {
+    color: $color-secondary;
+    &:hover { background: rgba($color-secondary, 0.1); }
+  }
+ 
+  &--delete {
+    color: $color-text-light;
+    &:hover {
+      background: rgba($color-danger, 0.1);
+      color: $color-danger;
+    }
+  }
+ &--activate {
+  color: $color-secondary;
+  &:hover { background: rgba($color-secondary, 0.1); }
+}
+  &--deactivate {
+    color: $color-text-light;
+    &:hover {
+      background: rgba($color-danger, 0.1);
+      color: $color-danger;
+    }
+  }
+}
+ 
+// Footer de card actualizado
+.recipe-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-xs;
+  border-top: $border-width-thin solid $color-neutral-light;
+  padding-top: $space-xs;
+  margin-top: $space-xs;
+}
+
+// ─────────────────────────────────────────
+// RESPONSIVE
+// ─────────────────────────────────────────
+@media (max-width: 767px) {
+  .professor-layout {
+    flex-direction: column;
+  }
+
+  .welcome-section {
+    padding: $space-lg $space-md $space-md;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__title { font-size: $font-size-2xl; }
+
+    .create-btn { width: 100%; }
+  }
+
+  .stats-grid {
+    padding: 0 $space-md $space-md;
+    flex-direction: column;
+  }
+
+  .section {
+    padding: 0 $space-md $space-lg;
+  }
 }

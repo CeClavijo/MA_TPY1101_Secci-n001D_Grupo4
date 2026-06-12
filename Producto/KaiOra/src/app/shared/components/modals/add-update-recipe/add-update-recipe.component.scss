@@ -1,344 +1,468 @@
-// Para el header antes del formulario
+@import 'src/theme/variables';
 
-.modal-header-container {
+.form-content-wrapper {
+  --background: #{$color-bg-secondary};
+}
+
+// ─────────────────────────────────────────
+// FORM LAYOUT
+// ─────────────────────────────────────────
+.recipe-form {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: $space-lg $space-lg $space-3xl;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  background: white;
-  padding-top: 24px;
-  padding-bottom: 0;
+  gap: $space-md;
+}
 
-  .modal-title {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 800;
-    color: #1a472a;
-    letter-spacing: -0.5px;
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.form-header {
+  padding: $space-md 0 $space-xs;
+
+  &__title {
+    @include typography($typography-h3);
+    color: $color-secondary-dark;
+    margin: 0 0 $space-xs 0;
   }
 
-  .modal-description {
-    margin: 8px 0 16px 0;
-    font-size: 14px;
-    color: #666;
-    line-height: 1.4;
-    max-width: 100%;
-  }
-
-  .header-actions-row {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    margin-bottom: 16px;
-  }
-
-  .btn-discard {
-    --color: #1a472a;
-    --border-color: #C1C9BE;
-    --border-radius: 12px;
-    font-weight: 600;
-    text-transform: none;
-    height: 44px;
-    text-transform: none;
+  &__desc {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
     margin: 0;
   }
-
-  .btn-create {
-    --background: #1a472a;
-    --border-radius: 12px;
-    --box-shadow: none;
-    height: 44px;
-    font-weight: 600;
-    text-transform: none;
-    margin: 0;
-  }
-
-  .header-divider {
-    height: 1px;
-    width: 100%;
-    background-color: #f2f2f2;
-  }
 }
 
-// para todas las demas opciones del formulario
-
-.custom-form-card {
-  margin: 0;
-  border-radius: 16px;
-  margin-bottom: 20px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.field-container {
-  text-align: left;
-  margin-bottom: 20px;
-
-  .custom-label {
-    display: block;
-    color: #1a472a;
-    font-weight: 700;
-    margin-bottom: 8px;
-    margin-left: 4px;
-  }
-}
-
-.custom-input-item {
-  --background: #ffffff;
-  --border-radius: 10px;
-  --border-color: #e0e0e0;
-  --padding-start: 12px;
-  margin-top: 4px;
-}
-
-.input-suffix {
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-  margin-left: 8px;
-}
-
-.category-select {
-  --placeholder-color: #999;
-  --placeholder-opacity: 1;
-  width: 100%;
+// ─────────────────────────────────────────
+// SECTIONS
+// ─────────────────────────────────────────
+.form-section {
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  padding: $space-lg;
+  box-shadow: $shadow-xs;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: $space-md;
 
-  &::part(container) {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  &--pcc {
+    background: #fdf7f2;
+    border: $border-width-thin solid #f5e1d5;
   }
 
-  &::part(placeholder), 
-  &::part(text) {
-    text-align: left;
-    flex: 1;
-  }
-
-  &::part(icon) {
-    position: absolute;
-    right: 0;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    opacity: 0.8;
+  &--key {
+    background: #fff9e6;
+    border: $border-width-thin solid #f2e1ac;
   }
 }
 
-// Para el apartado de los ingredientes
-.ingredients-container {
-  background: #f1f1ee;
-  border-radius: 12px;
-  overflow: hidden;
+.section-title {
+  @include typography($typography-label);
+  color: $color-text-primary;
+  font-weight: $font-weight-semibold;
+  margin: 0;
+  font-size: $font-size-base;
 
-  .header-row {
-    padding: 10px 15px;
-    font-size: 11px;
-    font-weight: bold;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .ingredient-row {
-    background: #ffffff;
-    margin: 0 8px 8px 8px;
-    border-radius: 8px;
-    padding: 5px;
-  }
-
-  .ing-input {
-    --padding-start: 10px;
-    font-size: 14px;
-  }
-
-  .ing-select {
-    font-size: 14px;
-    min-height: auto;
-  }
-
-  .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .btn-delete {
-    height: 38px;
-    margin: 0;
-    --padding-start: 0;
-    --padding-end: 0;
-  }
+  &--pcc { color: #632010; }
+  &--key { color: #8c6d1f; }
 }
 
-.add-ingredient-btn {
-  --color: #1a472a;
-  font-weight: bold;
-  text-transform: none;
-  font-size: 14px;
-}
-
-// Para la parte de lo importante
-.pcc-card {
-  --background: #fdf7f2;
-  border: 1px solid #f5e1d5;
-  text-align: left;
-
-  .section-title {
-    color: #632010;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .section-description {
-    color: #8c4a38;
-    font-size: 13px;
-  }
-
-  .custom-label {
-    color: #632010;
-  }
-
-  .custom-input-item {
-    --border-color: #f5e1d5;
-    --background: #ffffff;
-  }
-
-  .status-footer {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    ion-badge {
-      --background: #632010;
-      padding: 6px 12px;
-      font-weight: bold;
-    }
-
-    .helper-text {
-      color: #8c4a38;
-      font-style: italic;
-      font-size: 14px;
-    }
-  }
-}
-
-.header-with-icon {
+.section-title-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: $space-xs;
 
-  ion-icon {
-    font-size: 24px;
+  &__icon {
+    font-size: 22px;
     color: #632010;
+
+    &--key { color: #8c6d1f; }
   }
 }
 
-// Para la seccion de los puntos claves
-.key-points-card {
-  --background: #fff9e6;
-  border: 1px solid #f2e1ac;
-  margin-top: 16px;
+.section-desc {
+  @include typography($typography-body-sm);
+  color: #8c4a38;
+  margin: 0;
+}
 
-  .header-with-icon {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+// ─────────────────────────────────────────
+// FIELDS
+// ─────────────────────────────────────────
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+}
 
-    ion-icon {
-      font-size: 24px;
-      color: #8c6d1f;
-    }
+.field-label {
+  @include typography($typography-label);
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+  color: $color-secondary-dark;
 
-    .section-title {
-      color: #8c6d1f;
-      margin: 0;
-      font-weight: 700;
-    }
-  }
+  &--pcc { color: #632010; }
+}
 
-  .bullet-input-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.field-row {
+  display: flex;
+  gap: $space-sm;
+  flex-wrap: wrap;
 
-    .custom-bullet {
-      width: 8px;
-      height: 8px;
-      background-color: #8c6d1f;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .key-point-input {
-      --padding-start: 0;
-      font-size: 14px;
-      color: #4a3c15;
-      --placeholder-color: #a69363;
-      --placeholder-opacity: 0.6;
-    }
-  }
-
-  .point-divider {
-    border: 0;
-    border-top: 1px solid #e6d5a1;
-    margin: 4px 0 4px 20px;
-  }
-
-  .add-point-btn {
-    --color: #8c6d1f;
-    font-weight: 600;
-    text-transform: none;
-    margin-top: 10px;
+  .field-group {
+    flex: 1;
+    min-width: 100px;
   }
 }
 
-// Para el estado del formulario
-.status-card {
-  --background: #e5e7eb;
+.custom-field {
+  display: flex;
+  align-items: center;
+  background: $color-bg-secondary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: 0 $space-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  min-height: 44px;
 
-  .status-header {
-    font-size: 11px;
-    letter-spacing: 1px;
-    font-weight: bold;
-    color: #555;
+  &:focus-within {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
   }
 
-  .status-item {
-    margin-top: 15px;
+  &--error {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+  }
 
-    .status-text {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-      font-weight: 600;
-      color: #333;
+  &--suffix {
+    padding-right: $space-xs;
+  }
+
+  ion-input, ion-select {
+    flex: 1;
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --color: #{$color-text-primary};
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+  }
+}
+
+.field-suffix {
+  @include typography($typography-label-xs);
+  color: $color-text-light;
+  flex-shrink: 0;
+  margin-left: $space-xs;
+}
+
+// ─────────────────────────────────────────
+// INGREDIENTS TABLE
+// ─────────────────────────────────────────
+.ingredients-table {
+  background: $color-bg-secondary;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+
+  &__header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 36px;
+    gap: $space-xs;
+    padding: $space-xs $space-sm;
+    background: $color-neutral-lighter;
+
+    span {
+      @include typography($typography-label-xs);
+      color: $color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: $letter-spacing-wide;
     }
   }
 
-  .progress-basic {
-    --progress-background: #2d5a3f;
-    --buffer-background: #c8ced0;
-    --color: #2d5a3f;
-    height: 6px;
-    border-radius: 10px;
+  &__row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 36px;
+    gap: $space-xs;
+    padding: $space-xs $space-sm;
+    border-top: $border-width-thin solid $color-neutral-light;
+    align-items: center;
+  }
+}
+
+.remove-btn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: $border-radius-full;
+  background: transparent;
+  color: $color-text-light;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba($color-danger, 0.1);
+    color: $color-danger;
+  }
+}
+
+.add-row-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  background: transparent;
+  border: none;
+  color: $color-secondary;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  padding: $space-xs 0;
+  transition: color $transition-fast;
+
+  ion-icon { font-size: 18px; }
+
+  &:hover { color: $color-secondary-dark; }
+
+  &--key { color: #8c6d1f; &:hover { color: #6b5218; } }
+}
+
+// ─────────────────────────────────────────
+// PCC FOOTER
+// ─────────────────────────────────────────
+.pcc-footer {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
+.pcc-badge {
+  background: #632010;
+  color: white;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  border-radius: $border-radius-full;
+  padding: $space-2xs $space-sm;
+  letter-spacing: $letter-spacing-wide;
+}
+
+.pcc-helper {
+  @include typography($typography-label-xs);
+  color: #8c4a38;
+  font-style: italic;
+}
+
+// ─────────────────────────────────────────
+// KEY POINTS
+// ─────────────────────────────────────────
+.key-point-row {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-xs 0;
+  border-bottom: $border-width-thin solid #e6d5a1;
+
+  &:last-of-type { border-bottom: none; }
+
+  &__bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: $border-radius-full;
+    background: #8c6d1f;
+    flex-shrink: 0;
   }
 
-  .progress-pcc {
-  --progress-background: #632010; 
-  --buffer-background: #c8ced0; 
-  color: #632010;
-  height: 6px;
-  border-radius: 10px;
+  &__input {
+    flex: 1;
+    background: transparent;
+    border-color: transparent;
+
+    &:focus-within {
+      background: $color-bg-primary;
+      border-color: #8c6d1f;
+      box-shadow: 0 0 0 3px rgba(#8c6d1f, 0.1);
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// FOOTER BOTONES
+// ─────────────────────────────────────────
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-sm;
+  padding: $space-md 0 $space-xl;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: $border-width-medium solid transparent;
+  height: 44px;
+
+  ion-icon { font-size: 18px; }
+
+  &--cancel {
+    background: transparent;
+    border-color: $color-neutral-light;
+    color: $color-text-secondary;
+
+    &:hover {
+      border-color: $color-neutral-medium;
+      color: $color-text-primary;
+    }
+  }
+
+  &--archive {
+    background: transparent;
+    border-color: $color-secondary;
+    color: $color-secondary;
+
+    &:hover {
+      background: rgba($color-secondary, 0.08);
+    }
+  }
+
+  &--activate {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+
+    &:hover {
+      background: $color-secondary-dark;
+      border-color: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+  }
+}
+ection · SCSS
+// ─────────────────────────────────────────
+// IMAGEN
+// ─────────────────────────────────────────
+.field-label--optional {
+  font-weight: $font-weight-regular;
+  color: $color-text-light;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: $font-size-xs;
+}
+ 
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+  border: $border-width-medium dashed $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: $space-xl $space-lg;
+  cursor: pointer;
+  transition: all $transition-base;
+  background: $color-bg-secondary;
+  text-align: center;
+  min-height: 130px;
+ 
+  &:hover {
+    border-color: $color-secondary;
+    background: rgba($color-secondary, 0.04);
+ 
+    .image-upload__icon { color: $color-secondary; }
+  }
+ 
+  &__icon {
+    font-size: 36px;
+    color: $color-text-light;
+    transition: color $transition-base;
+  }
+ 
+  &__text {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    margin: 0;
+  }
+ 
+  &__hint {
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+  }
+}
+ 
+.image-preview {
+  position: relative;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+ 
+  &__img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    display: block;
+    border-radius: $border-radius-md;
+  }
+ 
+  &__remove {
+    position: absolute;
+    bottom: $space-sm;
+    right: $space-sm;
+    display: flex;
+    align-items: center;
+    gap: $space-2xs;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: $border-radius-full;
+    padding: $space-2xs $space-sm;
+    font-size: $font-size-xs;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: background $transition-fast;
+ 
+    ion-icon { font-size: 14px; }
+ 
+    &:hover { background: rgba($color-danger, 0.8); }
+  }
+}
+// ─────────────────────────────────────────
+// RESPONSIVE
+// ─────────────────────────────────────────
+@media (max-width: 767px) {
+  .recipe-form {
+    padding: $space-md $space-md $space-3xl;
+  }
+
+  .field-row {
+    flex-direction: column;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+
+    .btn { justify-content: center; }
+  }
+
+  .ingredients-table {
+    &__header, &__row {
+      grid-template-columns: 1.5fr 1fr 1fr 36px;
+    }
   }
 }

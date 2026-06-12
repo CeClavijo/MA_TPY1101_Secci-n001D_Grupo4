@@ -1,0 +1,319 @@
+@import 'src/theme/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.modal-header {
+  box-shadow: none;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-md $space-lg;
+    background: $color-bg-primary;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__icon {
+    font-size: 22px;
+    color: $color-secondary;
+  }
+
+  &__title {
+    @include typography($typography-h4);
+    color: $color-secondary;
+    margin: 0;
+  }
+
+  &__close-btn {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    border-radius: $border-radius-full;
+    border: none;
+    background: $color-neutral-lighter;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    font-size: 20px;
+
+    &:hover {
+      background: $color-neutral-light;
+      color: $color-text-primary;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────
+.modal-content {
+  --background: #{$color-bg-secondary};
+}
+
+.modal-body {
+  padding: $space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+
+  &__desc {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+// ─────────────────────────────────────────
+// COURSE LIST
+// ─────────────────────────────────────────
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: $space-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(.course-item--disabled) {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.08);
+  }
+
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: $color-bg-secondary;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2xs;
+  }
+
+  &__name {
+    @include typography($typography-body-sm);
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $space-2xs;
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+
+    ion-icon { font-size: 13px; }
+
+    &--students {
+      color: $color-secondary;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// CHECKBOX
+// ─────────────────────────────────────────
+.checkbox {
+  @include flex-center;
+  width: 22px;
+  height: 22px;
+  border-radius: $border-radius-sm;
+  border: $border-width-medium solid $color-neutral-light;
+  background: $color-bg-primary;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+
+  ion-icon {
+    font-size: 14px;
+    color: white;
+  }
+
+  &--checked {
+    background: $color-secondary;
+    border-color: $color-secondary;
+  }
+
+  &--disabled {
+    background: $color-neutral-lighter;
+    border-color: $color-neutral-light;
+  }
+}
+
+// ─────────────────────────────────────────
+// LOADING / EMPTY
+// ─────────────────────────────────────────
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: $space-xl;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $space-xl;
+  gap: $space-sm;
+  opacity: 0.4;
+
+  ion-icon {
+    font-size: 40px;
+    color: $color-text-secondary;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// FOOTER
+// ─────────────────────────────────────────
+.modal-footer {
+  border-top: $border-width-thin solid $color-neutral-light;
+  background: $color-bg-primary;
+  box-shadow: none;
+
+  &__selected {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-xs $space-lg 0;
+    @include typography($typography-label-xs);
+    color: $color-secondary;
+    font-weight: $font-weight-semibold;
+
+    ion-icon { font-size: 16px; }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $space-sm;
+    padding: $space-sm $space-lg $space-md;
+  }
+}
+
+// ─────────────────────────────────────────
+// BUTTONS
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: $border-width-medium solid transparent;
+  height: 44px;
+
+  ion-icon { font-size: 18px; }
+  ion-spinner { width: 18px; height: 18px; }
+
+  &--outline {
+    background: transparent;
+    border-color: $color-neutral-light;
+    color: $color-text-secondary;
+
+    &:hover {
+      border-color: $color-neutral-medium;
+      color: $color-text-primary;
+    }
+  }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+    border-color: $color-secondary;
+
+    &:hover:not([disabled]) {
+      background: $color-secondary-dark;
+      border-color: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+
+    &[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ── Empty archive suggestion ──────────────────────────────────────────────────
+.empty {
+  &__suggestion {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: $space-xs 0;
+  }
+
+  .btn--archive {
+    margin-top: $space-sm;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-xs;
+    border-radius: $border-radius-xl;
+    padding: $space-xs $space-lg;
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: all $transition-base;
+    border: $border-width-medium solid $color-secondary;
+    background: transparent;
+    color: $color-secondary;
+    height: 44px;
+
+    ion-icon { font-size: 18px; }
+    ion-spinner { width: 18px; height: 18px; }
+
+    &:hover:not([disabled]) {
+      background: rgba($color-secondary, 0.08);
+    }
+
+    &[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+  .archive-suggestion {
+    display: flex;
+    justify-content: center;
+    margin-top: $space-sm;
+    
+    }
+}

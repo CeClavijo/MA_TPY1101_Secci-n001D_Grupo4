@@ -1,91 +1,177 @@
-<app-header title="Inicio Profesor"></app-header>
+<div class="professor-layout">
 
-<ion-content class="ion-padding">
-  <h2>Bienvenido Chef</h2>
-  <p>Administra tus fichas técnicas y supervisa el progreso de tus módulos de formación culinaria.</p>
+  <app-navbar [menuItems]="menuItems"></app-navbar>
 
-  <ion-button (click)="addUpdateRecipe()" expand="block" mode="ios" class="add-button-custom">
-    <ion-icon slot="start" name="add-outline"></ion-icon>
-    Crear nueva ficha
-  </ion-button>
+  <div class="professor-layout__content">
+    <ion-content class="home-content">
 
-  <!-- ion card info -->
-
-  <ion-card>
-    <ion-card-header>
-      <ion-item lines="none" detail="false">
-        <ion-icon name="book-outline" slot="end" class="info-color"></ion-icon>
-        <ion-label>
-          <ion-card-subtitle class="info-color">TOTAL FICHAS</ion-card-subtitle>
-          <ion-card-title>24</ion-card-title>
-        </ion-label>
-      </ion-item>
-    </ion-card-header>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-item lines="none" detail="false">
-        <ion-icon name="eye-outline" slot="end" class="view-color"></ion-icon>
-        <ion-label>
-          <ion-card-subtitle class="view-color">VISITAS TOTALES</ion-card-subtitle>
-          <ion-card-title>1.2k</ion-card-title>
-        </ion-label>
-      </ion-item>
-    </ion-card-header>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-item lines="none" detail="false">
-        <ion-icon name="star" slot="end" class="grade-color"></ion-icon>
-        <ion-label>
-          <ion-card-subtitle class="grade-color">MEDIA CALIFICACIÓN</ion-card-subtitle>
-          <ion-card-title>4.9</ion-card-title>
-        </ion-label>
-      </ion-item>
-    </ion-card-header>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-item lines="none" detail="false">
-        <ion-icon name="document-text-outline" slot="end" class="info-color"></ion-icon>
-        <ion-label>
-          <ion-card-subtitle class="info-color">EN REVISIÓN</ion-card-subtitle>
-          <ion-card-title>3</ion-card-title>
-        </ion-label>
-      </ion-item>
-    </ion-card-header>
-  </ion-card>
-
-  <!-- ion card recetas -->
-  <ion-card>
-    <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-
-    <ion-card-content>
-      <div class="card-metadata">
-        <ion-badge color="warning" mode="ios">PB-04 • AVANZADO</ion-badge>
-
-        <div class="views-container">
-          <ion-icon name="eye-outline"></ion-icon>
-          <span class="views-count">482 visitas</span>
+      <!-- BIENVENIDA + BOTÓN -->
+      <div class="welcome-section">
+        <div class="welcome-section__text">
+          <h1 class="welcome-section__title">Bienvenido, Chef</h1>
+          <p class="welcome-section__subtitle">
+            Administra tus fichas técnicas y supervisa el progreso de tus módulos de formación culinaria.
+          </p>
         </div>
+        <ion-button mode="ios" class="create-btn" (click)="addUpdateRecipe()">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          Crear nueva ficha
+        </ion-button>
       </div>
 
-      <h2 class="card-title">Tarta de Frutos Rojos y Crema Mousseline</h2>
-    <p class="card-subtitle">
-      Un clásico de la pastelería que integra técnica de masa quebrada...
-    </p>
-    </ion-card-content>
+      <!-- STATS -->
+      <div class="stats-grid">
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-card__inner">
+              <div class="stat-card__info">
+                <span class="stat-card__label">MIS FICHAS</span>
+                <span class="stat-card__value">{{ totalRecipes }}</span>
+              </div>
+              <ion-icon name="book-outline" class="stat-card__icon stat-card__icon--green"></ion-icon>
+            </div>
+          </ion-card-content>
+        </ion-card>
 
-    <ion-button fill="clear">
-      <ion-icon slot="start" name="pencil-outline"></ion-icon>
-      Editar
-    </ion-button>
-    <ion-button fill="clear">
-      <ion-icon slot="start" name="share-social-outline"></ion-icon>
-      Compartir
-    </ion-button>
-  </ion-card>
-</ion-content>
+        <ion-card class="stat-card">
+          <ion-card-content>
+            <div class="stat-card__inner">
+              <div class="stat-card__info">
+                <span class="stat-card__label">MIS CURSOS</span>
+                <span class="stat-card__value">{{ totalCourses }}</span>
+              </div>
+              <ion-icon name="school-outline" class="stat-card__icon stat-card__icon--green"></ion-icon>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- FICHAS ACTIVAS -->
+      <div class="section">
+        <h2 class="section__title">Fichas Activas</h2>
+
+        <!-- Empty -->
+        <div class="empty-inline" *ngIf="!loading && activeSheets.length === 0">
+          <ion-icon name="play-circle-outline"></ion-icon>
+          <p>No tienes fichas activas en ningún curso</p>
+        </div>
+
+        <!-- Grid fichas activas -->
+        <ion-grid class="ion-no-padding recipes-grid" *ngIf="!loading && activeSheets.length > 0">
+          <ion-row>
+            <ion-col size="12" sizeMd="6" sizeLg="4" sizeXl="3" *ngFor="let sheet of activeSheets">
+              <ion-card class="recipe-card recipe-card--active">
+
+                <!-- Imagen -->
+                <div class="recipe-card__image-wrap" *ngIf="sheet.imageURL">
+                  <img [src]="sheet.imageURL" alt="{{ sheet.name }}" class="recipe-card__image" />
+                </div>
+                <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!sheet.imageURL">
+                  <ion-icon name="image-outline"></ion-icon>
+                </div>
+
+                <ion-card-content>
+                  <div class="recipe-card__meta">
+                    <span class="recipe-card__badge recipe-card__badge--active">
+                      <ion-icon name="checkmark-circle-outline"></ion-icon>
+                      Activada
+                    </span>
+                    <ion-badge class="recipe-card__category" mode="ios">{{ sheet.category }}</ion-badge>
+                  </div>
+
+                  <h3 class="recipe-card__title">{{ sheet.name }}</h3>
+
+                  <div class="recipe-card__footer">
+                    <button type="button" class="card-btn card-btn--deactivate" (click)="deactivateRecipe(sheet)">
+                      <ion-icon name="stop-circle-outline"></ion-icon>
+                      Desactivar
+                    </button>
+                  </div>
+                </ion-card-content>
+
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- MIS FICHAS TÉCNICAS -->
+      <div class="section">
+        <h2 class="section__title">Mis Fichas Técnicas</h2>
+
+        <!-- Loading -->
+        <div class="loading-state" *ngIf="loading">
+          <ion-spinner name="crescent" color="success"></ion-spinner>
+        </div>
+
+        <!-- Empty -->
+        <div class="empty" *ngIf="!loading && techSheets.length === 0">
+          <ion-icon name="document-text-outline"></ion-icon>
+          <p>Aún no tienes fichas técnicas creadas</p>
+        </div>
+
+        <!-- Grid fichas -->
+        <ion-grid class="ion-no-padding recipes-grid" *ngIf="!loading && techSheets.length > 0">
+          <ion-row>
+
+            <ion-col size="12" sizeMd="6" sizeLg="4" sizeXl="3" *ngFor="let sheet of techSheets">
+              <ion-card class="recipe-card">
+
+                <!-- Imagen -->
+                <div class="recipe-card__image-wrap" *ngIf="sheet.imageURL">
+                  <img [src]="sheet.imageURL" alt="{{ sheet.name }}" class="recipe-card__image" />
+                </div>
+                <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!sheet.imageURL">
+                  <ion-icon name="image-outline"></ion-icon>
+                </div>
+
+                <ion-card-content>
+                  <div class="recipe-card__meta">
+                    <ion-badge class="recipe-card__badge" mode="ios">{{ sheet.category }}</ion-badge>
+                    <span class="recipe-card__status" [ngClass]="getStatusClass(sheet.status)">
+                      {{ sheet.status }}
+                    </span>
+                  </div>
+
+                  <h3 class="recipe-card__title">{{ sheet.name }}</h3>
+
+                  <div class="recipe-card__footer">
+                    <button type="button" class="card-btn card-btn--edit" (click)="addUpdateRecipe(sheet)">
+                      <ion-icon name="pencil-outline"></ion-icon>
+                      Editar
+                    </button>
+                    <button type="button" class="card-btn card-btn--activate"
+                      *ngIf="sheet.status === 'Archivada'"
+                      (click)="activateRecipe(sheet)">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                      Activar
+                    </button>
+                    <button type="button" class="card-btn card-btn--delete" (click)="deleteRecipe(sheet)">
+                      <ion-icon name="trash-outline"></ion-icon>
+                      Eliminar
+                    </button>
+                  </div>
+                </ion-card-content>
+
+              </ion-card>
+            </ion-col>
+
+            <!-- Card agregar nueva ficha -->
+            <ion-col size="12" sizeMd="6" sizeLg="4" sizeXl="3">
+              <ion-card class="recipe-card recipe-card--add" (click)="addUpdateRecipe()">
+                <ion-card-content class="recipe-card--add__content">
+                  <ion-icon name="add-circle-outline"></ion-icon>
+                  <h3>Nueva Ficha Técnica</h3>
+                  <p>Haz clic para comenzar a redactar una nueva ficha.</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </div>
+
+    </ion-content>
+  </div>
+
+</div>
