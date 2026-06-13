@@ -1,0 +1,17 @@
+<div class="alumno-layout">
+
+  <app-navbar [menuItems]="menuItems"></app-navbar>
+
+  <div class="alumno-layout__content">
+    <ion-content class="alumno-content">
+      <div class="section">
+        <h2 class="section__title">Biblioteca de Fichas</h2>
+        <app-recipe-library
+          role="alumno"
+          (cardClicked)="onRecipeClick($event)">
+        </app-recipe-library>
+      </div>
+    </ion-content>
+  </div>
+
+</div>

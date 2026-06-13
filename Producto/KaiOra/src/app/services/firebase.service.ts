@@ -93,4 +93,10 @@ getCollectionData(path: string, queryConstraints: any[] = []): Observable<any[]>
   const q = query(ref, ...queryConstraints);
   return collectionData(q, { idField: 'id' });
 }
+async getCollectionWhereArrayContains(path: string, field: string, value: any) {
+  const ref = collection(getFirestore(), path);
+  const q = query(ref, where(field, 'array-contains', value));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+}
 }

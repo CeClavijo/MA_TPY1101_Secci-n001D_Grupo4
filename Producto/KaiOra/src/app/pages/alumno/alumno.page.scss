@@ -1,0 +1,393 @@
+@import 'src/theme/variables';
+
+// ─────────────────────────────────────────
+// LAYOUT
+// ─────────────────────────────────────────
+.alumno-layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  &__content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.alumno-content {
+  --background: #{$color-bg-secondary};
+}
+
+// ─────────────────────────────────────────
+// WELCOME
+// ─────────────────────────────────────────
+.welcome-section {
+  padding: $space-xl $space-xl $space-lg;
+
+  &__title {
+    @include typography($typography-h2);
+    color: $color-text-primary;
+    margin: 0 0 $space-2xs 0;
+  }
+
+  &__subtitle {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// LOADING
+// ─────────────────────────────────────────
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: $space-3xl;
+}
+
+// ─────────────────────────────────────────
+// EMPTY STATE
+// ─────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $space-3xl $space-xl;
+  gap: $space-md;
+
+  ion-icon {
+    font-size: 64px;
+    color: $color-neutral-light;
+  }
+
+  h3 {
+    @include typography($typography-h4);
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+    max-width: 340px;
+  }
+}
+
+// ─────────────────────────────────────────
+// RECIPE VIEW
+// ─────────────────────────────────────────
+.recipe-view {
+  padding: 0 $space-xl $space-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+
+  &__top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-md;
+    align-items: start;
+  }
+
+  &__top-right {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+  }
+
+  &__bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-md;
+    align-items: start;
+  }
+}
+
+// ─────────────────────────────────────────
+// BLOCKS
+// ─────────────────────────────────────────
+.recipe-block {
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  padding: $space-lg;
+  box-shadow: $shadow-xs;
+  border: $border-width-thin solid $color-neutral-light;
+
+  &--hero {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  &--pcc {
+    background: #fdf7f2;
+    border-color: #f5e1d5;
+  }
+
+  &--key {
+    background: #fff9e6;
+    border-color: #f2e1ac;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    @include typography($typography-label);
+    color: $color-text-primary;
+    font-weight: $font-weight-semibold;
+    margin: 0 0 $space-md 0;
+    font-size: $font-size-base;
+
+    ion-icon { font-size: 20px; }
+
+    &--pcc {
+      color: #632010;
+      ion-icon { color: #632010; }
+    }
+
+    &--key {
+      color: #8c6d1f;
+      ion-icon { color: #8c6d1f; }
+    }
+  }
+
+  &__desc--pcc {
+    @include typography($typography-body-sm);
+    color: #8c4a38;
+    margin: 0 0 $space-md 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// HERO
+// ─────────────────────────────────────────
+.recipe-hero {
+  &__image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__info {
+    padding: $space-md $space-lg;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-sm;
+  }
+
+  &__title {
+    @include typography($typography-h3);
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  &__category {
+    @include typography($typography-label-xs);
+    background: rgba($color-tertiary, 0.15);
+    color: $color-tertiary-dark;
+    border-radius: $border-radius-full;
+    padding: 2px $space-sm;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// INFO GRID
+// ─────────────────────────────────────────
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-xs 0;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+
+  &:last-child { border-bottom: none; }
+
+  &__label {
+    @include typography($typography-label-xs);
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__value {
+    @include typography($typography-body-sm);
+    color: $color-text-primary;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+// ─────────────────────────────────────────
+// INGREDIENTES
+// ─────────────────────────────────────────
+.ingredients-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-xs 0;
+    border-bottom: $border-width-thin solid $color-neutral-light;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: $border-radius-full;
+    background: $color-secondary;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    @include typography($typography-body-sm);
+    color: $color-text-primary;
+    flex: 1;
+  }
+
+  &__qty {
+    @include typography($typography-label-xs);
+    color: $color-text-secondary;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+  }
+}
+
+// ─────────────────────────────────────────
+// PCC
+// ─────────────────────────────────────────
+.pcc-item {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+  padding: $space-sm 0;
+  border-bottom: $border-width-thin solid #f5e1d5;
+
+  &:last-child { border-bottom: none; }
+
+  &__label {
+    @include typography($typography-label-xs);
+    color: #632010;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__value {
+    @include typography($typography-body-sm);
+    color: #3d1208;
+    font-weight: $font-weight-medium;
+  }
+}
+
+// ─────────────────────────────────────────
+// PUNTOS CLAVE
+// ─────────────────────────────────────────
+.key-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-sm;
+    @include typography($typography-body-sm);
+    color: #4a3c15;
+    line-height: 1.6;
+  }
+
+  &__bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: $border-radius-full;
+    background: #8c6d1f;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+}
+
+// ─────────────────────────────────────────
+// BOTÓN
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  border: none;
+  height: 44px;
+  transition: all $transition-base;
+
+  ion-icon { font-size: 18px; }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+
+    &:hover {
+      background: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// RESPONSIVE
+// ─────────────────────────────────────────
+@media (max-width: 767px) {
+  .alumno-layout {
+    flex-direction: column;
+  }
+
+  .welcome-section {
+    padding: $space-lg $space-md $space-md;
+  }
+
+  .recipe-view {
+    padding: 0 $space-md $space-3xl;
+
+    &__top {
+      grid-template-columns: 1fr;
+    }
+
+    &__bottom {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .recipe-hero__image {
+    height: 200px;
+  }
+}
