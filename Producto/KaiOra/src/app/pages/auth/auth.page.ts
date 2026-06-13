@@ -55,8 +55,10 @@ export class AuthPage implements OnInit {
         this.utilsSvc.routerLink('/admin');
       } else if (userData.role === 'profesor') {
         this.utilsSvc.routerLink('/main/home');
+      } else if (userData.role === 'alumno') {
+        this.utilsSvc.routerLink('/alumno/home'); 
       } else {
-        this.utilsSvc.routerLink('/main'); 
+        this.utilsSvc.routerLink('/auth'); 
       }
 
       this.form.reset();

@@ -26,9 +26,11 @@ export class NoAuthGuard implements CanActivate {
           const user = this.utilsSvc.getFromLocalStorage('user');
 
           if (user?.role === 'admin') {
-            this.utilsSvc.routerLink('/admin');
+            this.utilsSvc.routerLink('/admin/home');
           } else if (user?.role === 'profesor') {
             this.utilsSvc.routerLink('/main/home');
+          } else if (user?.role === 'alumno') {
+            this.utilsSvc.routerLink('/alumno/home');
           } else {
             this.firebaseSvc.signOut();
             resolve(true);

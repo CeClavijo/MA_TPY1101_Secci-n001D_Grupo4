@@ -1,0 +1,136 @@
+<div class="alumno-layout">
+
+  <app-navbar [menuItems]="menuItems"></app-navbar>
+
+  <div class="alumno-layout__content">
+    <ion-content class="alumno-content">
+
+      <!-- BIENVENIDA -->
+      <div class="welcome-section">
+        <div class="welcome-section__text">
+          <h1 class="welcome-section__title">¡Hola, Chef en potencia!</h1>
+          <p class="welcome-section__subtitle">¿Qué vamos a crear hoy en el taller?</p>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="loading-state" *ngIf="loading">
+        <ion-spinner name="crescent" color="success"></ion-spinner>
+      </div>
+
+      <!-- SIN FICHA ACTIVA -->
+      <div class="empty-state" *ngIf="!loading && !activeRecipe">
+        <ion-icon name="restaurant-outline"></ion-icon>
+        <h3>No hay nada para esta semana</h3>
+        <p>Tu profesor aún no ha asignado una ficha técnica. ¡Mientras tanto te invitamos a explorar la biblioteca!</p>
+        <button class="btn btn--primary" [routerLink]="'/alumno/library'">
+          <ion-icon name="library-outline"></ion-icon>
+          Explorar Biblioteca
+        </button>
+      </div>
+
+      <!-- FICHA ACTIVA -->
+      <div class="recipe-view" *ngIf="!loading && activeRecipe">
+
+        <!-- FILA SUPERIOR -->
+        <div class="recipe-view__top">
+
+          <!-- BLOQUE 1: Imagen + Nombre -->
+          <div class="recipe-block recipe-block--hero">
+            <img
+              *ngIf="activeRecipe.imageURL"
+              [src]="activeRecipe.imageURL"
+              [alt]="activeRecipe.name"
+              class="recipe-hero__image" />
+            <div class="recipe-hero__info">
+              <h2 class="recipe-hero__title">{{ activeRecipe.name }}</h2>
+              <span class="recipe-hero__category">{{ activeRecipe.category }}</span>
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA -->
+          <div class="recipe-view__top-right">
+
+            <!-- BLOQUE 2: Info básica -->
+            <div class="recipe-block">
+              <h3 class="recipe-block__title">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                Información General
+              </h3>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-item__label">Rendimiento</span>
+                  <span class="info-item__value">{{ activeRecipe.performance }} personas</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-item__label">Tiempo de Prep.</span>
+                  <span class="info-item__value">{{ activeRecipe.prepTime }} min</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-item__label">Tiempo de Cocción</span>
+                  <span class="info-item__value">{{ activeRecipe.cookingTime }} min</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- BLOQUE 3: Ingredientes -->
+            <div class="recipe-block">
+              <h3 class="recipe-block__title">
+                <ion-icon name="list-outline"></ion-icon>
+                Ingredientes
+              </h3>
+              <ul class="ingredients-list">
+                <li class="ingredients-list__item" *ngFor="let ing of activeRecipe.ingredients">
+                  <span class="ingredients-list__bullet"></span>
+                  <span class="ingredients-list__name">{{ ing.name }}</span>
+                  <span class="ingredients-list__qty">{{ ing.quantity }} {{ ing.unit }}</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- FILA INFERIOR -->
+        <div class="recipe-view__bottom">
+
+          <!-- BLOQUE 4: PCC -->
+          <div class="recipe-block recipe-block--pcc">
+            <h3 class="recipe-block__title recipe-block__title--pcc">
+              <ion-icon name="warning-sharp"></ion-icon>
+              Puntos Críticos (PCC)
+            </h3>
+            <p class="recipe-block__desc--pcc">Puntos de control vitales para garantizar la inocuidad alimentaria.</p>
+
+            <div class="pcc-item">
+              <span class="pcc-item__label">Temperatura de Cocción</span>
+              <span class="pcc-item__value">{{ activeRecipe.cookingTemp }}</span>
+            </div>
+            <div class="pcc-item">
+              <span class="pcc-item__label">Mantenimiento</span>
+              <span class="pcc-item__value">{{ activeRecipe.maintenance }}</span>
+            </div>
+          </div>
+
+          <!-- BLOQUE 5: Puntos Clave -->
+          <div class="recipe-block recipe-block--key">
+            <h3 class="recipe-block__title recipe-block__title--key">
+              <ion-icon name="bulb-outline"></ion-icon>
+              Puntos Clave
+            </h3>
+            <ul class="key-list">
+              <li class="key-list__item" *ngFor="let point of activeRecipe.keyPoints">
+                <span class="key-list__bullet"></span>
+                {{ point }}
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </ion-content>
+  </div>
+
+</div>
