@@ -168,7 +168,7 @@ export class HomePage implements OnInit, OnDestroy {
   async deactivateItem(item: ActiveSheetItem) {
     const confirm = await this.utilsSvc.presentAlert({
       header: 'Desactivar Ficha',
-      message: `¿Desactivar <strong>${item.recipe.name}</strong> del curso <strong>${item.course.name}</strong>?`,
+      message: `¿Desactivar ${item.recipe.name} del curso ${item.course.name}?`,
       confirmText: 'Desactivar',
       cancelText: 'Cancelar',
     });
@@ -234,7 +234,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     const confirm = await this.utilsSvc.presentAlert({
       header: 'Eliminar Ficha',
-      message: `¿Estás seguro de eliminar <strong>${sheet.name}</strong>? Esta acción no se puede deshacer.`,
+      message: `¿Estás seguro de eliminar ${sheet.name}? Esta acción no se puede deshacer.`,
       confirmText: 'Eliminar',
       cancelText: 'Cancelar',
     });
