@@ -85,7 +85,7 @@ addDocument(path: string, data: any) {
 
 async getCollection(path: string) {
   const snapshot = await getDocs(collection(getFirestore(), path));
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 }
 
 getCollectionData(path: string, queryConstraints: any[] = []): Observable<any[]> {

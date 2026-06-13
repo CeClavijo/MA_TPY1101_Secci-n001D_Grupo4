@@ -419,6 +419,27 @@
 }
 
 // ─────────────────────────────────────────
+// COURSE & GRID
+// ─────────────────────────────────────────
+.recipe-card__course {
+  display: flex;
+  align-items: center;
+  gap: $space-2xs;
+  @include typography($typography-label-xs);
+  color: $color-secondary;
+  font-weight: $font-weight-semibold;
+  margin: $space-xs 0;
+
+  ion-icon { font-size: 13px; }
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-md;
+}
+
+// ─────────────────────────────────────────
 // RESPONSIVE
 // ─────────────────────────────────────────
 @media (max-width: 767px) {
@@ -432,7 +453,6 @@
     align-items: flex-start;
 
     &__title { font-size: $font-size-2xl; }
-
     .create-btn { width: 100%; }
   }
 
@@ -443,5 +463,9 @@
 
   .section {
     padding: 0 $space-md $space-lg;
+  }
+
+  .recipes-grid {
+    grid-template-columns: 1fr;
   }
 }

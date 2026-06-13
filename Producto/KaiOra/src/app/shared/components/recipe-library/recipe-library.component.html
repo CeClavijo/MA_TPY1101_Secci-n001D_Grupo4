@@ -1,0 +1,83 @@
+<div class="library-wrapper">
+
+  <!-- FILTROS -->
+  <div class="library-filters">
+    <div class="search-field">
+      <ion-icon name="search-outline" class="search-field__icon"></ion-icon>
+      <ion-input
+        placeholder="Buscar ficha técnica..."
+        [value]="searchTerm"
+        (ionInput)="onSearch($event)"
+        class="search-field__input">
+      </ion-input>
+      <button class="search-field__clear" *ngIf="searchTerm" (click)="clearSearch()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="category-filter">
+      <button
+        class="category-btn"
+        [class.category-btn--active]="selectedCategory === ''"
+        (click)="selectCategory('')">
+        Todas
+      </button>
+      <button
+        class="category-btn"
+        *ngFor="let cat of categories"
+        [class.category-btn--active]="selectedCategory === cat"
+        (click)="selectCategory(cat)">
+        {{ cat }}
+      </button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" *ngIf="loading">
+    <ion-spinner name="crescent" color="success"></ion-spinner>
+  </div>
+
+  <!-- EMPTY -->
+  <div class="empty" *ngIf="!loading && filteredSheets.length === 0">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <p *ngIf="techSheets.length === 0">No hay fichas técnicas disponibles</p>
+    <p *ngIf="techSheets.length > 0">No se encontraron fichas con ese criterio</p>
+  </div>
+
+  <!-- GRID -->
+  <div class="recipes-grid" *ngIf="!loading && filteredSheets.length > 0">
+
+    <ion-card class="recipe-card" *ngFor="let sheet of filteredSheets" (click)="onCardClick(sheet)">
+
+      <!-- Imagen -->
+      <div class="recipe-card__image-wrap" *ngIf="sheet.imageURL">
+        <img [src]="sheet.imageURL" [alt]="sheet.name" class="recipe-card__image" />
+      </div>
+      <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!sheet.imageURL">
+        <ion-icon name="image-outline"></ion-icon>
+      </div>
+
+      <ion-card-content class="recipe-card__body">
+        <div class="recipe-card__meta">
+          <span class="recipe-card__category">{{ sheet.category }}</span>
+          <span class="recipe-card__professor">
+            <ion-icon name="person-outline"></ion-icon>
+            {{ sheet.profesorName }}
+          </span>
+        </div>
+
+        <h3 class="recipe-card__title">{{ sheet.name }}</h3>
+
+        <div class="recipe-card__footer" *ngIf="role === 'profesor'" (click)="$event.stopPropagation()">
+          <button type="button" class="card-btn card-btn--activate" (click)="activateRecipe(sheet)">
+            <ion-icon name="play-circle-outline"></ion-icon>
+            Activar en Curso
+          </button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</div>
