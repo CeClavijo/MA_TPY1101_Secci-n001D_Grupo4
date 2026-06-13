@@ -50,125 +50,111 @@
       <div class="section">
         <h2 class="section__title">Fichas Activas</h2>
 
-        <!-- Empty -->
-        <div class="empty-inline" *ngIf="!loading && activeSheets.length === 0">
+        <div class="empty-inline" *ngIf="activeSheetItems.length === 0">
           <ion-icon name="play-circle-outline"></ion-icon>
           <p>No tienes fichas activas en ningún curso</p>
         </div>
 
-        <!-- Grid fichas activas -->
-        <ion-grid class="ion-no-padding recipes-grid" *ngIf="!loading && activeSheets.length > 0">
-          <ion-row>
-            <ion-col size="12" sizeMd="6" sizeLg="4" sizeXl="3" *ngFor="let sheet of activeSheets">
-              <ion-card class="recipe-card recipe-card--active">
+        <div class="recipes-grid" *ngIf="activeSheetItems.length > 0">
+          <ion-card class="recipe-card recipe-card--active" *ngFor="let item of activeSheetItems">
 
-                <!-- Imagen -->
-                <div class="recipe-card__image-wrap" *ngIf="sheet.imageURL">
-                  <img [src]="sheet.imageURL" alt="{{ sheet.name }}" class="recipe-card__image" />
-                </div>
-                <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!sheet.imageURL">
-                  <ion-icon name="image-outline"></ion-icon>
-                </div>
+            <div class="recipe-card__image-wrap" *ngIf="item.recipe.imageURL">
+              <img [src]="item.recipe.imageURL" [alt]="item.recipe.name" class="recipe-card__image" />
+            </div>
+            <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!item.recipe.imageURL">
+              <ion-icon name="image-outline"></ion-icon>
+            </div>
 
-                <ion-card-content>
-                  <div class="recipe-card__meta">
-                    <span class="recipe-card__badge recipe-card__badge--active">
-                      <ion-icon name="checkmark-circle-outline"></ion-icon>
-                      Activada
-                    </span>
-                    <ion-badge class="recipe-card__category" mode="ios">{{ sheet.category }}</ion-badge>
-                  </div>
+            <ion-card-content class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <span class="recipe-card__badge--active">
+                  <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  Activada
+                </span>
+                <span class="recipe-card__category">{{ item.recipe.category }}</span>
+              </div>
 
-                  <h3 class="recipe-card__title">{{ sheet.name }}</h3>
+              <h3 class="recipe-card__title">{{ item.recipe.name }}</h3>
 
-                  <div class="recipe-card__footer">
-                    <button type="button" class="card-btn card-btn--deactivate" (click)="deactivateRecipe(sheet)">
-                      <ion-icon name="stop-circle-outline"></ion-icon>
-                      Desactivar
-                    </button>
-                  </div>
-                </ion-card-content>
+              <div class="recipe-card__course">
+                <ion-icon name="school-outline"></ion-icon>
+                {{ item.course.name }}
+              </div>
 
-              </ion-card>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+              <div class="recipe-card__footer">
+                <button type="button" class="card-btn card-btn--deactivate" (click)="deactivateItem(item)">
+                  <ion-icon name="stop-circle-outline"></ion-icon>
+                  Desactivar
+                </button>
+              </div>
+            </ion-card-content>
+
+          </ion-card>
+        </div>
       </div>
 
       <!-- MIS FICHAS TÉCNICAS -->
       <div class="section">
         <h2 class="section__title">Mis Fichas Técnicas</h2>
 
-        <!-- Loading -->
         <div class="loading-state" *ngIf="loading">
           <ion-spinner name="crescent" color="success"></ion-spinner>
         </div>
 
-        <!-- Empty -->
         <div class="empty" *ngIf="!loading && techSheets.length === 0">
           <ion-icon name="document-text-outline"></ion-icon>
           <p>Aún no tienes fichas técnicas creadas</p>
         </div>
 
-        <!-- Grid fichas -->
-        <ion-grid class="ion-no-padding recipes-grid" *ngIf="!loading && techSheets.length > 0">
-          <ion-row>
+        <div class="recipes-grid" *ngIf="!loading && techSheets.length > 0">
 
-            <ion-col size="12" sizeMd="6" sizeLg="4" sizeXl="3" *ngFor="let sheet of techSheets">
-              <ion-card class="recipe-card">
+          <ion-card class="recipe-card" *ngFor="let sheet of techSheets">
 
-                <!-- Imagen -->
-                <div class="recipe-card__image-wrap" *ngIf="sheet.imageURL">
-                  <img [src]="sheet.imageURL" alt="{{ sheet.name }}" class="recipe-card__image" />
-                </div>
-                <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!sheet.imageURL">
-                  <ion-icon name="image-outline"></ion-icon>
-                </div>
+            <div class="recipe-card__image-wrap" *ngIf="sheet.imageURL">
+              <img [src]="sheet.imageURL" [alt]="sheet.name" class="recipe-card__image" />
+            </div>
+            <div class="recipe-card__image-wrap recipe-card__image-wrap--placeholder" *ngIf="!sheet.imageURL">
+              <ion-icon name="image-outline"></ion-icon>
+            </div>
 
-                <ion-card-content>
-                  <div class="recipe-card__meta">
-                    <ion-badge class="recipe-card__badge" mode="ios">{{ sheet.category }}</ion-badge>
-                    <span class="recipe-card__status" [ngClass]="getStatusClass(sheet.status)">
-                      {{ sheet.status }}
-                    </span>
-                  </div>
+            <ion-card-content class="recipe-card__body">
+              <div class="recipe-card__meta">
+                <ion-badge class="recipe-card__badge" mode="ios">{{ sheet.category }}</ion-badge>
+                <span class="recipe-card__status" [ngClass]="getStatusClass(sheet.id)">
+                  {{ getActiveCountLabel(sheet.id) }}
+                </span>
+              </div>
 
-                  <h3 class="recipe-card__title">{{ sheet.name }}</h3>
+              <h3 class="recipe-card__title">{{ sheet.name }}</h3>
 
-                  <div class="recipe-card__footer">
-                    <button type="button" class="card-btn card-btn--edit" (click)="addUpdateRecipe(sheet)">
-                      <ion-icon name="pencil-outline"></ion-icon>
-                      Editar
-                    </button>
-                    <button type="button" class="card-btn card-btn--activate"
-                      *ngIf="sheet.status === 'Archivada'"
-                      (click)="activateRecipe(sheet)">
-                    <ion-icon name="play-circle-outline"></ion-icon>
-                      Activar
-                    </button>
-                    <button type="button" class="card-btn card-btn--delete" (click)="deleteRecipe(sheet)">
-                      <ion-icon name="trash-outline"></ion-icon>
-                      Eliminar
-                    </button>
-                  </div>
-                </ion-card-content>
+              <div class="recipe-card__footer">
+                <button type="button" class="card-btn card-btn--edit" (click)="addUpdateRecipe(sheet)">
+                  <ion-icon name="pencil-outline"></ion-icon>
+                  Editar
+                </button>
+                <button type="button" class="card-btn card-btn--activate" (click)="activateRecipe(sheet)">
+                  <ion-icon name="play-circle-outline"></ion-icon>
+                  Activar
+                </button>
+                <button type="button" class="card-btn card-btn--delete" (click)="deleteRecipe(sheet)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                  Eliminar
+                </button>
+              </div>
+            </ion-card-content>
 
-              </ion-card>
-            </ion-col>
+          </ion-card>
 
-            <!-- Card agregar nueva ficha -->
-            <ion-col size="12" sizeMd="6" sizeLg="4" sizeXl="3">
-              <ion-card class="recipe-card recipe-card--add" (click)="addUpdateRecipe()">
-                <ion-card-content class="recipe-card--add__content">
-                  <ion-icon name="add-circle-outline"></ion-icon>
-                  <h3>Nueva Ficha Técnica</h3>
-                  <p>Haz clic para comenzar a redactar una nueva ficha.</p>
-                </ion-card-content>
-              </ion-card>
-            </ion-col>
+          <!-- Card agregar nueva ficha -->
+          <ion-card class="recipe-card recipe-card--add" (click)="addUpdateRecipe()">
+            <ion-card-content class="recipe-card--add__content">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              <h3>Nueva Ficha Técnica</h3>
+              <p>Haz clic para comenzar a redactar una nueva ficha.</p>
+            </ion-card-content>
+          </ion-card>
 
-          </ion-row>
-        </ion-grid>
+        </div>
       </div>
 
     </ion-content>
