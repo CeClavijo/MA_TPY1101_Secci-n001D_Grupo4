@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { CourseRecipe } from 'src/app/models/course-recipe.model';
@@ -20,7 +20,12 @@ export class AlumnoPage implements OnInit {
 
   currentUser: User;
   activeRecipe: Recipe | null = null;
+  observations: string[] = [];
   loading = false;
+  isMobile = false;
+
+  // Acordeones abiertos por defecto (mobile)
+  accordionValues = ['info', 'observations', 'ingredients', 'procedure', 'pcc', 'keypoints', 'errors', 'evaluation'];
 
   menuItems: NavMenuItem[] = [
     { label: 'Principal', icon: 'grid-outline',   url: '/alumno/home' },
@@ -29,6 +34,12 @@ export class AlumnoPage implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.utilsSvc.getFromLocalStorage('user') as User;
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize')
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
   }
 
   ionViewWillEnter() {
@@ -52,7 +63,7 @@ export class AlumnoPage implements OnInit {
         return;
       }
 
-      const course = courses[0]; // el alumno solo está en un curso
+      const course = courses[0];
 
       // 2. Buscar el course-recipe activo de ese curso
       const relations = await this.firebaseSvc.getCollectionWhere(
@@ -61,6 +72,7 @@ export class AlumnoPage implements OnInit {
 
       if (relations.length === 0) {
         this.activeRecipe = null;
+        this.observations = [];
         return;
       }
 
@@ -70,6 +82,7 @@ export class AlumnoPage implements OnInit {
       ) as Recipe;
 
       this.activeRecipe = recipe ?? null;
+      this.observations = relations[0].observations ?? [];
 
     } catch (error) {
       console.log(error);

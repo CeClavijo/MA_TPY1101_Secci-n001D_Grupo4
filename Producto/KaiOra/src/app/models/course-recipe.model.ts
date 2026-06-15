@@ -4,4 +4,5 @@ export interface CourseRecipe {
   recipeId: string;
   profesorId: string;
   activatedAt: number;
+  observations?: string[]; // array de bullet points, opcional
 }

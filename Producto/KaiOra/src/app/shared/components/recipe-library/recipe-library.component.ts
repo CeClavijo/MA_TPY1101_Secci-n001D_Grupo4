@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Utils } from 'src/app/services/utils';
 import { ActivateCourseModalComponent } from '../modals/activate-course-modal/activate-course-modal.component';
+import { RecipeViewModalComponent } from '../modals/recipe-view-modal/recipe-view-modal.component';
 
 @Component({
   selector: 'app-recipe-library',
@@ -105,9 +106,14 @@ export class RecipeLibraryComponent implements OnInit {
 
   // ── Click en card ────────────────────────────────────────────────────────────
 
-  onCardClick(sheet: Recipe) {
-    this.cardClicked.emit(sheet);
-  }
+  async onCardClick(sheet: Recipe) {
+  await this.utilsSvc.presentModal({
+    component: RecipeViewModalComponent,
+    cssClass: 'recipe-view-modal',
+    componentProps: { recipe: sheet }
+  });
+  this.cardClicked.emit(sheet); 
+}
 
   // ── Activar ficha (solo profesor) ─────────────────────────────────────────────
 

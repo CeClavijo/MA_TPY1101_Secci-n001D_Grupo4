@@ -466,3 +466,187 @@ ection · SCSS
     }
   }
 }
+
+// ─────────────────────────────────────────
+// ACCORDION GROUP
+// ─────────────────────────────────────────
+.recipe-accordion {
+  background: transparent;
+}
+
+.acc {
+  background: $color-bg-primary;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xs;
+  margin-bottom: $space-md;
+  overflow: hidden;
+
+  &__header {
+    --background: #{$color-bg-primary};
+    --padding-start: #{$space-lg};
+    --padding-end: #{$space-lg};
+    --min-height: 56px;
+
+    ion-label {
+      @include typography($typography-label);
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+    }
+  }
+
+  &__icon {
+    font-size: 22px;
+    color: $color-secondary;
+
+    &--warning { color: #632010; }
+    &--evaluation { color: $color-secondary; }
+  }
+
+  &__content {
+    padding: 0 $space-lg $space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+
+    &--no-pad {
+      padding: 0;
+      gap: 0;
+    }
+  }
+
+  // Acordeón de evaluación con leve tinte verde
+  &--evaluation {
+    .acc__header {
+      --background: rgba(#{red($color-secondary)}, #{green($color-secondary)}, #{blue($color-secondary)}, 0.05);
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// PROCEDIMIENTO — PASOS NUMERADOS
+// ─────────────────────────────────────────
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-sm;
+  margin-bottom: $space-sm;
+
+  &__number {
+    @include flex-center;
+    width: 28px;
+    height: 28px;
+    border-radius: $border-radius-full;
+    background: $color-secondary;
+    color: white;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__input {
+    flex: 1;
+  }
+}
+
+// ─────────────────────────────────────────
+// SUB-BLOQUES (dentro de Puntos Técnicos)
+// ─────────────────────────────────────────
+.sub-block {
+  padding: $space-lg;
+  border-top: $border-width-thin solid $color-neutral-light;
+
+  &:first-child {
+    border-top: none;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    margin-bottom: $space-xs;
+
+    ion-icon { font-size: 20px; }
+
+    h3 {
+      @include typography($typography-label);
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      margin: 0;
+    }
+  }
+
+  &__desc {
+    @include typography($typography-body-sm);
+    margin: 0 0 $space-md 0;
+
+    &--evaluation {
+      color: $color-text-secondary;
+    }
+  }
+
+  &__optional {
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+    font-weight: $font-weight-regular;
+  }
+
+  // PCC — rojo
+  &--pcc {
+    background: #fdf7f2;
+
+    .sub-block__header { color: #632010; ion-icon { color: #632010; } }
+    .sub-block__desc { color: #8c4a38; }
+  }
+
+  // Puntos Clave — amarillo
+  &--key {
+    background: #fff9e6;
+
+    .sub-block__header { color: #8c6d1f; ion-icon { color: #8c6d1f; } }
+  }
+
+  // Errores Frecuentes — morado
+  &--error {
+    background: #f5f3ff;
+
+    .sub-block__header { color: #5b3aa8; ion-icon { color: #5b3aa8; } }
+  }
+}
+
+// ─────────────────────────────────────────
+// LIST ROWS (PCC, Puntos Clave, Errores, Evaluación)
+// ─────────────────────────────────────────
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  margin-bottom: $space-sm;
+
+  &__bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: $border-radius-full;
+    flex-shrink: 0;
+
+    &--pcc        { background: #632010; }
+    &--key        { background: #8c6d1f; }
+    &--error      { background: #5b3aa8; }
+    &--evaluation { background: $color-secondary; }
+  }
+
+  &__input {
+    flex: 1;
+  }
+}
+
+// ─────────────────────────────────────────
+// ADD BUTTONS POR COLOR
+// ─────────────────────────────────────────
+.add-row-btn {
+  &--pcc        { color: #632010; &:hover { background: rgba(#632010, 0.08); } }
+  &--key        { color: #8c6d1f; &:hover { background: rgba(#8c6d1f, 0.08); } }
+  &--error      { color: #5b3aa8; &:hover { background: rgba(#5b3aa8, 0.08); } }
+  &--evaluation { color: $color-secondary; &:hover { background: rgba($color-secondary, 0.08); } }
+}

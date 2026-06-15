@@ -7,190 +7,321 @@
       <p class="form-header__desc">Configura los parámetros técnicos y de seguridad alimentaria para tu creación culinaria.</p>
     </div>
 
-    <!-- SECCIÓN: INFO BÁSICA -->
-    <div class="form-section">
+    <ion-accordion-group [value]="accordionValues" multiple="true" class="recipe-accordion">
 
-      <div class="field-group">
-        <label class="field-label">Nombre de la Receta</label>
-        <div class="custom-field" [class.custom-field--error]="form.controls.name.invalid && form.controls.name.touched">
-          <ion-input [formControl]="form.controls.name" placeholder="Ej. Risotto de Espárragos..."></ion-input>
-        </div>
-      </div>
+      <!-- ════════════════════════════════ -->
+      <!-- 1. INFORMACIÓN BÁSICA -->
+      <!-- ════════════════════════════════ -->
+      <ion-accordion value="basic" class="acc acc--basic">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="information-circle-outline" slot="start" class="acc__icon"></ion-icon>
+          <ion-label>Información Básica</ion-label>
+        </ion-item>
 
-      <div class="field-group">
-        <label class="field-label">Categoría</label>
-        <div class="custom-field" [class.custom-field--error]="form.controls.category.invalid && form.controls.category.touched">
-          <ion-select formControlName="category" interface="popover" placeholder="Selecciona una opción...">
-            <ion-select-option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</ion-select-option>
-          </ion-select>
-        </div>
-      </div>
+        <div slot="content" class="acc__content">
 
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Rendimiento (Pax)</label>
-          <div class="custom-field custom-field--suffix">
-            <ion-input type="number" [formControl]="form.controls.performance" placeholder="4"></ion-input>
-            <span class="field-suffix">Pers.</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Tiempo de Prep.</label>
-          <div class="custom-field custom-field--suffix">
-            <ion-input type="number" [formControl]="form.controls.prepTime" placeholder="20"></ion-input>
-            <span class="field-suffix">Min.</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Tiempo de Cocción</label>
-          <div class="custom-field custom-field--suffix">
-            <ion-input type="number" [formControl]="form.controls.cookingTime" placeholder="45"></ion-input>
-            <span class="field-suffix">Min.</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- SECCIÓN: IMAGEN -->
-    <div class="form-section">
-      <label class="field-label">Imagen de la Ficha <span class="field-label--optional">(opcional)</span></label>
-
-      <!-- Sin imagen -->
-      <div class="image-upload" *ngIf="!imagePreview" (click)="takeImage()">
-        <ion-icon name="image-outline" class="image-upload__icon"></ion-icon>
-        <p class="image-upload__text">Haz clic para seleccionar una imagen</p>
-        <span class="image-upload__hint">PNG, JPG o WEBP</span>
-      </div>
-
-      <!-- Con imagen -->
-      <div class="image-preview" *ngIf="imagePreview">
-        <img [src]="imagePreview" alt="Preview de la ficha" class="image-preview__img" />
-        <button type="button" class="image-preview__remove" (click)="removeImage()">
-          <ion-icon name="trash-outline"></ion-icon>
-          Quitar imagen
-        </button>
-      </div>
-    </div>
-
-    <!-- SECCIÓN: INGREDIENTES -->
-    <div class="form-section">
-      <h2 class="section-title">Proporciones de Ingredientes</h2>
-
-      <div class="ingredients-table">
-        <div class="ingredients-table__header">
-          <span>Ingrediente</span>
-          <span>Cantidad</span>
-          <span>Unidad</span>
-          <span></span>
-        </div>
-
-        <div formArrayName="ingredients">
-          <div *ngFor="let ing of ingredients.controls; let i = index" [formGroupName]="i" class="ingredients-table__row">
-            <div class="custom-field">
-              <ion-input formControlName="name" placeholder="Ej. Arroz"></ion-input>
+          <div class="field-group">
+            <label class="field-label">Nombre de la Receta</label>
+            <div class="custom-field" [class.custom-field--error]="form.controls.name.invalid && form.controls.name.touched">
+              <ion-input [formControl]="form.controls.name" placeholder="Ej. Risotto de Espárragos..."></ion-input>
             </div>
-            <div class="custom-field">
-              <ion-input type="number" formControlName="quantity" placeholder="0"></ion-input>
-            </div>
-            <div class="custom-field">
-              <ion-select formControlName="unit" interface="popover" placeholder="Unid.">
-                <ion-select-option value="">---</ion-select-option>
-                <ion-select-option *ngFor="let u of units" [value]="u">{{ u }}</ion-select-option>
-              </ion-select>
-            </div>
-            <button type="button" class="remove-btn" (click)="removeIngredient(i)">
-              <ion-icon name="trash-outline"></ion-icon>
-            </button>
           </div>
-        </div>
-      </div>
 
-      <button type="button" class="add-row-btn" (click)="addIngredient()">
-        <ion-icon name="add-outline"></ion-icon>
-        Agregar ingrediente
-      </button>
-    </div>
-
-    <!-- SECCIÓN: PCC -->
-    <div class="form-section form-section--pcc">
-      <div class="section-title-row">
-        <ion-icon name="warning-sharp" class="section-title-row__icon"></ion-icon>
-        <h2 class="section-title section-title--pcc">Puntos Críticos (PCC)</h2>
-      </div>
-      <p class="section-desc">Puntos de control vitales para garantizar la inocuidad alimentaria del plato.</p>
-
-      <div class="field-group">
-        <label class="field-label field-label--pcc">Temperatura de Cocción</label>
-        <div class="custom-field">
-          <ion-input [formControl]="form.controls.cookingTemp" placeholder="Ej. > 75°C en centro del alimento"></ion-input>
-        </div>
-      </div>
-
-      <div class="field-group">
-        <label class="field-label field-label--pcc">Mantenimiento</label>
-        <div class="custom-field">
-          <ion-input [formControl]="form.controls.maintenance" placeholder="Ej. Abatimiento en < 90min"></ion-input>
-        </div>
-      </div>
-
-      <div class="pcc-footer">
-        <span class="pcc-badge">URGENTE</span>
-        <span class="pcc-helper">Validación obligatoria</span>
-      </div>
-    </div>
-
-    <!-- SECCIÓN: PUNTOS CLAVE -->
-    <div class="form-section form-section--key">
-      <div class="section-title-row">
-        <ion-icon name="bulb-outline" class="section-title-row__icon section-title-row__icon--key"></ion-icon>
-        <h2 class="section-title section-title--key">Puntos Clave</h2>
-      </div>
-
-      <div formArrayName="keyPoints">
-        <div *ngFor="let point of keyPoints.controls; let i = index" class="key-point-row">
-          <div class="key-point-row__bullet"></div>
-          <div class="custom-field key-point-row__input">
-            <ion-input [formControlName]="i" placeholder="Ej. Incorporación de caldo frío vs caliente..."></ion-input>
+          <div class="field-group">
+            <label class="field-label">Descripción</label>
+            <div class="custom-field custom-field--textarea" [class.custom-field--error]="form.controls.desc.invalid && form.controls.desc.touched">
+              <ion-textarea [formControl]="form.controls.desc" [autoGrow]="true" [rows]="2" placeholder="Breve descripción de la receta..."></ion-textarea>
+            </div>
           </div>
-          <button type="button" class="remove-btn" (click)="removeKeyPoint(i)">
-            <ion-icon name="close-outline"></ion-icon>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">Categoría</label>
+              <div class="custom-field" [class.custom-field--error]="form.controls.category.invalid && form.controls.category.touched">
+                <ion-select formControlName="category" interface="popover" placeholder="Selecciona...">
+                  <ion-select-option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</ion-select-option>
+                </ion-select>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Dificultad</label>
+              <div class="custom-field" [class.custom-field--error]="form.controls.dificulty.invalid && form.controls.dificulty.touched">
+                <ion-select formControlName="dificulty" interface="popover" placeholder="Selecciona...">
+                  <ion-select-option *ngFor="let level of difficultyLevels" [value]="level">{{ level }}</ion-select-option>
+                </ion-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">Rendimiento (Pax)</label>
+              <div class="custom-field custom-field--suffix">
+                <ion-input type="number" [formControl]="form.controls.performance" placeholder="4"></ion-input>
+                <span class="field-suffix">Pers.</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Tiempo de Prep.</label>
+              <div class="custom-field custom-field--suffix">
+                <ion-input type="number" [formControl]="form.controls.prepTime" placeholder="20"></ion-input>
+                <span class="field-suffix">Min.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- IMAGEN -->
+          <div class="field-group">
+            <label class="field-label">Imagen de la Ficha <span class="field-label--optional">(opcional)</span></label>
+
+            <div class="image-upload" *ngIf="!imagePreview" (click)="takeImage()">
+              <ion-icon name="image-outline" class="image-upload__icon"></ion-icon>
+              <p class="image-upload__text">Haz clic para seleccionar una imagen</p>
+              <span class="image-upload__hint">PNG, JPG o WEBP</span>
+            </div>
+
+            <div class="image-preview" *ngIf="imagePreview">
+              <img [src]="imagePreview" alt="Preview de la ficha" class="image-preview__img" />
+              <button type="button" class="image-preview__remove" (click)="removeImage()">
+                <ion-icon name="trash-outline"></ion-icon>
+                Quitar imagen
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </ion-accordion>
+
+      <!-- ════════════════════════════════ -->
+      <!-- 2. INGREDIENTES -->
+      <!-- ════════════════════════════════ -->
+      <ion-accordion value="ingredients" class="acc acc--basic">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="nutrition-outline" slot="start" class="acc__icon"></ion-icon>
+          <ion-label>Ingredientes</ion-label>
+        </ion-item>
+
+        <div slot="content" class="acc__content">
+
+          <div class="ingredients-table">
+            <div class="ingredients-table__header">
+              <span>Ingrediente</span>
+              <span>Cantidad</span>
+              <span>Unidad</span>
+              <span></span>
+            </div>
+
+            <div formArrayName="ingredients">
+              <div *ngFor="let ing of ingredients.controls; let i = index" [formGroupName]="i" class="ingredients-table__row">
+                <div class="custom-field">
+                  <ion-input formControlName="name" placeholder="Ej. Arroz"></ion-input>
+                </div>
+                <div class="custom-field">
+                  <ion-input type="number" formControlName="quantity" placeholder="0"></ion-input>
+                </div>
+                <div class="custom-field">
+                  <ion-select formControlName="unit" interface="popover" placeholder="Unid.">
+                    <ion-select-option value="">---</ion-select-option>
+                    <ion-select-option *ngFor="let u of units" [value]="u">{{ u }}</ion-select-option>
+                  </ion-select>
+                </div>
+                <button type="button" class="remove-btn" (click)="removeIngredient(i)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="add-row-btn" (click)="addIngredient()">
+            <ion-icon name="add-outline"></ion-icon>
+            Agregar ingrediente
           </button>
         </div>
-      </div>
+      </ion-accordion>
 
-      <button type="button" class="add-row-btn add-row-btn--key" (click)="addKeypoint()">
-        <ion-icon name="add-outline"></ion-icon>
-        Agregar punto clave
-      </button>
-    </div>
+      <!-- ════════════════════════════════ -->
+      <!-- 3. PROCEDIMIENTO -->
+      <!-- ════════════════════════════════ -->
+      <ion-accordion value="procedure" class="acc acc--basic">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="list-circle-outline" slot="start" class="acc__icon"></ion-icon>
+          <ion-label>Procedimiento</ion-label>
+        </ion-item>
+
+        <div slot="content" class="acc__content">
+
+          <div formArrayName="procedimiento">
+            <div *ngFor="let step of procedimiento.controls; let i = index" class="step-row">
+              <div class="step-row__number">{{ i + 1 }}</div>
+              <div class="custom-field custom-field--textarea step-row__input">
+                <ion-textarea [formControlName]="i" [autoGrow]="true" [rows]="1" placeholder="Describe este paso..."></ion-textarea>
+              </div>
+              <button type="button" class="remove-btn" (click)="removeProcedureStep(i)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="add-row-btn" (click)="addProcedureStep()">
+            <ion-icon name="add-outline"></ion-icon>
+            Agregar paso
+          </button>
+        </div>
+      </ion-accordion>
+
+      <!-- ════════════════════════════════ -->
+      <!-- 4. PUNTOS TÉCNICOS -->
+      <!-- ════════════════════════════════ -->
+      <ion-accordion value="technical" class="acc acc--basic">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="warning-sharp" slot="start" class="acc__icon acc__icon--warning"></ion-icon>
+          <ion-label>Puntos Técnicos</ion-label>
+        </ion-item>
+
+        <div slot="content" class="acc__content acc__content--no-pad">
+
+          <!-- PCC -->
+          <div class="sub-block sub-block--pcc">
+            <div class="sub-block__header">
+              <ion-icon name="warning-sharp"></ion-icon>
+              <h3>Puntos Críticos (PCC)</h3>
+            </div>
+            <p class="sub-block__desc">Puntos de control vitales para garantizar la inocuidad alimentaria.</p>
+
+            <div formArrayName="pcc">
+              <div *ngFor="let item of pcc.controls; let i = index" class="list-row">
+                <div class="list-row__bullet list-row__bullet--pcc"></div>
+                <div class="custom-field list-row__input">
+                  <ion-input [formControlName]="i" placeholder="Ej. Mantener refrigerado bajo 5°C"></ion-input>
+                </div>
+                <button type="button" class="remove-btn" (click)="removePcc(i)">
+                  <ion-icon name="close-outline"></ion-icon>
+                </button>
+              </div>
+            </div>
+
+            <button type="button" class="add-row-btn add-row-btn--pcc" (click)="addPcc()">
+              <ion-icon name="add-outline"></ion-icon>
+              Agregar PCC
+            </button>
+          </div>
+
+          <!-- PUNTOS CLAVE -->
+          <div class="sub-block sub-block--key">
+            <div class="sub-block__header">
+              <ion-icon name="bulb-outline"></ion-icon>
+              <h3>Puntos Clave</h3>
+            </div>
+
+            <div formArrayName="keyPoints">
+              <div *ngFor="let item of keyPoints.controls; let i = index" class="list-row">
+                <div class="list-row__bullet list-row__bullet--key"></div>
+                <div class="custom-field list-row__input">
+                  <ion-input [formControlName]="i" placeholder="Ej. Incorporación de caldo frío vs caliente..."></ion-input>
+                </div>
+                <button type="button" class="remove-btn" (click)="removeKeyPoint(i)">
+                  <ion-icon name="close-outline"></ion-icon>
+                </button>
+              </div>
+            </div>
+
+            <button type="button" class="add-row-btn add-row-btn--key" (click)="addKeypoint()">
+              <ion-icon name="add-outline"></ion-icon>
+              Agregar punto clave
+            </button>
+          </div>
+
+          <!-- ERRORES FRECUENTES -->
+          <div class="sub-block sub-block--error">
+            <div class="sub-block__header">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <h3>Errores Frecuentes</h3>
+              <span class="sub-block__optional">(opcional)</span>
+            </div>
+
+            <div formArrayName="erroresFrecuentes">
+              <div *ngFor="let item of erroresFrecuentes.controls; let i = index" class="list-row">
+                <div class="list-row__bullet list-row__bullet--error"></div>
+                <div class="custom-field list-row__input">
+                  <ion-input [formControlName]="i" placeholder="Ej. No secar bien los ingredientes antes de saltear"></ion-input>
+                </div>
+                <button type="button" class="remove-btn" (click)="removeError(i)">
+                  <ion-icon name="close-outline"></ion-icon>
+                </button>
+              </div>
+            </div>
+
+            <button type="button" class="add-row-btn add-row-btn--error" (click)="addError()">
+              <ion-icon name="add-outline"></ion-icon>
+              Agregar error frecuente
+            </button>
+          </div>
+
+        </div>
+      </ion-accordion>
+
+      <!-- ════════════════════════════════ -->
+      <!-- 5. EVALUACIÓN -->
+      <!-- ════════════════════════════════ -->
+      <ion-accordion value="evaluation" class="acc acc--evaluation">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="ribbon-outline" slot="start" class="acc__icon acc__icon--evaluation"></ion-icon>
+          <ion-label>Evaluación</ion-label>
+        </ion-item>
+
+        <div slot="content" class="acc__content">
+          <p class="sub-block__desc sub-block__desc--evaluation">
+            Criterios que se evaluarán al alumno en esta receta.
+            <span class="field-label--optional">(opcional)</span>
+          </p>
+
+          <div formArrayName="evaluaciones">
+            <div *ngFor="let item of evaluaciones.controls; let i = index" class="list-row">
+              <div class="list-row__bullet list-row__bullet--evaluation"></div>
+              <div class="custom-field list-row__input">
+                <ion-input [formControlName]="i" placeholder="Ej. Presentación del plato"></ion-input>
+              </div>
+              <button type="button" class="remove-btn" (click)="removeEvaluation(i)">
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="add-row-btn add-row-btn--evaluation" (click)="addEvaluation()">
+            <ion-icon name="add-outline"></ion-icon>
+            Agregar criterio de evaluación
+          </button>
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
 
     <!-- FOOTER CON BOTONES -->
-<div class="form-footer">
-  <button type="button" class="btn btn--cancel" (click)="dismissModal()">Cancelar</button>
+    <div class="form-footer">
+      <button type="button" class="btn btn--cancel" (click)="dismissModal()">Cancelar</button>
 
-  <!-- Modo crear -->
-  <ng-container *ngIf="!techSheet">
-    <button type="button" class="btn btn--archive" (click)="archiveTechSheet()">
-      <ion-icon name="archive-outline"></ion-icon>
-      Archivar
-    </button>
-    <button type="button" class="btn btn--activate" (click)="openActivateModal()">
-      <ion-icon name="play-circle-outline"></ion-icon>
-      Activar en Curso
-    </button>
-  </ng-container>
+      <!-- Modo crear -->
+      <ng-container *ngIf="!techSheet">
+        <button type="button" class="btn btn--archive" (click)="archiveTechSheet()">
+          <ion-icon name="archive-outline"></ion-icon>
+          Archivar
+        </button>
+        <button type="button" class="btn btn--activate" (click)="openActivateModal()">
+          <ion-icon name="play-circle-outline"></ion-icon>
+          Activar en Curso
+        </button>
+      </ng-container>
 
-  <!-- Modo editar -->
-  <ng-container *ngIf="techSheet">
-    <button type="button" class="btn btn--activate" (click)="updateTechSheet()">
-      <ion-icon name="save-outline"></ion-icon>
-      Actualizar
-    </button>
-  </ng-container>
-</div>
+      <!-- Modo editar -->
+      <ng-container *ngIf="techSheet">
+        <button type="button" class="btn btn--activate" (click)="updateTechSheet()">
+          <ion-icon name="save-outline"></ion-icon>
+          Actualizar
+        </button>
+      </ng-container>
+    </div>
 
   </form>
 </ion-content>

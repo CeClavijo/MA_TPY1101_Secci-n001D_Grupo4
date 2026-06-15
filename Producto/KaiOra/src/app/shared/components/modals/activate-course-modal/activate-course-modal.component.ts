@@ -32,6 +32,7 @@ export class ActivateCourseModalComponent implements OnInit {
   currentUser: User;
   courses: Course[]         = [];
   courseItems: CourseItem[] = [];
+  observations: string[] = [''];
 
   loading  = false;
   isSaving = false;
@@ -140,7 +141,9 @@ export class ActivateCourseModalComponent implements OnInit {
 
   // ── Activar en cursos seleccionados ──────────────────────────────────────────
 
-  async activate() {
+  // REEMPLAZAR el método activate() existente por este:
+
+async activate() {
   const selected = this.courseItems.filter(i => i.selected);
   if (selected.length === 0) return;
 
@@ -148,9 +151,9 @@ export class ActivateCourseModalComponent implements OnInit {
   const loading = await this.utilsSvc.loading();
   await loading.present();
 
+  const cleanObservations = this.getCleanObservations();
+
   try {
-    // Si viene recipeId ya existe en Firestore, solo actualizamos status
-    // Si viene recipeData hay que crearlo primero
     const id = this.recipeId ?? this.getOrCreateId();
 
     if (this.recipeData) {
@@ -160,11 +163,9 @@ export class ActivateCourseModalComponent implements OnInit {
         status: 'Activa',
       });
     } else {
-      // ficha existente — solo actualizar status
       await this.firebaseSvc.updateDocument(`technical-sheets/${id}`, { status: 'Activa' });
     }
 
-    // Crear documentos en course-recipes
     await Promise.all(
       selected.map(item => {
         const data: CourseRecipe = {
@@ -173,6 +174,7 @@ export class ActivateCourseModalComponent implements OnInit {
           recipeId:    id,
           profesorId:  this.currentUser.uid,
           activatedAt: Date.now(),
+          observations: cleanObservations, // siempre array, aunque sea []
         };
         return this.firebaseSvc.addDocument('course-recipes', data);
       })
@@ -214,5 +216,20 @@ export class ActivateCourseModalComponent implements OnInit {
   dismiss() {
     this.utilsSvc.dismissModal();
   }
+  addObservation() {
+    this.observations.push('');
+  }
   
+  removeObservation(index: number) {
+    this.observations.splice(index, 1);
+  }
+  
+  updateObservation(index: number, value: string) {
+    this.observations[index] = value;
+  }
+  
+  // Filtra observaciones vacías antes de guardar
+  private getCleanObservations(): string[] {
+    return this.observations.map(o => o.trim()).filter(o => o.length > 0);
+  }
 }

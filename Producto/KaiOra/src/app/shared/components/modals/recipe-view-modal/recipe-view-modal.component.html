@@ -1,0 +1,158 @@
+<ion-header class="modal-header">
+  <div class="modal-header__content">
+    <div class="modal-header__title-group">
+      <ion-icon name="document-text-outline" class="modal-header__icon"></ion-icon>
+      <h2 class="modal-header__title">{{ recipe.name }}</h2>
+    </div>
+    <button class="modal-header__close-btn" (click)="dismiss()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+</ion-header>
+
+<ion-content class="modal-content">
+  <div class="recipe-view-modal">
+
+    <ion-accordion-group [value]="accordionValues" multiple="true" class="recipe-accordion">
+
+      <!-- INFO GENERAL -->
+      <ion-accordion value="info" class="acc">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="information-circle-outline" slot="start" class="acc__icon"></ion-icon>
+          <ion-label>Información General</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <img *ngIf="recipe.imageURL" [src]="recipe.imageURL" [alt]="recipe.name" class="mobile-image" />
+          <p class="recipe-block__description">{{ recipe.desc }}</p>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-item__label">Categoría</span>
+              <span class="info-item__value">{{ recipe.category }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">Dificultad</span>
+              <span class="info-item__value">{{ recipe.dificulty }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">Rendimiento</span>
+              <span class="info-item__value">{{ recipe.performance }} personas</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">Tiempo de Prep.</span>
+              <span class="info-item__value">{{ recipe.prepTime }} min</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">Profesor</span>
+              <span class="info-item__value">{{ recipe.profesorName }}</span>
+            </div>
+          </div>
+        </div>
+      </ion-accordion>
+
+      <!-- INGREDIENTES -->
+      <ion-accordion value="ingredients" class="acc">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="nutrition-outline" slot="start" class="acc__icon"></ion-icon>
+          <ion-label>Ingredientes</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <ul class="bullet-list">
+            <li class="ingredients-item" *ngFor="let ing of recipe.ingredients">
+              <span class="bullet-list__bullet bullet-list__bullet--default"></span>
+              <span class="ingredients-item__name">{{ ing.name }}</span>
+              <span class="ingredients-item__qty">{{ ing.quantity }} {{ ing.unit }}</span>
+            </li>
+          </ul>
+        </div>
+      </ion-accordion>
+
+      <!-- PROCEDIMIENTO -->
+      <ion-accordion value="procedure" class="acc">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="list-circle-outline" slot="start" class="acc__icon"></ion-icon>
+          <ion-label>Procedimiento</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <ol class="step-list">
+            <li class="step-list__item" *ngFor="let step of recipe.procedimiento">
+              <span class="step-list__number">{{ step.orden }}</span>
+              <span class="step-list__desc">{{ step.descripcion }}</span>
+            </li>
+          </ol>
+        </div>
+      </ion-accordion>
+
+      <!-- PCC -->
+      <ion-accordion value="pcc" class="acc acc--pcc">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="warning-sharp" slot="start" class="acc__icon acc__icon--pcc"></ion-icon>
+          <ion-label>Puntos Críticos (PCC)</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <ul class="bullet-list">
+            <li class="bullet-list__item" *ngFor="let item of recipe.pcc">
+              <span class="bullet-list__bullet bullet-list__bullet--pcc"></span>
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </ion-accordion>
+
+      <!-- PUNTOS CLAVE -->
+      <ion-accordion value="keypoints" class="acc acc--key">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="bulb-outline" slot="start" class="acc__icon acc__icon--key"></ion-icon>
+          <ion-label>Puntos Clave</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <ul class="bullet-list">
+            <li class="bullet-list__item" *ngFor="let item of recipe.keyPoints">
+              <span class="bullet-list__bullet bullet-list__bullet--key"></span>
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </ion-accordion>
+
+      <!-- ERRORES FRECUENTES -->
+      <ion-accordion value="errors" class="acc acc--error">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="alert-circle-outline" slot="start" class="acc__icon acc__icon--error"></ion-icon>
+          <ion-label>Errores Comunes</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <ul class="bullet-list" *ngIf="recipe.erroresFrecuentes?.length > 0">
+            <li class="bullet-list__item" *ngFor="let item of recipe.erroresFrecuentes">
+              <span class="bullet-list__bullet bullet-list__bullet--error"></span>
+              {{ item }}
+            </li>
+          </ul>
+          <p class="recipe-block__empty" *ngIf="!recipe.erroresFrecuentes || recipe.erroresFrecuentes.length === 0">
+            No hay errores frecuentes registrados.
+          </p>
+        </div>
+      </ion-accordion>
+
+      <!-- EVALUACIÓN -->
+      <ion-accordion value="evaluation" class="acc acc--evaluation">
+        <ion-item slot="header" class="acc__header">
+          <ion-icon name="ribbon-outline" slot="start" class="acc__icon acc__icon--evaluation"></ion-icon>
+          <ion-label>Criterios de Evaluación</ion-label>
+        </ion-item>
+        <div slot="content" class="acc__content">
+          <ul class="bullet-list" *ngIf="recipe.evaluaciones?.length > 0">
+            <li class="bullet-list__item" *ngFor="let item of recipe.evaluaciones">
+              <span class="bullet-list__bullet bullet-list__bullet--evaluation"></span>
+              {{ item }}
+            </li>
+          </ul>
+          <p class="recipe-block__empty" *ngIf="!recipe.evaluaciones || recipe.evaluaciones.length === 0">
+            No hay criterios de evaluación registrados.
+          </p>
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
+
+  </div>
+</ion-content>

@@ -12,6 +12,7 @@ import { User } from '../models/user.model';
 import { getFirestore, setDoc, doc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, collectionData, addDoc  } from '@angular/fire/firestore';
 import { Utils } from './utils';
 import { Observable } from 'rxjs';
+import { deleteApp, getApp, initializeApp } from 'firebase/app';
 
 
 @Injectable({
@@ -33,8 +34,25 @@ return signInWithEmailAndPassword(getAuth(), user.email, user.password);
 }
 
 
-signUp(user: User) {
-return createUserWithEmailAndPassword(getAuth(), user.email, user.password);
+async signUp(user: User) {
+  // Instancia secundaria con la misma config, para no perder la sesión del admin
+  const config = getApp().options;
+  const secondaryApp = initializeApp(config, `Secondary-${Date.now()}`);
+  const secondaryAuth = getAuth(secondaryApp);
+
+  try {
+    const res = await createUserWithEmailAndPassword(secondaryAuth, user.email, user.password);
+
+    if (user.name) {
+      await updateProfile(res.user, { displayName: user.name });
+    }
+
+    return res;
+
+  } finally {
+    await secondaryAuth.signOut();
+    await deleteApp(secondaryApp);
+  }
 }
 
 updateUser(displayName: string) {
