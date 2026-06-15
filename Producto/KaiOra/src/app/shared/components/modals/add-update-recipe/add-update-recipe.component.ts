@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-import { Recipe } from 'src/app/models/recipe.model';
+import { Recipe, DIFFICULTY_LEVELS } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { Utils } from 'src/app/services/utils';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -26,20 +26,27 @@ export class AddUpdateRecipeComponent implements OnInit {
     { id: '4', name: 'Repostería' },
   ];
 
+  difficultyLevels = DIFFICULTY_LEVELS;
   units = ['gr', 'ml', 'ud'];
 
+  // Acordeones abiertos por defecto
+  accordionValues = ['basic', 'ingredients', 'procedure', 'technical', 'evaluation'];
+
   form = new FormGroup({
-    id:          new FormControl(''),
-    name:        new FormControl('', [Validators.required, Validators.minLength(1)]),
-    category:    new FormControl('', [Validators.required]),
-    performance: new FormControl(null, [Validators.required, Validators.min(0)]),
-    prepTime:    new FormControl(null, [Validators.required, Validators.min(0)]),
-    cookingTime: new FormControl(null, [Validators.required, Validators.min(0)]),
-    ingredients: new FormArray([]),
-    cookingTemp: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    maintenance: new FormControl('', [Validators.required, Validators.minLength(1)]),
-    keyPoints:   new FormArray([]),
-    imageURL:    new FormControl(''), // renombrado de 'image' a 'imageURL'
+    id:           new FormControl(''),
+    name:         new FormControl('', [Validators.required, Validators.minLength(1)]),
+    desc:         new FormControl('', [Validators.required, Validators.minLength(1)]),
+    category:     new FormControl('', [Validators.required]),
+    dificulty:    new FormControl('', [Validators.required]),
+    performance:  new FormControl(null, [Validators.required, Validators.min(0)]),
+    prepTime:     new FormControl(null, [Validators.required, Validators.min(0)]),
+    imageURL:     new FormControl(''),
+    ingredients:  new FormArray([]),
+    procedimiento: new FormArray([]),
+    pcc:          new FormArray([]),
+    keyPoints:    new FormArray([]),
+    erroresFrecuentes: new FormArray([]),
+    evaluaciones: new FormArray([]),
   });
 
   firebaseSvc = inject(FirebaseService);
@@ -51,23 +58,40 @@ export class AddUpdateRecipeComponent implements OnInit {
     if (this.techSheet) {
       this.form.patchValue(this.techSheet);
 
-      if (this.techSheet.ingredients?.length > 0) {
-        this.techSheet.ingredients.forEach(ingredient => {
-          this.ingredients.push(new FormGroup({
-            name:     new FormControl(ingredient.name,     [Validators.required]),
-            quantity: new FormControl(ingredient.quantity, [Validators.required]),
-            unit:     new FormControl(ingredient.unit,     [Validators.required]),
-          }));
-        });
-      }
+      // Ingredientes
+      this.techSheet.ingredients?.forEach(ingredient => {
+        this.ingredients.push(new FormGroup({
+          name:     new FormControl(ingredient.name,     [Validators.required]),
+          quantity: new FormControl(ingredient.quantity, [Validators.required]),
+          unit:     new FormControl(ingredient.unit,     [Validators.required]),
+        }));
+      });
 
-      if (this.techSheet.keyPoints?.length > 0) {
-        this.techSheet.keyPoints.forEach(point => {
-          this.keyPoints.push(new FormControl(point, [Validators.required]));
+      // Procedimiento (ordenado por 'orden')
+      [...(this.techSheet.procedimiento ?? [])]
+        .sort((a, b) => a.orden - b.orden)
+        .forEach(step => {
+          this.procedimiento.push(new FormControl(step.descripcion, [Validators.required]));
         });
-      }
+
+      // Arrays simples de string
+      this.techSheet.pcc?.forEach(item =>
+        this.pcc.push(new FormControl(item, [Validators.required])));
+
+      this.techSheet.keyPoints?.forEach(item =>
+        this.keyPoints.push(new FormControl(item, [Validators.required])));
+
+      this.techSheet.erroresFrecuentes?.forEach(item =>
+        this.erroresFrecuentes.push(new FormControl(item, [Validators.required])));
+
+      this.techSheet.evaluaciones?.forEach(item =>
+        this.evaluaciones.push(new FormControl(item, [Validators.required])));
+
     } else {
+      // Modo crear: inicializar secciones esenciales con un elemento vacío
       this.addIngredient();
+      this.addProcedureStep();
+      this.addPcc();
       this.addKeypoint();
     }
   }
@@ -113,6 +137,34 @@ export class AddUpdateRecipeComponent implements OnInit {
     this.ingredients.removeAt(index);
   }
 
+  // ── Procedimiento ────────────────────────────────────────────────────────────
+
+  get procedimiento() {
+    return this.form.get('procedimiento') as FormArray;
+  }
+
+  addProcedureStep() {
+    this.procedimiento.push(new FormControl('', [Validators.required]));
+  }
+
+  removeProcedureStep(index: number) {
+    this.procedimiento.removeAt(index);
+  }
+
+  // ── PCC ──────────────────────────────────────────────────────────────────────
+
+  get pcc() {
+    return this.form.get('pcc') as FormArray;
+  }
+
+  addPcc() {
+    this.pcc.push(new FormControl('', [Validators.required]));
+  }
+
+  removePcc(index: number) {
+    this.pcc.removeAt(index);
+  }
+
   // ── Puntos clave ─────────────────────────────────────────────────────────────
 
   get keyPoints() {
@@ -127,22 +179,32 @@ export class AddUpdateRecipeComponent implements OnInit {
     this.keyPoints.removeAt(index);
   }
 
-  // ── Progress bars ────────────────────────────────────────────────────────────
+  // ── Errores frecuentes ───────────────────────────────────────────────────────
 
-  get basicInfoProgress(): number {
-    return this.calculateProgress(['name', 'category']);
+  get erroresFrecuentes() {
+    return this.form.get('erroresFrecuentes') as FormArray;
   }
 
-  get securityProgress(): number {
-    return this.calculateProgress(['cookingTemp', 'maintenance']);
+  addError() {
+    this.erroresFrecuentes.push(new FormControl('', [Validators.required]));
   }
 
-  private calculateProgress(controlNames: string[]): number {
-    let completed = 0;
-    controlNames.forEach(name => {
-      if (this.form.get(name)?.valid && this.form.get(name)?.value) completed++;
-    });
-    return completed / controlNames.length;
+  removeError(index: number) {
+    this.erroresFrecuentes.removeAt(index);
+  }
+
+  // ── Evaluación ───────────────────────────────────────────────────────────────
+
+  get evaluaciones() {
+    return this.form.get('evaluaciones') as FormArray;
+  }
+
+  addEvaluation() {
+    this.evaluaciones.push(new FormControl('', [Validators.required]));
+  }
+
+  removeEvaluation(index: number) {
+    this.evaluaciones.removeAt(index);
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -171,6 +233,17 @@ export class AddUpdateRecipeComponent implements OnInit {
       return false;
     }
 
+    if (this.procedimiento.length === 0) {
+      this.utilsSvc.presentToast({
+        message: 'Agrega al menos un paso al procedimiento',
+        duration: 2000,
+        color: 'warning',
+        icon: 'alert-circle-outline',
+        position: 'top'
+      });
+      return false;
+    }
+
     return true;
   }
 
@@ -185,16 +258,24 @@ export class AddUpdateRecipeComponent implements OnInit {
   }
 
   private buildRecipeData(status: 'Activa' | 'Archivada'): any {
-    const { id, imageURL, ...formValues } = this.form.value;
+    const { id, imageURL, procedimiento, ...formValues } = this.form.value;
+
+    // Convertir array de strings -> array de { orden, descripcion }
+    const procedimientoData = (procedimiento as string[]).map((descripcion, index) => ({
+      orden: index + 1,
+      descripcion,
+    }));
+
     return {
       ...formValues,
       id,
-      imageURL:     imageURL ?? '',  // ahora sí llega la imagen
-      profesorId:   this.currentUser?.uid ?? '',
-      profesorName: this.currentUser?.name ?? '',
+      imageURL:      imageURL ?? '',
+      procedimiento: procedimientoData,
+      profesorId:    this.currentUser?.uid ?? '',
+      profesorName:  this.currentUser?.name ?? '',
       status,
-      createdAt:    this.techSheet?.createdAt ?? new Date(),
-      updatedAt:    new Date(),
+      createdAt:     this.techSheet?.createdAt ?? new Date(),
+      updatedAt:     new Date(),
     };
   }
 
@@ -235,9 +316,6 @@ export class AddUpdateRecipeComponent implements OnInit {
   async openActivateModal() {
     if (!this.validateBeforeSave()) return;
 
-    // Generar id primero para que buildRecipeData lo incluya
-    this.getOrCreateId();
-
     const result = await this.utilsSvc.presentModal({
       component: ActivateCourseModalComponent,
       cssClass: 'activate-course-modal',
@@ -251,43 +329,36 @@ export class AddUpdateRecipeComponent implements OnInit {
       this.utilsSvc.dismissModal({ success: true });
     }
   }
+
+  // ── Actualizar (modo edición) ───────────────────────────────────────────────
+
   async updateTechSheet() {
-  if (!this.validateBeforeSave()) return;
+    if (!this.validateBeforeSave()) return;
 
-  const loading = await this.utilsSvc.loading();
-  await loading.present();
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
 
-  const { id, imageURL, ...formValues } = this.form.value;
-  const data = {
-    ...formValues,
-    id,
-    imageURL: imageURL ?? '',
-    profesorId:   this.currentUser?.uid ?? '',
-    profesorName: this.currentUser?.name ?? '',
-    updatedAt: new Date(),
-    // status y createdAt se mantienen igual
-    status:    this.techSheet.status,
-    createdAt: this.techSheet.createdAt,
-  };
+    const id   = this.getOrCreateId();
+    const data = this.buildRecipeData(this.techSheet.status);
 
-  this.firebaseSvc.setDocument(`technical-sheets/${id}`, data).then(() => {
-    this.utilsSvc.presentToast({
-      message: 'Ficha actualizada correctamente',
-      duration: 1500,
-      color: 'success',
-      icon: 'checkmark-circle-outline',
-      position: 'top'
-    });
-    this.utilsSvc.dismissModal({ success: true });
-  }).catch(error => {
-    console.log(error);
-    this.utilsSvc.presentToast({
-      message: 'Error al actualizar la ficha',
-      duration: 2500,
-      color: 'danger',
-      icon: 'alert-circle-outline',
-      position: 'top'
-    });
-  }).finally(() => loading.dismiss());
-}
+    this.firebaseSvc.setDocument(`technical-sheets/${id}`, data).then(() => {
+      this.utilsSvc.presentToast({
+        message: 'Ficha actualizada correctamente',
+        duration: 1500,
+        color: 'success',
+        icon: 'checkmark-circle-outline',
+        position: 'top'
+      });
+      this.utilsSvc.dismissModal({ success: true });
+    }).catch(error => {
+      console.log(error);
+      this.utilsSvc.presentToast({
+        message: 'Error al actualizar la ficha',
+        duration: 2500,
+        color: 'danger',
+        icon: 'alert-circle-outline',
+        position: 'top'
+      });
+    }).finally(() => loading.dismiss());
+  }
 }

@@ -137,11 +137,10 @@ export class CreateCourseModalComponent  {
         const res = await this.firebaseSvc.signUp({
           email: draft.email,
           password: generatedPassword,
+          name: draft.name,
         } as User);
 
         const uid = res.user.uid;
-
-        await this.firebaseSvc.updateUser(draft.name);
 
         await this.firebaseSvc.setDocument(`users/${uid}`, {
           uid,

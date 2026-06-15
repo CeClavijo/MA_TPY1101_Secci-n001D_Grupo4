@@ -24,4 +24,5 @@ export class AlumnoLibraryPage implements OnInit {
     // modal de visualización — lo implementamos después
     console.log('ficha clickeada:', sheet);
   }
+  
 }

@@ -13,6 +13,7 @@ import { NavBarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { ActivateCourseModalComponent } from './components/modals/activate-course-modal/activate-course-modal.component';
 import { RecipeLibraryComponent } from './components/recipe-library/recipe-library.component';
+import { RecipeViewModalComponent } from './components/modals/recipe-view-modal/recipe-view-modal.component';
 
 
 
@@ -27,7 +28,8 @@ import { RecipeLibraryComponent } from './components/recipe-library/recipe-libra
     CreateTeacherModalComponent,
     ForgotPasswordModalComponent,
     ActivateCourseModalComponent,
-    RecipeLibraryComponent
+    RecipeLibraryComponent,
+    RecipeViewModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -41,7 +43,8 @@ import { RecipeLibraryComponent } from './components/recipe-library/recipe-libra
     ForgotPasswordModalComponent,
     RouterModule,
     ActivateCourseModalComponent,
-    RecipeLibraryComponent
+    RecipeLibraryComponent,
+    RecipeViewModalComponent
   ],
   imports: [
     CommonModule,

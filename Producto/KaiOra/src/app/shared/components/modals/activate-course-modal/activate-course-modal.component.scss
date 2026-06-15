@@ -317,3 +317,121 @@
     
     }
 }
+.observations-block {
+  background: rgba($color-secondary, 0.05);
+  border: $border-width-thin solid rgba($color-secondary, 0.15);
+  border-radius: $border-radius-md;
+  padding: $space-md;
+  margin-bottom: $space-md;
+ 
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    margin-bottom: $space-2xs;
+ 
+    ion-icon {
+      font-size: 20px;
+      color: $color-secondary-dark;
+    }
+ 
+    h3 {
+      @include typography($typography-label);
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $color-secondary-dark;
+      margin: 0;
+    }
+  }
+ 
+  &__desc {
+    @include typography($typography-label-xs);
+    color: $color-text-secondary;
+    margin: 0 0 $space-sm 0;
+  }
+}
+ 
+// Reutiliza el patrón list-row / custom-field / remove-btn / add-row-btn
+// que ya tienes en add-update-recipe — si este modal no los tiene, copialos:
+ 
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  margin-bottom: $space-sm;
+ 
+  &__bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: $border-radius-full;
+    flex-shrink: 0;
+ 
+    &--observations { background: $color-secondary; }
+  }
+ 
+  &__input { flex: 1; }
+}
+ 
+.add-row-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  background: transparent;
+  border: none;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  padding: $space-xs 0;
+  transition: color $transition-fast;
+ 
+  ion-icon { font-size: 18px; }
+ 
+  &--observations {
+    color: $color-secondary;
+    &:hover { color: $color-secondary-dark; }
+  }
+}
+ 
+.remove-btn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: $border-radius-full;
+  background: transparent;
+  color: $color-text-light;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all $transition-fast;
+ 
+  &:hover {
+    background: rgba($color-danger, 0.1);
+    color: $color-danger;
+  }
+}
+ 
+.custom-field {
+  display: flex;
+  align-items: center;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: 0 $space-sm;
+  min-height: 40px;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+ 
+  &:focus-within {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
+  }
+ 
+  ion-input {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --color: #{$color-text-primary};
+    font-family: $font-family-primary;
+    font-size: $font-size-sm;
+  }
+}

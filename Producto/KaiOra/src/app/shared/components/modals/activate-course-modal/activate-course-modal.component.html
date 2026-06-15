@@ -44,7 +44,36 @@
         {{ isSaving ? 'Archivando...' : 'Archivar Ficha' }}
       </button>
     </div>
-
+    <!-- OBSERVACIONES -->
+    <div class="observations-block" *ngIf="!loading && courses.length > 0">
+      <div class="observations-block__header">
+        <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+        <h3>Observaciones <span class="field-label--optional">(opcional)</span></h3>
+      </div>
+      <p class="observations-block__desc">
+        Estas notas se mostrarán a los alumnos de todos los cursos seleccionados.
+      </p>
+    
+      <div *ngFor="let obs of observations; let i = index" class="list-row">
+        <div class="list-row__bullet list-row__bullet--observations"></div>
+        <div class="custom-field list-row__input">
+          <ion-input
+            [value]="obs"
+            (ionInput)="updateObservation(i, $event.detail.value)"
+            placeholder="Ej. Esta semana evaluamos presentación del plato">
+          </ion-input>
+        </div>
+        <button type="button" class="remove-btn" (click)="removeObservation(i)">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+    
+      <button type="button" class="add-row-btn add-row-btn--observations" (click)="addObservation()">
+        <ion-icon name="add-outline"></ion-icon>
+        Agregar observación
+      </button>
+    </div>
+    
     <!-- Lista de cursos -->
     <div class="course-list" *ngIf="!loading && courses.length > 0">
       <div

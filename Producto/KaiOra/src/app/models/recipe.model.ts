@@ -1,8 +1,16 @@
+// recipe.model.ts
+
 export interface Ingredient {
-    name: string,
-    quantity: number,
-    unit: string
+  name: string;
+  quantity: number;
+  unit: string;
 }
+
+export interface ProcedureStep {
+  orden: number;
+  descripcion: string;
+}
+
 export interface Recipe {
   id: string;
   name: string;
@@ -11,11 +19,12 @@ export interface Recipe {
   category: string;
   performance: number;
   prepTime: number;
-  cookingTime: number;
   ingredients: Ingredient[];
-  cookingTemp: string;
-  maintenance: string;
+  procedimiento: ProcedureStep[];
+  pcc: string[];
   keyPoints: string[];
+  evaluaciones: string[];
+  erroresFrecuentes: string[];
   profesorId: string;
   profesorName: string;
   status: TechSheetStatus;
@@ -25,3 +34,6 @@ export interface Recipe {
 }
 
 export type TechSheetStatus = 'Activa' | 'Archivada';
+
+// opciones fijas para el select de dificultad
+export const DIFFICULTY_LEVELS = ['Fácil', 'Media', 'Difícil'];
