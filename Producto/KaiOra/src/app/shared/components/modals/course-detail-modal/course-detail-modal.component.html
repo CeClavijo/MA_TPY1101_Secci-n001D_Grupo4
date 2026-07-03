@@ -1,0 +1,159 @@
+<ion-header class="modal-header">
+  <div class="modal-header__content">
+    <div class="modal-header__title-group">
+      <ion-icon name="school-outline" class="modal-header__icon"></ion-icon>
+      <h2 class="modal-header__title">{{ course.name }}</h2>
+    </div>
+    <button class="modal-header__close-btn" (click)="dismiss()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- TABS -->
+  <div class="modal-tabs">
+    <button
+      class="modal-tabs__btn"
+      [class.modal-tabs__btn--active]="activeTab === 'info'"
+      (click)="setTab('info')">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      Información
+    </button>
+    <button
+      class="modal-tabs__btn"
+      [class.modal-tabs__btn--active]="activeTab === 'alumnos'"
+      (click)="setTab('alumnos')">
+      <ion-icon name="people-outline"></ion-icon>
+      Alumnos
+      <span class="modal-tabs__count">{{ students.length }}</span>
+    </button>
+  </div>
+</ion-header>
+
+<ion-content class="modal-content">
+
+  <!-- ══════════════════════════════ -->
+  <!-- TAB: INFORMACIÓN -->
+  <!-- ══════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'info'">
+
+  <div class="course-image-wrap" *ngIf="course.imageURL">
+    <img [src]="course.imageURL" [alt]="course.name" class="course-image" />
+  </div>
+  <div class="course-image-wrap course-image-wrap--placeholder" *ngIf="!course.imageURL">
+    <ion-icon name="image-outline"></ion-icon>
+  </div>
+
+  <div class="tab-panel__body">
+    <form [formGroup]="infoForm" class="info-form">
+
+      <div class="field-group" *ngIf="role === 'admin'">
+        <label class="field-label">Nombre del Curso</label>
+        <div class="custom-field" [class.custom-field--error]="infoForm.controls.name.invalid && infoForm.controls.name.touched">
+          <ion-input formControlName="name" placeholder="Nombre del curso"></ion-input>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Descripción</label>
+        <div class="custom-field custom-field--textarea">
+          <ion-textarea
+            formControlName="description"
+            [autoGrow]="true"
+            [rows]="3"
+            placeholder="Descripción del curso">
+          </ion-textarea>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="tab-panel__footer">
+      <button
+        type="button"
+        class="btn btn--danger"
+        *ngIf="role === 'admin'"
+        (click)="deleteCourse()">
+        <ion-icon name="trash-outline"></ion-icon>
+        Eliminar Curso
+      </button>
+      <button
+        type="button"
+        class="btn btn--primary"
+        (click)="saveInfo()"
+        [disabled]="isSavingInfo">
+        <ion-icon name="save-outline"></ion-icon>
+        {{ role === 'admin' ? 'Guardar Cambios' : 'Actualizar Descripción' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+  <!-- ══════════════════════════════ -->
+  <!-- TAB: ALUMNOS -->
+  <!-- ══════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'alumnos'">
+
+    <!-- Loading -->
+    <div class="loading-state" *ngIf="loading">
+      <ion-spinner name="crescent" color="success"></ion-spinner>
+    </div>
+
+    <!-- Empty -->
+    <div class="empty-state" *ngIf="!loading && students.length === 0">
+      <ion-icon name="people-outline"></ion-icon>
+      <p>No hay alumnos inscritos en este curso</p>
+    </div>
+
+    <!-- Lista de alumnos -->
+    <div class="students-list" *ngIf="!loading && students.length > 0">
+      <div class="student-item" *ngFor="let alumno of students">
+
+        <!-- Avatar -->
+        <div class="student-item__avatar">
+          {{ alumno.name?.charAt(0)?.toUpperCase() }}
+        </div>
+
+        <!-- Info / Form edición inline -->
+        <div class="student-item__info" *ngIf="editingAlumnoId !== alumno.uid">
+          <span class="student-item__name">{{ alumno.name }}</span>
+          <span class="student-item__email">{{ alumno.email }}</span>
+        </div>
+
+        <div class="student-item__edit-form" *ngIf="editingAlumnoId === alumno.uid" [formGroup]="editAlumnoForm">
+          <div class="custom-field custom-field--inline">
+            <ion-input formControlName="name" placeholder="Nombre del alumno"></ion-input>
+          </div>
+          <span class="student-item__email">{{ alumno.email }}</span>
+        </div>
+
+        <!-- Acciones (solo admin) -->
+        <div class="student-item__actions" *ngIf="role === 'admin'">
+
+          <!-- Modo normal -->
+          <ng-container *ngIf="editingAlumnoId !== alumno.uid">
+            <button type="button" class="icon-btn icon-btn--edit" (click)="startEditAlumno(alumno)">
+              <ion-icon name="pencil-outline"></ion-icon>
+            </button>
+            <button type="button" class="icon-btn icon-btn--delete" (click)="removeAlumno(alumno)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </ng-container>
+
+          <!-- Modo edición inline -->
+          <ng-container *ngIf="editingAlumnoId === alumno.uid">
+            <button type="button" class="icon-btn icon-btn--confirm" (click)="saveAlumnoName(alumno)">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </button>
+            <button type="button" class="icon-btn icon-btn--cancel" (click)="cancelEditAlumno()">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </ng-container>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>

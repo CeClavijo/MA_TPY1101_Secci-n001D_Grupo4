@@ -1,0 +1,431 @@
+@import 'src/theme/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// ─────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────
+.modal-header {
+  box-shadow: none;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-md $space-lg;
+    background: $color-bg-primary;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    overflow: hidden;
+  }
+
+  &__icon {
+    font-size: 22px;
+    color: $color-secondary;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    @include typography($typography-h4);
+    color: $color-text-primary;
+    margin: 0;
+    @include truncate;
+  }
+
+  &__close-btn {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    border-radius: $border-radius-full;
+    border: none;
+    background: $color-neutral-lighter;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    font-size: 20px;
+    flex-shrink: 0;
+
+    &:hover {
+      background: $color-neutral-light;
+      color: $color-text-primary;
+    }
+  }
+}
+
+// ─────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────
+.modal-tabs {
+  display: flex;
+  background: $color-bg-primary;
+  padding: 0 $space-lg;
+  gap: $space-sm;
+  border-bottom: $border-width-thin solid $color-neutral-light;
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-sm $space-md;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: $color-text-secondary;
+    font-family: $font-family-primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+    margin-bottom: -1px;
+
+    ion-icon { font-size: 18px; }
+
+    &:hover {
+      color: $color-secondary;
+    }
+
+    &--active {
+      color: $color-secondary;
+      border-bottom-color: $color-secondary;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 $space-2xs;
+    background: $color-secondary;
+    color: white;
+    border-radius: $border-radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+  }
+}
+
+// ─────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────
+.modal-content {
+  --background: #{$color-bg-secondary};
+}
+
+// ─────────────────────────────────────────
+// TAB PANELS
+// ─────────────────────────────────────────
+.tab-panel {
+  &__body {
+    padding: $space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: $space-sm;
+    border-top: $border-width-thin solid $color-neutral-light;
+  }
+}
+
+// ─────────────────────────────────────────
+// IMAGEN DEL CURSO
+// ─────────────────────────────────────────
+.course-image-wrap {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+
+  &--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-neutral-lighter;
+
+    ion-icon {
+      font-size: 48px;
+      color: $color-neutral-light;
+    }
+  }
+}
+
+.course-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// ─────────────────────────────────────────
+// FORM INFO
+// ─────────────────────────────────────────
+.info-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
+.field-label {
+  @include typography($typography-label-xs);
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+  font-weight: $font-weight-semibold;
+}
+
+.custom-field {
+  display: flex;
+  align-items: center;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: 0 $space-sm;
+  min-height: 44px;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus-within {
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba($color-secondary, 0.12);
+  }
+
+  ion-input, ion-textarea {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --color: #{$color-text-primary};
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+  }
+
+  &--textarea {
+    align-items: flex-start;
+    padding: $space-sm;
+  }
+
+  &--readonly {
+    background: $color-bg-secondary;
+    cursor: not-allowed;
+    gap: $space-xs;
+  }
+
+  &--inline {
+    min-height: 36px;
+    padding: 0 $space-xs;
+  }
+}
+
+.field-prefix-icon {
+  font-size: 18px;
+  color: $color-text-light;
+  flex-shrink: 0;
+}
+
+.field-readonly-text {
+  @include typography($typography-body-sm);
+  color: $color-text-secondary;
+  @include truncate;
+}
+
+// ─────────────────────────────────────────
+// LOADING / EMPTY
+// ─────────────────────────────────────────
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: $space-3xl;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3xl $space-lg;
+  gap: $space-sm;
+  opacity: 0.5;
+
+  ion-icon {
+    font-size: 48px;
+    color: $color-text-secondary;
+  }
+
+  p {
+    @include typography($typography-body-sm);
+    color: $color-text-secondary;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+// ─────────────────────────────────────────
+// LISTA DE ALUMNOS
+// ─────────────────────────────────────────
+.students-list {
+  padding: $space-md;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  background: $color-bg-primary;
+  border: $border-width-thin solid $color-neutral-light;
+  border-radius: $border-radius-md;
+  padding: $space-sm $space-md;
+  transition: box-shadow $transition-fast;
+
+  &:hover {
+    box-shadow: $shadow-xs;
+  }
+
+  &__avatar {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    border-radius: $border-radius-full;
+    background: rgba($color-secondary, 0.12);
+    color: $color-secondary-dark;
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  &__edit-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2xs;
+    overflow: hidden;
+  }
+
+  &__name {
+    @include typography($typography-body-sm);
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    @include truncate;
+  }
+
+  &__email {
+    @include typography($typography-label-xs);
+    color: $color-text-light;
+    @include truncate;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    flex-shrink: 0;
+  }
+}
+
+// ─────────────────────────────────────────
+// ICON BUTTONS
+// ─────────────────────────────────────────
+.icon-btn {
+  @include flex-center;
+  width: 34px;
+  height: 34px;
+  border-radius: $border-radius-full;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all $transition-fast;
+  background: transparent;
+
+  &--edit {
+    color: $color-text-light;
+    &:hover { background: rgba($color-secondary, 0.1); color: $color-secondary; }
+  }
+
+  &--delete {
+    color: $color-text-light;
+    &:hover { background: rgba($color-danger, 0.1); color: $color-danger; }
+  }
+
+  &--confirm {
+    color: $color-secondary;
+    &:hover { background: rgba($color-secondary, 0.1); }
+  }
+
+  &--cancel {
+    color: $color-text-light;
+    &:hover { background: $color-neutral-lighter; color: $color-text-primary; }
+  }
+}
+
+// ─────────────────────────────────────────
+// BOTÓN PRIMARIO
+// ─────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  border-radius: $border-radius-xl;
+  padding: $space-xs $space-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  border: none;
+  height: 44px;
+  transition: all $transition-base;
+
+  ion-icon { font-size: 18px; }
+
+  &--primary {
+    background: $color-secondary;
+    color: white;
+
+    &:hover:not([disabled]) {
+      background: $color-secondary-dark;
+      transform: translateY(-1px);
+      box-shadow: $shadow-md;
+    }
+
+    &[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+  &--danger {
+    background: transparent;
+    color: $color-danger;
+    border: $border-width-medium solid $color-danger;
+
+    &:hover:not([disabled]) {
+      background: rgba($color-danger, 0.08);
+      transform: translateY(-1px);
+    }
+  }
+}

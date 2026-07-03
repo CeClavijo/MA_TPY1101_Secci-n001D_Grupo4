@@ -1,0 +1,87 @@
+<div class="professor-layout">
+
+  <app-navbar [menuItems]="menuItems"></app-navbar>
+
+  <div class="professor-layout__content">
+    <ion-content class="home-content">
+
+      <!-- HEADER -->
+      <div class="page-header">
+        <div class="page-header__text">
+          <h1 class="page-header__title">Mis Cursos</h1>
+          <p class="page-header__desc">Aquí puedes visualizar tus cursos asignados y revisar a tus alumnos.</p>
+        </div>
+      </div>
+
+      <!-- BUSCADOR -->
+      <div class="search-wrapper">
+        <div class="search-field">
+          <ion-icon name="search-outline" class="search-field__icon"></ion-icon>
+          <ion-input
+            placeholder="Buscar curso..."
+            [value]="searchTerm"
+            (ionInput)="onSearch($event)"
+            class="search-field__input">
+          </ion-input>
+          <button class="search-field__clear" *ngIf="searchTerm" (click)="clearSearch()">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="loading-state" *ngIf="loading">
+        <ion-spinner name="crescent" color="success"></ion-spinner>
+      </div>
+
+      <!-- SIN CURSOS ASIGNADOS -->
+      <div class="empty-state" *ngIf="!loading && courses.length === 0">
+        <ion-icon name="school-outline"></ion-icon>
+        <h3>No tienes cursos asignados</h3>
+        <p>Avisale a tu administrador para que te asigne a cursos.</p>
+      </div>
+
+      <!-- SIN RESULTADOS DE BÚSQUEDA -->
+      <div class="empty-state empty-state--search" *ngIf="!loading && courses.length > 0 && filteredCourses.length === 0">
+        <ion-icon name="search-outline"></ion-icon>
+        <p>No se encontraron cursos con ese nombre.</p>
+      </div>
+
+      <!-- GRID DE CURSOS -->
+      <div class="courses-grid" *ngIf="!loading && filteredCourses.length > 0">
+        <ion-card
+          class="course-card"
+          *ngFor="let course of filteredCourses"
+          (click)="openCourseDetail(course)">
+
+          <!-- Imagen -->
+          <div class="course-card__image-wrap" *ngIf="course.imageURL">
+            <img [src]="course.imageURL" [alt]="course.name" class="course-card__image" />
+          </div>
+          <div class="course-card__image-wrap course-card__image-wrap--placeholder" *ngIf="!course.imageURL">
+            <ion-icon name="school-outline"></ion-icon>
+          </div>
+
+          <ion-card-content class="course-card__body">
+            <h3 class="course-card__name">{{ course.name }}</h3>
+            <p class="course-card__desc">{{ course.description }}</p>
+
+            <div class="course-card__footer">
+              <span class="course-card__students">
+                <ion-icon name="people-outline"></ion-icon>
+                {{ course.studentIds?.length || 0 }} alumnos
+              </span>
+              <span class="course-card__action">
+                Ver detalle
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </span>
+            </div>
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+
+    </ion-content>
+  </div>
+
+</div>

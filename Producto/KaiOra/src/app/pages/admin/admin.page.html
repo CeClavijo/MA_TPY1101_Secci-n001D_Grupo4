@@ -56,7 +56,7 @@
 
         <!-- Grid de cursos -->
         <div class="courses-grid" *ngIf="courses.length > 0">
-          <ion-card class="course-card" *ngFor="let course of courses">
+          <ion-card class="course-card" *ngFor="let course of courses" (click)="openCourseDetail(course)">
 
             <ion-card-header class="course-card__header">
               <div class="course-card__badge">{{ course.name }}</div>
