@@ -5,6 +5,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { Utils } from 'src/app/services/utils';
 import { NavMenuItem } from 'src/app/shared/components/navbar/navbar.component';
 import { CreateCourseModalComponent } from 'src/app/shared/components/modals/create-course-modal/create-course-modal.component';
+import { CourseDetailModalComponent } from 'src/app/shared/components/modals/course-detail-modal/course-detail-modal.component';
 
 @Component({
   selector: 'app-admin-home',
@@ -60,4 +61,19 @@ export class AdminHomePage implements OnInit {
       this.courses.push(data);
     }
   }
+  async openCourseDetail(course: Course) {
+    const result = await this.utilsSvc.presentModal({
+      component: CourseDetailModalComponent,
+      cssClass: 'course-detail-modal',
+      componentProps: {
+        course,
+        role: 'admin',
+      }
+    });
+
+    if (result?.success) {
+      this.loadData();
+    }
+  }
+
 }

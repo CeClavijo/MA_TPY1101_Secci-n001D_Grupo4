@@ -485,3 +485,60 @@
     }
   }
 }
+
+// ─────────────────────────────────────────
+// ACCIONES NÓMINA
+// ─────────────────────────────────────────
+.nomina-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  margin-bottom: $space-sm;
+}
+
+.nomina-hint {
+  @include typography($typography-label-xs);
+  color: $color-text-light;
+}
+
+// ─────────────────────────────────────────
+// BOTÓN IMPORTAR
+// ─────────────────────────────────────────
+.btn-import {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  background: transparent;
+  border: $border-width-medium solid $color-secondary;
+  border-radius: $border-radius-md;
+  color: $color-secondary;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-xs $space-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+  white-space: nowrap;
+
+  ion-icon { font-size: 18px; }
+
+  &:hover {
+    background: rgba($color-secondary, 0.08);
+  }
+}
+
+// ─────────────────────────────────────────
+// BADGE IMPORTADO
+// ─────────────────────────────────────────
+.badge-imported {
+  display: inline-flex;
+  align-items: center;
+  background: rgba($color-secondary, 0.12);
+  color: $color-secondary-dark;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  border-radius: $border-radius-full;
+  padding: 1px $space-xs;
+  margin-left: $space-xs;
+  vertical-align: middle;
+}

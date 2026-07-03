@@ -40,9 +40,7 @@
                 placeholder="Seleccionar..."
                 interface="popover"
                 class="field-select">
-                <ion-select-option
-                  *ngFor="let prof of professors"
-                  [value]="prof.uid">
+                <ion-select-option *ngFor="let prof of professors" [value]="prof.uid">
                   {{ prof.name }}
                 </ion-select-option>
               </ion-select>
@@ -76,17 +74,38 @@
 
     <!-- ── NÓMINA ── -->
     <section class="form-section">
+
+      <!-- Header nómina -->
       <div class="nomina-header">
         <div class="nomina-header__left">
           <ion-icon name="people-outline" class="nomina-header__icon"></ion-icon>
           <span class="nomina-header__title">Nómina de Estudiantes</span>
         </div>
-        <span class="nomina-badge" *ngIf="students.length > 0">
-          {{ students.length }} {{ students.length === 1 ? 'Estudiante' : 'Estudiantes' }}
-        </span>
+        <div class="nomina-header__right">
+          <span class="nomina-badge" *ngIf="students.length > 0">
+            {{ students.length }} / {{ MAX_STUDENTS }}
+          </span>
+        </div>
       </div>
 
-      <!-- Formulario agregar alumno -->
+      <!-- Input oculto para archivo -->
+      <input
+        type="file"
+        id="fileInput"
+        accept=".csv,.xlsx,.xls"
+        style="display:none"
+        (change)="onFileImport($event)" />
+
+      <!-- Acciones de importar + agregar manual -->
+      <div class="nomina-actions">
+        <button type="button" class="btn-import" (click)="triggerFileInput()">
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+          Importar CSV / Excel
+        </button>
+        <span class="nomina-hint">o agrégalos manualmente</span>
+      </div>
+
+      <!-- Formulario agregar alumno manualmente -->
       <div class="add-student-box" [formGroup]="studentForm">
         <div class="add-student-box__fields">
           <div class="mini-field" [class.mini-field--error]="studentFieldInvalid('studentName')">
@@ -105,10 +124,15 @@
             </ion-input>
           </div>
         </div>
-        <button type="button" class="add-student-btn" (click)="addStudent()" [disabled]="studentForm.invalid">
+        <button
+          type="button"
+          class="add-student-btn"
+          (click)="addStudent()"
+          [disabled]="studentForm.invalid || students.length >= MAX_STUDENTS">
           <ion-icon name="add-outline"></ion-icon>
           Agregar
         </button>
+
         <span class="field-error field-error--student" *ngIf="duplicateEmailError">
           <ion-icon name="warning-outline"></ion-icon>
           Este email ya está registrado en otro curso
@@ -124,7 +148,10 @@
         <div class="student-card" *ngFor="let student of students; let i = index">
           <div class="student-card__avatar">{{ getInitials(student.name) }}</div>
           <div class="student-card__info">
-            <span class="student-card__name">{{ student.name }}</span>
+            <span class="student-card__name">
+              {{ student.name }}
+              <span class="badge-imported" *ngIf="student.imported">Importado</span>
+            </span>
             <span class="student-card__email">{{ student.email }}</span>
           </div>
           <button type="button" class="student-card__remove-btn" (click)="removeStudent(i)">
