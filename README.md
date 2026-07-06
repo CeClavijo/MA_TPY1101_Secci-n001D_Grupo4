@@ -5,7 +5,7 @@ Plataforma web y móvil híbrida para la gestión estandarizada de fichas técni
 
 ## Descripción
 
-KaiOra Institute centraliza la distribución de material técnico culinario entre profesores y alumnos, reemplazando la dispersión de contenido informal (TikTok, Instagram, YouTube) con fichas técnicas institucionales estandarizadas que incluyen ingredientes, procedimiento paso a paso, Puntos Críticos de Control (PCC) sanitarios, puntos clave, errores frecuentes y criterios de evaluación.
+KaiOra centraliza la distribución de material técnico culinario entre profesores y alumnos, reemplazando la dispersión de contenido informal (TikTok, Instagram, YouTube) con fichas técnicas institucionales estandarizadas que incluyen ingredientes, procedimiento paso a paso, Puntos Críticos de Control (PCC) sanitarios, puntos clave, errores frecuentes y criterios de evaluación.
 
 ---
 
